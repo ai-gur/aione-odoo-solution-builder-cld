@@ -1,9 +1,20 @@
 {
-  "$comment": "Capability records for the Israeli B2B wholesale pilot. Each states what Odoo can do for a business, keyed to the requirement topics normalisation produces, and each carries the source evidence that supports it. Status is draft until an AIOne functional reviewer verifies it; a draft capability may inform a blueprint but cannot approve one (Blueprint §8).",
+  "$comment": "Capability records for the Israeli B2B wholesale pilot. Each states what Odoo can do for a business, keyed to the requirement topics normalisation produces, and each carries the source evidence that supports it. A capability is draft until an AIOne functional reviewer confirms it against the pinned revision; a draft capability may inform a blueprint but cannot carry one to approval (Blueprint §8). All nine were reviewed on 18 August 2026 — see `verification` below. Verification confirms the statement and its recorded limitations; it does not widen coverage, close a residual gap, or resolve an unresolved topic.",
   "kind": "CapabilitySet",
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
   "scopeKey": "il-b2b-wholesale-distribution",
   "baselineKey": "odoo19-baseline-2026-08-17",
+  "verification": {
+    "reviewer": "Nir Bar, founding partner, AIOne",
+    "role": "solution_owner",
+    "date": "2026-08-18",
+    "baselineKey": "odoo19-baseline-2026-08-17",
+    "scope": "All nine capability records in this set. Each statement, its modules, its activation route and its recorded limitations were reviewed against the pinned Odoo 19 revisions in catalogue/pinned-sources.json.",
+    "excluded": [
+      "The two unresolved topics below. Verifying what the catalogue does contain says nothing about what it does not; approval.discounts (F-01) and approval.credit remain open questions requiring an answer about Enterprise modules outside the pilot set.",
+      "The residual gaps on inventory.traceability.expiry and finance.chart_of_accounts_israel. Both capabilities are verified as partial: the reviewer confirmed the statement and confirmed that the gap is real, which is why coverage stays partial and neither can produce a green assessment."
+    ]
+  },
   "capabilities": [
     {
       "capabilityKey": "inventory.multi_warehouse",
@@ -28,7 +39,13 @@
       "limitations": [
         "Routes between warehouses beyond the standard receipt and delivery flows need configuration review."
       ],
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-18",
+        "note": "Confirmed: multi-warehouse stock is standard in stock, activated by the multi-locations setting, and covers per-warehouse availability and moves. The limitation stands — inter-warehouse routes are a configuration decision per customer, not a property of the module."
+      }
     },
     {
       "capabilityKey": "inventory.traceability.serial",
@@ -52,7 +69,13 @@
       "limitations": [
         "Per-product configuration decides whether tracking is by serial, by lot, or none."
       ],
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-18",
+        "note": "Confirmed: serial tracking is standard, end to end from receipt to delivery, and the delivery-slip group is the correct surface for showing the number on the document. Tracking mode remains a per-product setting, as recorded."
+      }
     },
     {
       "capabilityKey": "inventory.traceability.lot",
@@ -72,7 +95,13 @@
       "securitySurfaces": ["stock.group_production_lot"],
       "evidence": ["stock declares lot and serial groups in security/stock_security.xml"],
       "limitations": [],
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-18",
+        "note": "Confirmed: lot tracking is standard and shares the same activation setting as serial tracking. The two are separate capabilities because a customer asking for batches is not asking for unit-level serials."
+      }
     },
     {
       "capabilityKey": "inventory.traceability.expiry",
@@ -97,7 +126,13 @@
         "Blocking delivery of expired stock depends on the removal strategy and alert configuration; whether it is a hard block or a warning needs functional confirmation."
       ],
       "residualGap": "Whether expired stock is blocked or merely flagged is unconfirmed at this revision.",
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-18",
+        "note": "Confirmed as partial. Expiry dates on lots are real, and the setting installs product_expiry. The gap is confirmed rather than closed: a customer who says expired stock must not ship is asking for a hard block, and that behaviour is not established at this revision. Coverage stays partial, so this capability cannot produce a green assessment."
+      }
     },
     {
       "capabilityKey": "organisation.multi_company",
@@ -122,7 +157,13 @@
       "limitations": [
         "Intercompany flows and consolidated reporting are separate capabilities and are not covered by this record."
       ],
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-18",
+        "note": "Confirmed: several legal companies in one database with per-company record separation is standard. The limitation is deliberate — customers routinely mean intercompany invoicing when they say multi-company, and that is a different capability this record does not claim."
+      }
     },
     {
       "capabilityKey": "sales.discount.per_line",
@@ -146,7 +187,13 @@
       "limitations": [
         "This controls who may enter a discount. It does not require anyone to approve one."
       ],
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-18",
+        "note": "Confirmed, and the limitation is the important half of this record: the group decides who may type a discount, not who must approve it. This capability must never be offered as an answer to a discount-approval requirement — that is the topic recorded as unresolved under F-01."
+      }
     },
     {
       "capabilityKey": "sales.order.lock_confirmed",
@@ -166,7 +213,13 @@
       "securitySurfaces": ["sale.group_auto_done_setting"],
       "evidence": ["sale declares group_auto_done_setting (Lock Confirmed Sales)"],
       "limitations": [],
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-18",
+        "note": "Confirmed: confirmed orders can be locked against edit, released only by a user holding the group."
+      }
     },
     {
       "capabilityKey": "finance.chart_of_accounts_israel",
@@ -177,7 +230,7 @@
         "en_US": "Israeli chart of accounts and local reports, as the basis for accounting in Israeli entities."
       },
       "modules": ["l10n_il", "l10n_il_reports", "account"],
-      "edition": "community",
+      "edition": "enterprise",
       "coverage": "partial",
       "activation": {
         "settingField": null,
@@ -187,14 +240,22 @@
       "evidence": [
         "l10n_il defines no models and extends only account.chart.template",
         "l10n_il_reports is the only other l10n_il module at this revision",
+        "l10n_il is core LGPL-3; l10n_il_reports is Enterprise OEEL-1, so the capability as a whole requires Enterprise",
         "account declares 11 security groups and 125 access rules"
       ],
       "limitations": [
         "The localization supplies a chart and reports. Invoice numbering rules, tax-authority submission formats and document layouts beyond these two modules are not covered.",
+        "The chart alone (l10n_il) is available in Community. The local reports require an Enterprise subscription.",
         "Financial policy is unverified until an authorized finance owner confirms it."
       ],
       "residualGap": "Israeli reporting obligations beyond the chart and standard reports are unestablished and need finance review.",
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-18",
+        "note": "Confirmed as partial, and the narrowness is the finding (F-02). The Israeli localization at this revision is a chart of accounts and reports — nothing more. An Israeli customer asking for accounting usually also means invoice numbering and tax-authority submission, none of which this record covers. Coverage stays partial, and per-customer financial policy still needs a finance owner's confirmation. The edition was corrected during this review from community to enterprise: l10n_il_reports is OEEL-1, so the capability cannot be delivered on Community even though the chart alone can."
+      }
     },
     {
       "capabilityKey": "purchase.approval.thresholds",
@@ -219,7 +280,13 @@
       "limitations": [
         "The threshold is a single amount per company. Multi-step or role-specific approval chains are not covered."
       ],
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-18",
+        "note": "Confirmed: purchase double validation is a real approval step above a single amount per company. The limitation matters in practice — a customer describing two approval tiers by role is beyond this capability and needs a further decision."
+      }
     }
   ],
   "unresolvedTopics": [

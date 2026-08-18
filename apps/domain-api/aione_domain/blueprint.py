@@ -60,7 +60,7 @@ def _capabilities(cursor, set_id: str) -> list[dict[str, Any]]:
         """
         SELECT capability_key, domain, description, addresses_topics, modules, edition,
                coverage, activation, security_surfaces, evidence, limitations,
-               residual_gap, status
+               residual_gap, status, verified_by, verified_on
           FROM catalogue.capabilities
          WHERE set_id = %s
       ORDER BY capability_key
@@ -154,6 +154,14 @@ def classify(
         rationale_en += f" Activated through the {activation['settingField']} setting."
     if chosen["status"] != "verified":
         rationale_en += " Catalogue entry is draft and needs functional verification."
+    elif chosen.get("verified_by"):
+        # A green assessment rests on a person's review, so the assessment
+        # names them. The record is immutable, so it keeps naming them even
+        # after a later catalogue release replaces the capability.
+        rationale_en += (
+            f" Catalogue entry verified by {chosen['verified_by']}"
+            f" on {chosen['verified_on']}."
+        )
 
     return {
         "classification": classification,

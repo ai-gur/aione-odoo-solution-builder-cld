@@ -139,11 +139,35 @@ class TestClassification(unittest.TestCase):
         )
         verified = blueprint.classify(
             {"requirement_ref": "R", "topic": "inventory.multi_warehouse"},
-            [self.capability(status="verified")], {},
+            [self.capability(status="verified", verified_by="A Reviewer",
+                             verified_on="2026-08-18")], {},
         )
         self.assertEqual(draft["confidence"], "amber")
         self.assertIn("draft", draft["rationale"]["en_US"])
         self.assertEqual(verified["confidence"], "green")
+
+    def test_a_green_assessment_names_the_reviewer_it_rests_on(self) -> None:
+        """Green means a person confirmed the claim. The record says which
+        person, and keeps saying so after the catalogue moves on."""
+        decision = blueprint.classify(
+            {"requirement_ref": "R", "topic": "inventory.multi_warehouse"},
+            [self.capability(status="verified", verified_by="Nir Bar, founding partner, AIOne",
+                             verified_on="2026-08-18")], {},
+        )
+        self.assertIn("Nir Bar", decision["rationale"]["en_US"])
+        self.assertIn("2026-08-18", decision["rationale"]["en_US"])
+
+    def test_verification_does_not_close_a_partial_coverage_gap(self) -> None:
+        """A reviewer confirming that a capability is partial has confirmed
+        the gap, not removed it."""
+        decision = blueprint.classify(
+            {"requirement_ref": "R", "topic": "inventory.traceability.expiry"},
+            [self.capability(status="verified", verified_by="A Reviewer",
+                             verified_on="2026-08-18", coverage="partial",
+                             residual_gap="Blocking is unconfirmed.")], {},
+        )
+        self.assertEqual(decision["confidence"], "amber")
+        self.assertEqual(decision["residual_gap"], "Blocking is unconfirmed.")
 
     def test_partial_coverage_produces_a_gap(self) -> None:
         decision = blueprint.classify(
@@ -277,17 +301,36 @@ class TestBlueprintGeneration(unittest.TestCase):
         self.assertEqual(by_ref["REQ-APR-001"]["classification"], "unresolved")
         self.assertEqual(by_ref["REQ-APR-001"]["modules"], [])
 
-    def test_nothing_is_green_while_the_catalogue_is_draft(self) -> None:
+    def test_a_verified_catalogue_carries_assessments_to_green(self) -> None:
+        """The nine pilot capabilities were verified on 18 August 2026, and
+        that is what green rests on: a fully covered, verified capability is
+        green, and the assessment names the reviewer."""
         blueprint_id = self.generate().json()["blueprint"]["id"]
         result = self.client.get(
             f"/v1/tenants/{TENANT}/blueprints/{blueprint_id}", headers=self.auth()
         ).json()["blueprint"]
         self.assertTrue(result["assessments"])
-        for assessment in result["assessments"]:
-            self.assertNotEqual(
-                assessment["confidence"], "green",
-                f"{assessment['requirement_ref']} is green against an unverified catalogue",
-            )
+
+        green = [a for a in result["assessments"] if a["confidence"] == "green"]
+        self.assertTrue(green, "a verified catalogue produced no green assessment")
+        for assessment in green:
+            self.assertIsNotNone(assessment["capability_key"])
+            self.assertIsNone(assessment["residual_gap"])
+            self.assertIn("verified by", assessment["rationale"]["en_US"])
+
+    def test_verification_does_not_resolve_what_the_catalogue_lacks(self) -> None:
+        """Reviewing what the catalogue contains says nothing about what it
+        does not. F-01 is still open, so discount approval is still red."""
+        blueprint_id = self.generate().json()["blueprint"]["id"]
+        result = self.client.get(
+            f"/v1/tenants/{TENANT}/blueprints/{blueprint_id}", headers=self.auth()
+        ).json()["blueprint"]
+        by_ref = {a["requirement_ref"]: a for a in result["assessments"]}
+
+        self.assertEqual(by_ref["REQ-APR-001"]["classification"], "unresolved")
+        self.assertEqual(by_ref["REQ-APR-001"]["confidence"], "red")
+        self.assertEqual(by_ref["REQ-APR-001"]["modules"], [])
+        self.assertFalse(result["summary"]["readyForReview"])
 
     def test_selected_modules_record_what_justified_them(self) -> None:
         blueprint_id = self.generate().json()["blueprint"]["id"]
@@ -318,6 +361,27 @@ class TestBlueprintGeneration(unittest.TestCase):
             f"'{TENANT}' AND action = 'blueprint.generated';"
         )
         self.assertGreaterEqual(int(count), 1)
+
+    def test_the_database_refuses_a_verified_capability_with_no_reviewer(self) -> None:
+        """Even the migrator cannot write one. A loader that forgets to carry
+        the provenance fails at load rather than producing green assessments
+        that rest on nobody (migration 0010)."""
+        from scripts.db import run_psql
+
+        set_id = psql(
+            "SELECT id FROM catalogue.capability_sets ORDER BY loaded_at DESC LIMIT 1;"
+        ).strip()
+        result = run_psql(
+            "INSERT INTO catalogue.capabilities "
+            "(id, set_id, capability_key, domain, description, status) VALUES "
+            f"('cap_UNATTRIBUTED0000000000001', '{set_id}', 'test.unattributed', 'INV', "
+            "'{}'::jsonb, 'verified');"
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "capabilities_verified_names_its_reviewer",
+            (result.stderr + result.stdout).lower(),
+        )
 
     def test_fit_assessments_cannot_be_deleted_by_the_api_role(self) -> None:
         from scripts.db import run_psql

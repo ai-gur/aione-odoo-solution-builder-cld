@@ -72,11 +72,17 @@ def load(path: pathlib.Path) -> None:
         capability_id = "cap_" + hashlib.sha256(
             f"{set_id}:{capability['capabilityKey']}".encode()
         ).hexdigest()[:26].upper()
+        # Who confirmed this against the pinned revision, and when. A verified
+        # row that names nobody is rejected by the database (migration 0010),
+        # so a file that flips status without recording the review fails here
+        # rather than producing a green assessment nobody stands behind.
+        verification = capability.get("verification") or {}
         statements.append(
             f"""INSERT INTO catalogue.capabilities
                   (id, set_id, capability_key, domain, description, addresses_topics, modules,
                    edition, coverage, activation, security_surfaces, evidence, limitations,
-                   residual_gap, status)
+                   residual_gap, status, verified_by, verified_role, verified_on,
+                   verification_note)
                 VALUES ({literal(capability_id)}, {literal(set_id)},
                         {literal(capability['capabilityKey'])}, {literal(capability['domain'])},
                         {json_literal(capability['description'])},
@@ -89,7 +95,11 @@ def load(path: pathlib.Path) -> None:
                         {json_literal(capability.get('evidence', []))},
                         {json_literal(capability.get('limitations', []))},
                         {literal(capability.get('residualGap'))},
-                        {literal(capability.get('status', 'draft'))});"""
+                        {literal(capability.get('status', 'draft'))},
+                        {literal(verification.get('reviewer'))},
+                        {literal(verification.get('role'))},
+                        {literal(verification.get('date'))},
+                        {literal(verification.get('note'))});"""
         )
 
     for unresolved in document.get("unresolvedTopics", []):

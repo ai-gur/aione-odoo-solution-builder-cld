@@ -36,7 +36,15 @@ design direction and refuse to invent the module.
 **Evidence.** `l10n_il` defines no models, extends only
 `account.chart.template`, ships no access rules and adds no configuration
 settings. `l10n_il_reports` is the only other `l10n_il*` module at this
-revision.
+revision. `l10n_il` is core and LGPL-3; `l10n_il_reports` is Enterprise and
+OEEL-1.
+
+**Split edition.** The chart of accounts is available on Community; the local
+reports are not. A capability naming both modules is an Enterprise capability,
+because a customer cannot install half of it. The pilot capability record
+declared `community` until verification on 18 August 2026; the check now runs
+on every test run, deriving the required edition from the module sources in the
+pinned release rather than from what the record asserts.
 
 **Why it matters.** The pilot scope assumed an Israeli accounting boundary.
 The localization supplies a chart of accounts and reports; it does not supply

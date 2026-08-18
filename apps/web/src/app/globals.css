@@ -1,0 +1,235 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* AIOne Odoo Solution Builder design system.
+   The authority is docs/30-architecture/DESIGN-SYSTEM.md; this file is its
+   only implementation. Hand-written hex outside these tokens is a review
+   defect.
+
+   Two rules carry most of the weight here:
+   - Brand gold (#e3aa24) is 2.09:1 on white. It marks brand, never text,
+     links, focus or state. Gold Ink (#8a6508, 5.32:1) exists for the cases
+     that need a gold tone and must also be readable.
+   - State is never colour alone. Every badge pairs a tint with an icon and a
+     label; the tokens below only make that possible, they do not enforce it. */
+
+@custom-variant dark (&:is(.dark *));
+
+/* ---------------------------------------------------------------------------
+   Hebrew and Latin type stacks
+
+   Satoshi, Inter and Geist Mono have no Hebrew coverage, and Hebrew is the
+   primary product language. Open Sans is vendored because it covers both
+   scripts, so a Hebrew interface never silently falls back to a font that
+   cannot draw it.
+   --------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Open Sans Vendored";
+  src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans Vendored";
+  src: url("/fonts/OpenSans-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans Vendored";
+  src: url("/fonts/OpenSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  /* Neutrals */
+  --color-canvas: #ffffff;
+  --color-paper: #f5f5f5;
+  --color-ash: #e5e5e5;
+  --color-smoke: #d4d4d4;
+  --color-midnight-ink: #0a0a0a;
+  --color-charcoal: #171717;
+  --color-graphite: #262626;
+  --color-slate: #404040;
+  --color-steel: #525252;
+  --color-fog: #737373;
+  --color-silver: #a3a3a3;
+
+  /* Brand */
+  --color-brand-gold: #e3aa24;
+  --color-gold-ink: #8a6508;
+  --color-brand-black: #231f20;
+
+  /* Action */
+  --color-action-fill: #0a0a0a;
+  --color-action-fill-hover: #262626;
+  --color-action-on-fill: #ffffff;
+
+  /* Semantic state: ink for icons and standalone text, tint for surfaces.
+     Badge labels use charcoal on the tint (14.7:1 or better). */
+  --color-state-success-ink: #15803d;
+  --color-state-success-tint: #dcfce7;
+  --color-state-success-border: #bbf7d0;
+  --color-state-caution-ink: #a16207;
+  --color-state-caution-tint: #fef3c7;
+  --color-state-caution-border: #fde68a;
+  --color-state-danger-ink: #b91c1c;
+  --color-state-danger-tint: #fee2e2;
+  --color-state-danger-border: #fecaca;
+  --color-state-info-ink: #1e40af;
+  --color-state-info-tint: #dbeafe;
+  --color-state-info-border: #bfdbfe;
+  --color-state-neutral-ink: #525252;
+  --color-state-neutral-tint: #f5f5f5;
+  --color-state-neutral-border: #e5e5e5;
+
+  /* Focus and selection */
+  --color-focus-ring: #0a0a0a;
+  --color-selection-bg: #dbeafe;
+
+  /* Shape */
+  --radius-pill: 9999px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 6px;
+
+  /* Layout */
+  --page-max-width: 1200px;
+  --section-gap: 64px;
+  --card-padding: 16px;
+
+  /* shadcn variable mapping (DESIGN-SYSTEM.md §10.2). Fixed here so the two
+     systems cannot drift. */
+  --radius: 8px;
+  --background: var(--color-canvas);
+  --foreground: var(--color-charcoal);
+  --card: var(--color-canvas);
+  --card-foreground: var(--color-charcoal);
+  --popover: var(--color-canvas);
+  --popover-foreground: var(--color-charcoal);
+  --primary: var(--color-action-fill);
+  --primary-foreground: var(--color-action-on-fill);
+  --secondary: var(--color-paper);
+  --secondary-foreground: var(--color-charcoal);
+  --muted: var(--color-paper);
+  --muted-foreground: var(--color-steel);
+  --accent: var(--color-selection-bg);
+  --accent-foreground: var(--color-charcoal);
+  --destructive: var(--color-state-danger-ink);
+  --border: var(--color-ash);
+  --input: var(--color-steel);
+  --ring: var(--color-focus-ring);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --font-sans: "Inter", "Open Sans Vendored", ui-sans-serif, system-ui, sans-serif;
+  --font-hebrew: "Open Sans Vendored", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  /* One switchable property rather than competing selectors: the direction
+     sets the family, and every descendant inherits it. Setting it on <html>
+     and letting <body> declare its own family is how the Hebrew stack quietly
+     loses to the Latin one. */
+  :root {
+    --font-ui: var(--font-sans);
+    --leading-ui: 1.5;
+  }
+
+  :root[dir="rtl"] {
+    --font-ui: var(--font-hebrew);
+    --leading-ui: 1.6;
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-charcoal);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: var(--leading-ui);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hebrew has no ascender/descender rhythm and no italics: line height grows,
+     letter-spacing stays neutral, and emphasis uses weight. */
+  [dir="rtl"] {
+    letter-spacing: normal;
+  }
+
+  [dir="rtl"] i,
+  [dir="rtl"] em {
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* WCAG 2.2 2.4.13. Never removed, never clipped. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-selection-bg);
+  }
+
+  /* Technical identifiers stay LTR inside Hebrew text. Direction is isolated
+     by <bdi>; this only supplies the face. */
+  bdi,
+  code,
+  .technical {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+}
+
+@layer components {
+  /* Skip link: inset-inline-start, not left. Under RTL a physical `left`
+     offset moves this off the wrong edge, where it becomes unreachable
+     rather than hidden. */
+  .skip-link {
+    position: absolute;
+    inset-inline-start: -9999px;
+    top: 0;
+    z-index: 100;
+    padding: 12px 16px;
+    background: var(--color-canvas);
+    border: 1px solid var(--color-steel);
+    border-radius: var(--radius-sm);
+  }
+
+  .skip-link:focus {
+    inset-inline-start: 8px;
+    top: 8px;
+  }
+}

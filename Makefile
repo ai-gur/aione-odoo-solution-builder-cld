@@ -1,13 +1,23 @@
 # Canonical developer commands (LOCAL-DEVELOPMENT.md).
 # README and CI use this interface and no other.
 
-.PHONY: help bootstrap check test test-contract test-contract-ts test-contract-py
+COMPOSE := docker compose -f infrastructure/control-plane/compose.yaml
+
+.PHONY: help bootstrap check test test-contract test-contract-ts test-contract-py \
+        stack-up stack-down stack-ps db-migrate db-status db-reset test-integration
 
 help:
-	@echo "bootstrap       install toolchains and dependencies"
-	@echo "check           format, lint and type checks"
-	@echo "test            all tests"
-	@echo "test-contract   shared contract tests in both ecosystems"
+	@echo "bootstrap         install toolchains and dependencies"
+	@echo "stack-up          start postgres, redis, storage and mail"
+	@echo "stack-down        stop the local stack (keeps volumes)"
+	@echo "stack-ps          show local stack status"
+	@echo "db-migrate        apply pending migrations"
+	@echo "db-status         show applied and pending migrations"
+	@echo "db-reset          drop and recreate the control database"
+	@echo "check             format, lint and type checks"
+	@echo "test              all tests"
+	@echo "test-contract     shared contract tests in both ecosystems"
+	@echo "test-integration  database, policy and isolation tests"
 
 bootstrap:
 	pnpm install
@@ -16,7 +26,32 @@ bootstrap:
 check:
 	@echo "no checks wired yet"
 
-test: test-contract
+test: test-contract test-integration
+
+stack-up:
+	$(COMPOSE) up -d
+	@echo "postgres 55432 | redis 56379 | storage 59000 (console 59001) | mail 58125"
+
+stack-down:
+	$(COMPOSE) down
+
+stack-ps:
+	$(COMPOSE) ps
+
+db-migrate:
+	python scripts/db.py migrate
+
+db-status:
+	python scripts/db.py status
+
+db-reset:
+	python scripts/db.py reset
+	python scripts/db.py migrate
+
+# Proves tenant isolation as the API's own database role (I0-05). Requires the
+# stack to be up and migrated.
+test-integration:
+	python -m unittest discover -s tests/integration -v
 
 # Both suites read the same fixtures. Passing here and there is what proves the
 # TypeScript and Python canonicalizers agree byte for byte (ADR-015).

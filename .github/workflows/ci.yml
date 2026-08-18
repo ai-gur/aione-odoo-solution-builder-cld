@@ -1,0 +1,111 @@
+name: CI
+
+# CI runs the same commands a developer runs. `scripts/run.py` is the canonical
+# interface (LOCAL-DEVELOPMENT.md), so a green pipeline means the documented
+# commands work, not that a parallel CI-only script works.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: Shared contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Both ecosystems consume the same fixtures. A disagreement between the
+      # TypeScript and Python canonicalizers fails here, which is the whole
+      # point of ADR-015.
+      - name: Contract tests
+        run: python scripts/run.py test-contract
+
+  database:
+    name: Database, policies and API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Install service dependencies
+        run: |
+          cd apps/domain-api && uv sync
+          cd ../worker && uv sync
+
+      - name: Start control-plane stack
+        run: python scripts/run.py stack-up
+
+      - name: Wait for Postgres
+        run: |
+          for i in $(seq 1 60); do
+            if docker exec aione-sb-postgres pg_isready -U postgres -d aione_control; then exit 0; fi
+            sleep 2
+          done
+          echo "postgres did not become ready" && exit 1
+
+      # Applies from empty, which is acceptance test 8.
+      - name: Migrate
+        run: python scripts/run.py db-migrate
+
+      # Tenant isolation, audit immutability and the durable job path. These
+      # run as the API's own database role, so a policy regression fails here
+      # rather than in production.
+      - name: Integration tests
+        run: python scripts/run.py test-integration
+
+      - name: API tests
+        run: python scripts/run.py test-api
+
+      - name: Stack logs on failure
+        if: failure()
+        run: docker compose -f infrastructure/control-plane/compose.yaml logs --tail 100
+
+  web:
+    name: Web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm --filter web lint
+      - name: Build
+        run: pnpm --filter web build
+
+  security:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # A secret reaching the repository is a stop condition, not a warning
+      # (SECURITY-BASELINE.md). The scan covers history, not just the diff.
+      - name: Scan for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --results=verified,unknown

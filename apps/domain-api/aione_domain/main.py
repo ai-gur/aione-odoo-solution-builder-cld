@@ -21,7 +21,7 @@ from datetime import datetime
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 
-from . import audit, authorization, db, discovery, identity, workspaces
+from . import audit, authorization, blueprint, db, discovery, identity, workspaces
 from .config import ConfigurationError, Settings, load_settings
 
 logger = logging.getLogger("aione.domain")
@@ -705,6 +705,72 @@ def interview_derived(
         tenant_id=tenant_id, user_id=principal.user_id, run_id=run_id
     )
     return {**view, "correlationId": correlation_id}
+
+
+@app.post("/v1/tenants/{tenant_id}/workspaces/{workspace_id}/blueprints", status_code=201)
+def generate_blueprint(
+    tenant_id: str,
+    workspace_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Generate a blueprint from the workspace's approved discovery.
+
+    Refuses when no approved discovery version exists: the engine consumes an
+    approved version and nothing else (Blueprint §2), which is what makes every
+    decision traceable to something a person approved.
+    """
+    correlation_id = request.state.correlation_id
+    role = authorize(principal, tenant_id, "blueprint.propose", correlation_id)
+
+    try:
+        result = blueprint.generate(
+            tenant_id=tenant_id, user_id=principal.user_id, workspace_id=workspace_id
+        )
+    except blueprint.BlueprintError as error:
+        raise HTTPException(status_code=409, detail={"error": str(error)}) from error
+
+    audit.record(
+        tenant_id=tenant_id, action="blueprint.generated", correlation_id=correlation_id,
+        outcome="succeeded", actor_id=principal.user_id, actor_role=role,
+        subject_type="blueprint", subject_id=result["id"],
+        subject_version=str(result["version"]),
+        detail={"summary": result["summary"]},
+    )
+    return {"blueprint": _serialise(result), "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/blueprints/{blueprint_id}")
+def read_blueprint(
+    tenant_id: str,
+    blueprint_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "workspace.read", correlation_id)
+    try:
+        result = blueprint.read(
+            tenant_id=tenant_id, user_id=principal.user_id, blueprint_id=blueprint_id
+        )
+    except blueprint.BlueprintError as error:
+        raise HTTPException(status_code=404, detail={"error": str(error)}) from error
+    return {"blueprint": _serialise(result), "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/workspaces/{workspace_id}/blueprints")
+def list_blueprints(
+    tenant_id: str,
+    workspace_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "workspace.read", correlation_id)
+    rows = blueprint.list_for_workspace(
+        tenant_id=tenant_id, user_id=principal.user_id, workspace_id=workspace_id
+    )
+    return {"blueprints": [_serialise(row) for row in rows], "correlationId": correlation_id}
 
 
 @app.get("/v1/tenants/{tenant_id}/interviews/{run_id}/readiness")

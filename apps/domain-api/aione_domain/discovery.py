@@ -220,8 +220,13 @@ def submit_answer(
 ) -> dict[str, Any]:
     """Record an answer, superseding any previous one for that question."""
     run = _run(tenant_id, user_id, run_id)
-    if run["state"] in ("approved_for_blueprint", "superseded", "cancelled"):
+    if run["state"] in ("superseded", "cancelled"):
         raise DiscoveryError(f"run is {run['state']} and no longer accepts answers")
+
+    # An approved run still accepts corrections. The approved version is a
+    # frozen snapshot, so nothing already approved changes; the run simply
+    # returns to in progress, and re-approving produces the next version.
+    reopened = run["state"] == "approved_for_blueprint"
 
     known = {question["question_key"] for question in _questions(run["definition_id"])}
     if question_key not in known:
@@ -268,7 +273,15 @@ def submit_answer(
             ),
         )
         row = cursor.fetchone()
-    return {**dict(row), "revision": previous is not None}
+
+        if reopened:
+            cursor.execute(
+                "UPDATE discovery.interview_runs SET state = 'in_progress', completed_at = NULL "
+                "WHERE id = %s",
+                (run_id,),
+            )
+
+    return {**dict(row), "revision": previous is not None, "reopened": reopened}
 
 
 def normalise(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]:
@@ -289,8 +302,9 @@ def normalise(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]:
     with db.transaction(tenant_id=tenant_id, user_id=user_id) as cursor:
         counts["superseded"] += _reconcile(
             cursor, run, "business_facts", "fact_key", derived.facts,
+            ["value", "confidence", "verification_state"],
             lambda row: {
-                "value": json.dumps(row["value"], ensure_ascii=False),
+                "value": row["value"],
                 "confidence": row["confidence"],
                 "verification_state": row["verification_state"],
             },
@@ -300,8 +314,10 @@ def normalise(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]:
 
         counts["superseded"] += _reconcile(
             cursor, run, "requirements", "requirement_ref", derived.requirements,
+            ["topic", "statement", "priority", "confidence"],
             lambda row: {
-                "statement": json.dumps(row["statement"], ensure_ascii=False),
+                "topic": row.get("topic", ""),
+                "statement": row["statement"],
                 "priority": row["priority"],
                 "confidence": row["confidence"],
             },
@@ -311,8 +327,9 @@ def normalise(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]:
 
         counts["superseded"] += _reconcile(
             cursor, run, "open_questions", "topic_key", derived.open_questions,
+            ["question", "severity", "blocking"],
             lambda row: {
-                "question": json.dumps(row["question"], ensure_ascii=False),
+                "question": row["question"],
                 "severity": row["severity"],
                 "blocking": row["blocking"],
             },
@@ -324,31 +341,49 @@ def normalise(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]:
 
 
 def _reconcile(cursor, run, table: str, key_column: str, wanted: list[dict[str, Any]],
-               comparable, insert) -> int:
-    """Supersede live rows that are gone or changed, insert what is missing."""
+               comparable_columns: list[str], comparable, insert) -> int:
+    """Supersede live rows that are gone or changed, insert what is missing.
+
+    Comparing content matters as much as comparing keys. Skipping a row because
+    its key already exists means a corrected rule, or a new field, never reaches
+    the rows already stored — which is how every requirement ended up with an
+    empty topic after the generator learned to produce one.
+    """
+    columns = ", ".join([key_column, *comparable_columns])
     cursor.execute(
-        f"SELECT id, {key_column} AS key FROM discovery.{table} "
+        f"SELECT id, {columns} FROM discovery.{table} "
         "WHERE run_id = %s AND superseded_at IS NULL",
         (run["id"],),
     )
-    existing = {row["key"]: row["id"] for row in cursor.fetchall()}
+    existing = {row[key_column]: row for row in cursor.fetchall()}
     wanted_by_key = {row[key_column]: row for row in wanted}
 
     superseded = 0
-    for key, row_id in existing.items():
-        if key in wanted_by_key:
-            continue
+
+    def supersede(row_id: str) -> None:
         cursor.execute(
             f"UPDATE discovery.{table} SET superseded_at = now() WHERE id = %s", (row_id,)
         )
-        superseded += 1
+
+    for key, row in existing.items():
+        if key not in wanted_by_key:
+            supersede(row["id"])
+            superseded += 1
 
     for key, row in wanted_by_key.items():
-        if key in existing:
-            # Already live. Comparing full content would supersede on every
-            # run for cosmetic reasons; the key identifies the conclusion, and
-            # a changed conclusion under the same key is handled by replacing.
+        current = existing.get(key)
+        if current is None:
+            insert(cursor, run, row)
             continue
+
+        stored = {column: current[column] for column in comparable_columns}
+        if comparable(row) == stored:
+            continue
+
+        # The conclusion changed under the same key: the old one is superseded
+        # and stays visible, and the new one is inserted beside it.
+        supersede(current["id"])
+        superseded += 1
         insert(cursor, run, row)
 
     return superseded
@@ -374,14 +409,14 @@ def _insert_requirement(cursor, run, row) -> None:
     cursor.execute(
         """
         INSERT INTO discovery.requirements
-          (id, tenant_id, workspace_id, run_id, requirement_ref, domain, statement,
+          (id, tenant_id, workspace_id, run_id, requirement_ref, domain, topic, statement,
            rationale, acceptance_criteria, priority, confidence, source_question_keys,
            generator_version)
-        VALUES (%s, %s, %s, %s, %s, %s, %s::jsonb, %s::jsonb, %s::jsonb, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s::jsonb, %s::jsonb, %s::jsonb, %s, %s, %s, %s)
         """,
         (
             new_id("req"), run["tenant_id"], run["workspace_id"], run["id"],
-            row["requirement_ref"], row["domain"],
+            row["requirement_ref"], row["domain"], row.get("topic", ""),
             json.dumps(row["statement"], ensure_ascii=False),
             json.dumps(row["rationale"], ensure_ascii=False),
             json.dumps(row["acceptance_criteria"], ensure_ascii=False),
@@ -423,7 +458,7 @@ def derived_view(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]
 
         cursor.execute(
             """
-            SELECT requirement_ref, domain, statement, rationale, acceptance_criteria,
+            SELECT requirement_ref, domain, topic, statement, rationale, acceptance_criteria,
                    priority, status, confidence, source_question_keys
               FROM discovery.requirements
              WHERE run_id = %s AND superseded_at IS NULL
@@ -522,9 +557,6 @@ def approve(*, tenant_id: str, user_id: str, actor_role: str, run_id: str) -> di
         raise ApprovalBlocked(state["reasons"])
 
     run = _run(tenant_id, user_id, run_id)
-    if run["state"] == "approved_for_blueprint":
-        raise DiscoveryError("this interview has already been approved")
-
     answers = current_answers(tenant_id=tenant_id, user_id=user_id, run_id=run_id)
     view = derived_view(tenant_id=tenant_id, user_id=user_id, run_id=run_id)
 
@@ -575,6 +607,25 @@ def approve(*, tenant_id: str, user_id: str, actor_role: str, run_id: str) -> di
             "openQuestions": view["openQuestions"],
         }
         content_digest = digest(content)
+
+        # Re-approving is how a corrected answer reaches the Blueprint Engine:
+        # a new version, never an edit of the approved one (Constitution §7.6).
+        # Identical content produces no version, because a version that records
+        # no change is noise in the history a customer later reads.
+        cursor.execute(
+            """
+            SELECT version, content_digest FROM discovery.discovery_versions
+             WHERE workspace_id = %s
+          ORDER BY version DESC LIMIT 1
+            """,
+            (run["workspace_id"],),
+        )
+        previous = cursor.fetchone()
+        if previous is not None and previous["content_digest"] == content_digest:
+            raise DiscoveryError(
+                f"discovery version {previous['version']} already records this content; "
+                "nothing has changed since it was approved"
+            )
 
         version_id = new_id("dsv")
         cursor.execute(

@@ -189,6 +189,7 @@ def requirement_rule(function: RequirementRule) -> RequirementRule:
 
 def requirement(
     ref: str, domain: str, he: str, en: str, sources: list[str], *,
+    topic: str,
     priority: str = "should", confidence: str = "amber",
     rationale_he: str = "", rationale_en: str = "",
     acceptance: list[dict[str, str]] | None = None,
@@ -196,6 +197,10 @@ def requirement(
     return {
         "requirement_ref": ref,
         "domain": domain,
+        # The join to the capability catalogue is this key, not a keyword match
+        # on the statement text. Semantic similarity may suggest candidates; it
+        # may not establish fit (Blueprint §9.1).
+        "topic": topic,
         "statement": {"he_IL": he, "en_US": en},
         "rationale": {"he_IL": rationale_he, "en_US": rationale_en},
         "acceptance_criteria": acceptance or [],
@@ -233,6 +238,7 @@ def approval_requirements(answers: dict[str, Any]) -> list[dict[str, Any]]:
                 f"The system shall require an authorized approval before {en_label} are confirmed, "
                 "so that business control is preserved.",
                 ["QS-16"],
+                topic=f"approval.{item}",
                 priority="must",
                 rationale_he="הלקוח ציין שפעולה זו מחייבת אישור הנהלה.",
                 rationale_en="The customer stated this action requires management approval.",
@@ -266,7 +272,10 @@ def traceability_requirements(answers: dict[str, Any]) -> list[dict[str, Any]]:
                 "כדי לאפשר איתור וטיפול בפניות.",
                 f"The system shall track items by {unit_en} from receipt through delivery, "
                 "so that items can be traced when a customer query arises.",
-                ["QS-08"], priority="must", confidence="green",
+                ["QS-08"],
+                topic="inventory.traceability.serial" if "serial_tracking" in selected
+                      else "inventory.traceability.lot",
+                priority="must", confidence="green",
                 rationale_he="הלקוח ציין דרישת מעקב עבור הפריטים הפיזיים.",
                 rationale_en="The customer stated a tracking requirement for physical items.",
                 acceptance=[{
@@ -282,7 +291,8 @@ def traceability_requirements(answers: dict[str, Any]) -> list[dict[str, Any]]:
                 "REQ-INV-002", "INV",
                 "המערכת תנהל תאריכי תפוגה ותמנע אספקה של פריטים שפג תוקפם.",
                 "The system shall manage expiry dates and prevent delivery of expired items.",
-                ["QS-08"], priority="must", confidence="green",
+                ["QS-08"], topic="inventory.traceability.expiry",
+                priority="must", confidence="green",
             )
         )
 
@@ -292,7 +302,8 @@ def traceability_requirements(answers: dict[str, Any]) -> list[dict[str, Any]]:
                 "REQ-INV-003", "INV",
                 "המערכת תנהל מלאי בכמה מחסנים ותציג זמינות לפי מחסן.",
                 "The system shall manage stock across several warehouses and show availability per warehouse.",
-                ["QS-05"], priority="must", confidence="green",
+                ["QS-05"], topic="inventory.multi_warehouse",
+                priority="must", confidence="green",
             )
         )
 
@@ -310,7 +321,8 @@ def multi_company_requirements(answers: dict[str, Any]) -> list[dict[str, Any]]:
             f"המערכת תתמוך ב-{companies} חברות משפטיות עם הפרדת נתונים ודיווח לכל חברה.",
             f"The system shall support {companies} legal companies with separated data and "
             "per-company reporting.",
-            ["QS-05"], priority="must", confidence="green",
+            ["QS-05"], topic="organisation.multi_company",
+            priority="must", confidence="green",
             rationale_he="הלקוח ציין יותר מחברה משפטית אחת.",
             rationale_en="The customer stated more than one legal company.",
             acceptance=[{
@@ -336,6 +348,8 @@ def finance_requirements(answers: dict[str, Any]) -> list[dict[str, Any]]:
     return [
         requirement(
             "REQ-FIN-001", "FIN", he, en, ["QS-11"],
+            topic="finance.accounting_israel" if scope == "full_accounting"
+                  else "finance.invoicing_israel",
             priority="must",
             # Amber deliberately: the requirement is real, but its exact
             # content is not settled until a finance owner confirms it.

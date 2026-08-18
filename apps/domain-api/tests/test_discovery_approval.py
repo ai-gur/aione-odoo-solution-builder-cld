@@ -219,12 +219,29 @@ class TestApproval(GateTestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("permission denied", (result.stderr + result.stdout).lower())
 
-    def test_approving_twice_is_refused(self) -> None:
+    def test_approving_unchanged_discovery_creates_no_second_version(self) -> None:
+        """A version that records no change is noise in the history."""
         self.answer_all()
         self.assertEqual(self.approve().status_code, 201)
         second = self.approve()
         self.assertEqual(second.status_code, 409)
-        self.assertIn("already been approved", second.json()["detail"]["error"])
+        self.assertIn("nothing has changed", second.json()["detail"]["error"])
+
+    def test_a_corrected_answer_can_be_approved_as_a_new_version(self) -> None:
+        """This is how a correction reaches the Blueprint Engine: a new
+        version, never an edit of the approved one."""
+        self.answer_all()
+        first = self.approve().json()["version"]
+
+        self.answer("QS-16", ["discounts", "purchases", "refunds"])
+        self.client.post(
+            f"/v1/tenants/{TENANT}/interviews/{self.run_id}/normalise", headers=self.auth()
+        )
+
+        second = self.approve()
+        self.assertEqual(second.status_code, 201, second.text)
+        self.assertEqual(second.json()["version"]["version"], first["version"] + 1)
+        self.assertNotEqual(second.json()["version"]["content_digest"], first["content_digest"])
 
     def test_the_snapshot_carries_answers_and_conclusions(self) -> None:
         self.answer_all()

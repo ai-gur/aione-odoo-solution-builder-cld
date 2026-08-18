@@ -79,6 +79,7 @@ def db_test_prepare() -> None:
     run([sys.executable, "scripts/db.py", "create"], env=env)
     run([sys.executable, "scripts/db.py", "migrate"], env=env)
     run([sys.executable, "scripts/seed_interviews.py"], env=env)
+    run([sys.executable, "scripts/seed_capabilities.py"], env=env)
 
 
 # --- stack ------------------------------------------------------------------
@@ -180,6 +181,11 @@ def catalogue_ingest() -> None:
     run([sys.executable, "catalogue/ingestion/ingest.py"])
 
 
+def catalogue_load() -> None:
+    """Load capability sets into the control database. Idempotent."""
+    run([sys.executable, "scripts/seed_capabilities.py"])
+
+
 def catalogue_evidence() -> None:
     """Extract capability evidence for the pilot scope from pinned source."""
     run([sys.executable, "catalogue/ingestion/extract_evidence.py"])
@@ -226,6 +232,7 @@ COMMANDS = {
     "workspace-health": workspace_health,
     "catalogue-ingest": catalogue_ingest,
     "catalogue-evidence": catalogue_evidence,
+    "catalogue-load": catalogue_load,
     "test-catalogue": test_catalogue,
 }
 

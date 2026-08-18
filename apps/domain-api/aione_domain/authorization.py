@@ -41,6 +41,8 @@ AUTHORITIES: dict[str, frozenset[str]] = {
     }),
     "discovery.conduct": frozenset({"account_owner", "consultant"}),
     "discovery.approve": frozenset({"consultant"}),
+    "blueprint.propose": frozenset({"consultant", "solution_architect", "solution_owner"}),
+    "blueprint.approve": frozenset({"consultant"}),
 }
 
 # Roles a customer may hold. A customer role never holds an AIOne authority,

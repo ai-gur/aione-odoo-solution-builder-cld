@@ -11,6 +11,7 @@ web tier, this service, workers and eventually a sandbox run.
 
 from __future__ import annotations
 
+import json
 import logging
 import secrets
 import sys
@@ -139,6 +140,140 @@ def me(
             for m in principal.memberships
         ],
         "correlationId": request.state.correlation_id,
+    }
+
+
+@app.post("/v1/tenants/{tenant_id}/jobs", status_code=202)
+def submit_job(
+    tenant_id: str,
+    request: Request,
+    body: dict,
+    principal: identity.Principal = Depends(current_principal),
+    idempotency_key: str | None = Header(default=None, alias="Idempotency-Key"),
+) -> dict[str, object]:
+    """Submit a durable job.
+
+    Returns 202 with a job identifier rather than a result: long work never
+    runs inside a request (ADR-002). The job row and its outbox event are
+    written in one transaction, so the queue can never carry an event for work
+    the database does not know about (ADR-005).
+
+    Resubmitting with the same Idempotency-Key returns the original job instead
+    of creating a second one.
+    """
+    correlation_id = request.state.correlation_id
+
+    if tenant_id not in principal.tenant_ids():
+        audit.record(
+            tenant_id=tenant_id,
+            action="job.submit",
+            correlation_id=correlation_id,
+            outcome="denied",
+            actor_id=principal.user_id,
+            detail={"reason": "not_a_member"},
+        )
+        raise HTTPException(status_code=403, detail={"error": "forbidden"})
+
+    job_type = str(body.get("jobType", "")).strip()
+    if job_type != "health.echo":
+        # Increment 0 registers one example handler. An unknown type is
+        # refused here rather than accepted and blocked later, so the caller
+        # learns immediately.
+        raise HTTPException(status_code=400, detail={"error": "unsupported_job_type"})
+
+    key = (idempotency_key or "").strip() or f"auto_{correlation_id}"
+    job_id = "job_" + secrets.token_hex(13).upper()
+
+    with db.transaction(tenant_id=tenant_id, user_id=principal.user_id) as cursor:
+        cursor.execute(
+            """
+            INSERT INTO jobs.jobs (id, tenant_id, job_type, payload, idempotency_key, correlation_id)
+            VALUES (%s, %s, %s, %s::jsonb, %s, %s)
+            ON CONFLICT (tenant_id, idempotency_key) DO NOTHING
+            RETURNING id
+            """,
+            (job_id, tenant_id, job_type, json.dumps(body.get("payload", {})), key, correlation_id),
+        )
+        created = cursor.fetchone()
+
+        if created is None:
+            cursor.execute(
+                "SELECT id, state FROM jobs.jobs WHERE tenant_id = %s AND idempotency_key = %s",
+                (tenant_id, key),
+            )
+            existing = cursor.fetchone()
+            return {
+                "jobId": existing["id"],
+                "state": existing["state"],
+                "duplicate": True,
+                "correlationId": correlation_id,
+            }
+
+        # Same transaction as the insert above: both commit or neither does.
+        cursor.execute(
+            """
+            INSERT INTO jobs.outbox (tenant_id, job_id, topic, correlation_id)
+            VALUES (%s, %s, %s, %s)
+            """,
+            (tenant_id, job_id, "job.submitted", correlation_id),
+        )
+
+    audit.record(
+        tenant_id=tenant_id,
+        action="job.submit",
+        correlation_id=correlation_id,
+        outcome="succeeded",
+        actor_id=principal.user_id,
+        subject_type="job",
+        subject_id=job_id,
+        detail={"jobType": job_type},
+    )
+
+    return {"jobId": job_id, "state": "pending", "duplicate": False, "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/jobs/{job_id}")
+def job_status(
+    tenant_id: str,
+    job_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Authoritative job state, read from the database and never from the
+    queue (ADR-005)."""
+    if tenant_id not in principal.tenant_ids():
+        raise HTTPException(status_code=403, detail={"error": "forbidden"})
+
+    with db.transaction(tenant_id=tenant_id, user_id=principal.user_id) as cursor:
+        cursor.execute(
+            """
+            SELECT id, job_type, state, attempts, max_attempts, last_error,
+                   correlation_id, created_at, completed_at
+              FROM jobs.jobs
+             WHERE id = %s
+            """,
+            (job_id,),
+        )
+        job = cursor.fetchone()
+        if job is None:
+            raise HTTPException(status_code=404, detail={"error": "not_found"})
+
+        cursor.execute(
+            "SELECT count(*) AS n FROM jobs.job_effects WHERE job_id = %s", (job_id,)
+        )
+        effects = cursor.fetchone()["n"]
+
+    return {
+        "jobId": job["id"],
+        "jobType": job["job_type"],
+        "state": job["state"],
+        "attempts": job["attempts"],
+        "maxAttempts": job["max_attempts"],
+        "lastError": job["last_error"],
+        "effectCount": effects,
+        "correlationId": job["correlation_id"],
+        "createdAt": job["created_at"].isoformat(),
+        "completedAt": job["completed_at"].isoformat() if job["completed_at"] else None,
     }
 
 

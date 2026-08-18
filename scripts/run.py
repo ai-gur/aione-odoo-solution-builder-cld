@@ -77,6 +77,12 @@ def db_seed() -> None:
     run([sys.executable, "scripts/seed_interviews.py"])
 
 
+def db_seed_dev() -> None:
+    """Load the local fixture: one tenant, customer and workspace."""
+    db_seed()
+    run([sys.executable, "scripts/seed_dev.py"])
+
+
 # --- tests ------------------------------------------------------------------
 
 def test_contract_ts() -> None:
@@ -143,6 +149,7 @@ COMMANDS = {
     "db-status": db_status,
     "db-reset": db_reset,
     "db-seed": db_seed,
+    "db-seed-dev": db_seed_dev,
     "test": test,
     "test-contract": test_contract,
     "test-integration": test_integration,

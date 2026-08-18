@@ -49,6 +49,23 @@ type Copy = {
   incrementNotice: string;
   identityResolvedServerSide: string;
   correlationId: string;
+  noWorkspaces: string;
+  localeNotice: string;
+  stateLabel: Record<string, string>;
+  modeLabel: Record<string, string>;
+  interview: string;
+  question: string;
+  progressLabel: string;
+  save: string;
+  saved: string;
+  answeredEarlier: string;
+  optional: string;
+  required: string;
+  whyThisQuestion: string;
+  allAnswered: string;
+  notApplicableHere: string;
+  startInterview: string;
+  backToWorkspaces: string;
 };
 
 const he: Copy = {
@@ -77,6 +94,45 @@ const he: Copy = {
     "שלב 0: שלד המערכת. גילוי, תכנון פתרון והקמת סביבות יתווספו בשלבים הבאים.",
   identityResolvedServerSide: "הזהות נקבעת בשרת מול מסד הבקרה, ולא מתוך הבקשה.",
   correlationId: "מזהה מעקב",
+  noWorkspaces: "אין עדיין מרחבי פתרון",
+  localeNotice: "קוד השפה בחוזים ובאחסון:",
+  stateLabel: {
+    proposed: "הוצע",
+    discovering: "באפיון",
+    clarification_required: "נדרשת הבהרה",
+    designing: "בתכנון פתרון",
+    blueprint_review: "בבדיקת תכנון",
+    approved_for_sandbox: "אושר להקמת סביבה",
+    provisioning: "בהקמה",
+    validation_failed: "בדיקות נכשלו",
+    sandbox_active: "סביבה פעילה",
+    customer_review: "בבדיקת הלקוח",
+    revision_required: "נדרש עדכון",
+    accepted: "התקבל",
+    operating: "בתפעול",
+    change_in_progress: "שינוי בביצוע",
+    suspended: "מושהה",
+    archived: "בארכיון",
+    closed: "סגור",
+  },
+  modeLabel: {
+    quick_start: "היכרות מהירה",
+    guided: "אפיון מודרך",
+    comprehensive: "אפיון מקיף",
+  },
+  interview: "ריאיון אפיון",
+  question: "שאלה",
+  progressLabel: "שאלות שנענו",
+  save: "שמירה והמשך",
+  saved: "נשמר",
+  answeredEarlier: "נענה קודם",
+  optional: "לא חובה",
+  required: "חובה",
+  whyThisQuestion: "מדוע שאלה זו מוצגת",
+  allAnswered: "כל השאלות הרלוונטיות נענו. אפשר להעביר את האפיון לבדיקת יועץ.",
+  notApplicableHere: "לא רלוונטי לפי התשובות עד כה",
+  startInterview: "התחלת ריאיון",
+  backToWorkspaces: "חזרה למרחבי הפתרון",
 };
 
 const en: Copy = {
@@ -106,6 +162,45 @@ const en: Copy = {
   identityResolvedServerSide:
     "Identity is resolved server-side against the control database, never from the request.",
   correlationId: "Correlation id",
+  noWorkspaces: "No solution workspaces yet",
+  localeNotice: "Locale code used in contracts and storage:",
+  stateLabel: {
+    proposed: "Proposed",
+    discovering: "Discovering",
+    clarification_required: "Clarification required",
+    designing: "Designing",
+    blueprint_review: "Blueprint review",
+    approved_for_sandbox: "Approved for sandbox",
+    provisioning: "Provisioning",
+    validation_failed: "Validation failed",
+    sandbox_active: "Sandbox active",
+    customer_review: "Customer review",
+    revision_required: "Revision required",
+    accepted: "Accepted",
+    operating: "Operating",
+    change_in_progress: "Change in progress",
+    suspended: "Suspended",
+    archived: "Archived",
+    closed: "Closed",
+  },
+  modeLabel: {
+    quick_start: "Quick Start",
+    guided: "Guided",
+    comprehensive: "Comprehensive",
+  },
+  interview: "Discovery interview",
+  question: "Question",
+  progressLabel: "Questions answered",
+  save: "Save and continue",
+  saved: "Saved",
+  answeredEarlier: "Answered earlier",
+  optional: "Optional",
+  required: "Required",
+  whyThisQuestion: "Why this question appears",
+  allAnswered: "Every applicable question is answered. Discovery can go to consultant review.",
+  notApplicableHere: "Not applicable given the answers so far",
+  startInterview: "Start interview",
+  backToWorkspaces: "Back to workspaces",
 };
 
 const DICTIONARIES: Record<Locale, Copy> = { he, en };

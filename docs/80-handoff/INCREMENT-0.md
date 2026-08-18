@@ -1,6 +1,8 @@
 # Implementation Handoff: Increment 0
 
-**Status:** Proposed  
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Increment:** Foundation and Architecture  
 **Product:** AIOne Odoo Solution Builder
 
@@ -11,7 +13,8 @@ Create a runnable, testable repository foundation for the control plane without 
 ## Preconditions
 
 - Product design documents are present in `docs/10-product/`.
-- ADR-001 through ADR-012 are reviewed and Accepted or revised.
+- ADR-001 through ADR-015 are Accepted.
+- The domain vocabulary in `docs/20-domain/` is Accepted: canonical enumerations, roles and authorities, naming.
 - Existing Odoo 19 Enterprise Foundation, Odoo core and Enterprise repositories are available as separate workspace checkouts.
 - Pilot scope remains Israeli B2B wholesale distribution.
 

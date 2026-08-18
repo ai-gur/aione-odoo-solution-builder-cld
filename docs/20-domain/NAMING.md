@@ -2,7 +2,9 @@
 
 **Version:** 0.1
 **Date:** 18 August 2026
-**Status:** Proposed
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Resolves:** readiness blocker B8 (the product and repository name was never fixed)
 **Authority:** design note under `DESIGN-AUTHORITY.md` — naming sits inside accepted boundaries. It is recorded here because five different names are in circulation and they are about to be baked into package registries, container images and Odoo external identifiers, where renaming is expensive.
 

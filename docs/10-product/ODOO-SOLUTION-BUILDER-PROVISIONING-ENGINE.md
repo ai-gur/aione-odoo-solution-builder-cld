@@ -4,7 +4,9 @@
 
 **Version:** 0.1  
 **Date:** 18 August 2026  
-**Status:** Initial design baseline  
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Depends on:** Product Constitution, Discovery Engine and Blueprint Engine specifications  
 **Target:** Odoo Enterprise 19 development and sandbox environments
 
@@ -84,8 +86,8 @@ Every manifest contains:
 ### 4.3 Manifest sections
 
 ```yaml
-apiVersion: aione.odoo/v1alpha1
 kind: OdooSandboxManifest
+schemaVersion: "1.0.0"
 metadata:
   manifestId: manifest_example
   revision: 1
@@ -227,8 +229,9 @@ Compilation fails when:
 Each Environment contains:
 
 - stable environment identifier;
-- customer and implementation project;
+- customer and solution workspace;
 - environment type: development or sandbox in MVP;
+- environment purpose: automated_test, project_development or customer_demonstration;
 - infrastructure provider and driver;
 - region and data-residency classification;
 - Odoo and database endpoints by protected reference;
@@ -240,7 +243,7 @@ Each Environment contains:
 - access policy and authorized users;
 - health and deviation summary.
 
-No environment may be shared between unrelated customer projects.
+No environment may be shared between unrelated customer workspaces.
 
 ## 7. Environment lifecycle
 

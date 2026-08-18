@@ -2,7 +2,9 @@
 
 **Version:** 0.1
 **Date:** 18 August 2026
-**Status:** Proposed
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Purpose:** Decisions consciously postponed, with the point at which each must be settled. A deferred decision is not an open risk to be rediscovered later; it is recorded here so that the increment which depends on it cannot start unnoticed.
 
 Each entry names the decision, why it is safe to defer now, and the **trigger** — the concrete event that ends the deferral. When a trigger is reached, the entry becomes an ADR, a change request or a specification amendment.

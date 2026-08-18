@@ -1,6 +1,8 @@
 # ADR-015: Contract Format, Canonical Serialization and Identity Conventions
 
-**Status:** Proposed
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Date:** 18 August 2026
 **Proposed by:** Claude implementation authority, for Codex design review
 **Resolves:** readiness blocker B9 (no canonical schema format, hashing or identifier convention)

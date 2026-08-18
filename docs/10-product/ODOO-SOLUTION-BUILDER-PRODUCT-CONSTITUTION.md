@@ -4,7 +4,9 @@
 
 **Version:** 0.1  
 **Date:** 18 August 2026  
-**Status:** Initial design baseline  
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Target platform:** Odoo Enterprise 19  
 
 ## 1. Purpose
@@ -127,9 +129,11 @@ The MVP will not:
 
 One person may hold several roles, but approval events must record the role under which the action was taken.
 
+The canonical role keys, their authorities and the segregation-of-duties constraints are in `docs/20-domain/ROLES-AND-PERMISSIONS.md`, which reconciles this table with the Provisioning and Portfolio role lists.
+
 ## 6. End-to-end lifecycle
 
-1. Create customer and implementation project.
+1. Create customer and solution workspace.
 2. Select or recommend a discovery mode.
 3. Conduct adaptive interview and collect supporting evidence.
 4. Normalize answers into facts, processes, requirements, constraints and open questions.
@@ -157,13 +161,17 @@ The organization operating the control plane. Owns global policies, catalogues, 
 
 The business being interviewed and implemented. Stores identity, countries, industries, size indicators and primary contacts. It does not itself contain the full implementation design.
 
-#### Implementation Project
+#### Solution Workspace
 
-The bounded engagement for a customer. It owns discovery, requirements, blueprints, environments, approvals and audit history.
+The bounded engagement for a customer, and the long-lived container for one customer solution lifecycle. It owns discovery, requirements, blueprints, manifests, environments, baselines, change requests, approvals and audit history.
+
+A customer may hold several workspaces when separate programmes have materially different scope, governance or Odoo environments. Workspaces are not created to represent ordinary implementation phases.
+
+Amended 18 August 2026: the Solution Workspace replaces the former Implementation Project as this aggregate. The two described the same bounded engagement, and the Customer Solution Portfolio specification is the authority for its long-lived behaviour.
 
 Key fields:
 
-- project identifier and name;
+- workspace identifier and name;
 - customer organization;
 - lifecycle state;
 - target Odoo version and edition;
@@ -173,6 +181,7 @@ Key fields:
 - responsible consultant and architect;
 - scope, objectives and success measures;
 - target dates and implementation phase;
+- current accepted baseline and active change set;
 - overall confidence, risk and completeness.
 
 ### 7.2 Discovery
@@ -183,7 +192,7 @@ A versioned template describing a discovery mode, sections, questions, branching
 
 #### Interview Run
 
-An execution of an interview definition within an implementation project. A project may contain several runs, workshops or follow-up sessions.
+An execution of an interview definition within a solution workspace. A workspace may contain several runs, workshops or follow-up sessions.
 
 #### Interview Section
 
@@ -309,7 +318,7 @@ Allowed classifications:
 
 #### Blueprint
 
-A versioned solution design for an implementation project. A blueprint contains decisions, dependencies, gaps, phases, assumptions, risks and validation criteria.
+A versioned solution design for a solution workspace. A blueprint contains decisions, dependencies, gaps, phases, assumptions, risks and validation criteria.
 
 Blueprint states:
 
@@ -415,8 +424,8 @@ A versioned AIOne rule governing matters such as approved addons, confidence thr
 
 ## 8. Key relationships
 
-- A Customer Organization has one or more Implementation Projects.
-- An Implementation Project has many Interview Runs, but one current approved Blueprint per version line.
+- A Customer Organization has one or more Solution Workspaces.
+- A Solution Workspace has many Interview Runs, but one current approved Blueprint per version line, and at most one Current Accepted baseline.
 - Interview Answers and Evidence Items produce or support Business Facts, Requirements, Constraints, Assumptions and Open Questions.
 - Requirements belong to business processes and are assessed against Capability Catalogue Entries.
 - Fit Assessments produce proposed Blueprint Decisions and Gaps.
@@ -425,25 +434,31 @@ A versioned AIOne rule governing matters such as approved addons, confidence thr
 - Provisioning Runs produce Operation Results, Validation Results and Deviations.
 - All approvals and material changes produce Audit Events.
 
-## 9. Project lifecycle states
+## 9. Workspace lifecycle states
 
 | State | Meaning |
 | --- | --- |
-| Initiated | Project shell exists; discovery has not started |
+| Proposed | Workspace shell exists; discovery has not started |
 | Discovering | Interviews and evidence collection are active |
 | Clarification Required | Blocking gaps or conflicts prevent reliable design |
-| Blueprint Drafting | Requirements are being mapped to a solution |
+| Designing | Requirements are being mapped to a solution |
 | Blueprint Review | Consultant or architect review is active |
 | Approved for Sandbox | A specific blueprint version is approved |
 | Provisioning | An authorized sandbox run is active |
 | Validation Failed | One or more blocking validations failed |
-| Sandbox Ready | Provisioning and mandatory validations succeeded |
+| Sandbox Active | Provisioning and mandatory validations succeeded; the sandbox is available |
 | Customer Review | Customer testing and feedback are active |
 | Revision Required | Discovery or blueprint changes are required |
-| Accepted | The sandbox and documented scope were accepted for the next delivery stage |
-| Closed | Project is completed or terminated |
+| Accepted | The sandbox and documented scope were accepted, and a Current Accepted baseline exists |
+| Operating | Delivery is complete; the workspace is in support and no longer in the delivery queue |
+| Change In Progress | An approved change request is being delivered against the accepted baseline |
+| Suspended | Work is paused; access and runtime may be disabled |
+| Archived | Required artifacts retained; the workspace is inactive |
+| Closed | The engagement is completed or terminated |
 
-State transitions require explicit guards. For example, a project cannot enter Approved for Sandbox while it has blocking open questions, unapproved red-confidence decisions or unresolved mandatory requirements.
+Canonical values are in `docs/20-domain/ENUMS.md`.
+
+State transitions require explicit guards. A workspace cannot enter Approved for Sandbox while it has blocking open questions, unapproved red-confidence decisions or unresolved mandatory requirements. The transition from Accepted to Operating requires the `workspace.complete` authority and is what releases the workspace from the delivery team's active queue.
 
 ## 10. Confidence, completeness and risk
 
@@ -491,7 +506,7 @@ The blueprint approver and provisioning authorizer may be required to be differe
 7. Failed operations stop dependent operations unless policy explicitly permits continuation.
 8. The product never modifies Odoo core or Enterprise source.
 9. Provisioning handlers are versioned and compatible with the declared Odoo version.
-10. Mandatory validations must pass before an environment can be marked Sandbox Ready.
+10. Mandatory validations must pass before an environment can be marked Ready and the workspace can enter Sandbox Active.
 11. Logs must avoid exposing credentials or unnecessarily retaining personal data.
 12. Production provisioning is prohibited in the MVP.
 
@@ -501,7 +516,7 @@ To keep the architecture maintainable, transactional consistency should be conce
 
 | Aggregate | Root | Contains |
 | --- | --- | --- |
-| Customer Engagement | Implementation Project | scope, roles, objectives, lifecycle and project-level measures |
+| Customer Engagement | Solution Workspace | scope, roles, objectives, lifecycle, baselines and workspace-level measures |
 | Discovery | Interview Run | sections, questions, answers and interview progress |
 | Requirements | Requirement | sources, acceptance criteria, dependencies and status |
 | Blueprint | Blueprint | decisions, gaps, phases, review and version-specific approvals |
@@ -514,7 +529,7 @@ Evidence, capability catalogue entries, policies and audit events are referenced
 
 The MVP is successful when an authorized consultant can:
 
-1. create a customer implementation project;
+1. create a customer solution workspace;
 2. complete any of the three discovery modes without duplicating prior answers;
 3. see missing, contradictory and low-confidence information;
 4. review structured requirements linked to their sources;

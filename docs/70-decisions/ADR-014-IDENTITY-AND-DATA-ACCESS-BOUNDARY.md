@@ -1,6 +1,8 @@
 # ADR-014: Identity, Session and Data-Access Boundary
 
-**Status:** Proposed
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Date:** 18 August 2026
 **Proposed by:** Claude implementation authority, for Codex design review
 **Resolves:** readiness blockers B3 (web-to-data path), B4 (row-level security enforcement), B5 (service-to-service authentication)

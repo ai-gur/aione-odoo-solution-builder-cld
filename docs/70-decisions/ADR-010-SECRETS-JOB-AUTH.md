@@ -1,6 +1,8 @@
 # ADR-010: Secrets and Short-Lived Job Authorization
 
-**Status:** Proposed  
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Date:** 18 August 2026
 
 ## Context

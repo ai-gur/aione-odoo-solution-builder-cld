@@ -4,7 +4,9 @@
 
 **Version:** 0.1  
 **Date:** 18 August 2026  
-**Status:** Initial design baseline  
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Depends on:** `ODOO-SOLUTION-BUILDER-PRODUCT-CONSTITUTION.md`
 
 ## 1. Objective

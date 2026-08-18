@@ -1,6 +1,8 @@
 # ADR-008: Docker Sandbox Driver and Runner Trust Boundary
 
-**Status:** Proposed  
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Date:** 18 August 2026
 
 ## Context
@@ -14,7 +16,7 @@ Implement one Docker sandbox driver first. Execute provisioning through a runner
 ## Rules
 
 - Pin Odoo core, Enterprise, Foundation and addon revisions.
-- Separate compute, database, storage and credentials per project environment.
+- Separate compute, database, storage and credentials per workspace environment.
 - Keep the driver contract provider-neutral.
 - Prefer rebuilding disposable failed sandboxes.
 

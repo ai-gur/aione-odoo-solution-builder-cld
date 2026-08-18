@@ -2,7 +2,9 @@
 
 **Version:** 0.1
 **Date:** 18 August 2026
-**Status:** Proposed
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Purpose:** One home for every closed value set in the product. Specifications describe these enumerations in prose; contracts, migrations and code must agree on exactly one spelling.
 
 Conventions per ADR-015: values are `lower_snake_case`, closed unless stated, and never reordered — a value's meaning is fixed once published. Adding a value is a minor schema change; removing or redefining one is breaking.
@@ -28,6 +30,8 @@ Source: `docs/00-governance/DESIGN-AUTHORITY.md`. Applies to specifications, ADR
 Merged from Constitution §9 (project lifecycle) and Customer Portfolio §2.2 (workspace states). The Constitution contributed the delivery states through first acceptance; the Portfolio contributed the long-lived states that follow it — `operating`, `change_in_progress`, `suspended`, `archived`.
 
 Mapping for the amendment: Constitution `initiated` → `proposed`; `blueprint_drafting` → `designing`; `sandbox_ready` → `sandbox_active`. Portfolio `sandbox_active` is unchanged and now also covers the former `sandbox_ready`.
+
+**Reading older prose.** Where an accepted specification says "project" as the engagement scope — tenant and project keys, project membership, project-level authorization — read Solution Workspace. Contracts, tables and policies use `workspace_id`. The word "project" survives only where it means an Odoo project record or a customer's own delivery programme.
 
 Two transitions carry a named authority rather than being derived from other state:
 

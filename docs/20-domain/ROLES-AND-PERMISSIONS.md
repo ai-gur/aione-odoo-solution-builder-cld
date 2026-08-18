@@ -2,7 +2,9 @@
 
 **Version:** 0.1
 **Date:** 18 August 2026
-**Status:** Proposed
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Resolves:** readiness blocker B6 (three incompatible role vocabularies)
 **Sources reconciled:** Constitution §5, Provisioning §25, Customer Portfolio §12
 
@@ -71,7 +73,7 @@ Provisioning's "Customer Reviewer" is not a role. Sandbox review access is an au
 | `validation.review` | Review validation results | `consultant`, `solution_architect`, `provisioning_operator` | — | |
 | `deviation.accept` | Accept a bounded deviation with owner, reason and expiry | `solution_architect`, `solution_owner` | yes | Constitution §11 gate 5 |
 | `sandbox.review` | Access a released sandbox and complete review scenarios | `customer_sponsor`, `customer_process_owner`, `account_owner`, `consultant` | — | |
-| `baseline.accept` | Set the Current Accepted baseline for a workspace | `solution_owner`, `customer_sponsor` | yes | AIOne and customer, per policy |
+| `baseline.accept` | Set the Current Accepted baseline for a workspace | `solution_owner`, `account_owner` | yes | One AIOne signature is sufficient. A customer counter-signature is recorded only where the customer or their contract requires it |
 | `workspace.complete` | Confirm the engagement is delivered and release the workspace from the delivery team's active queue | `account_owner` | — | Transitions `accepted` → `operating`. Audited. Requires the workspace to already hold a Current Accepted baseline |
 | `change.submit` | Raise and triage a change request against a baseline | `account_owner`, `consultant`, `solution_owner` | — | The customer's request reaches the system through the Account Manager |
 | `change.approve` | Approve a change request for delivery | `solution_owner` | — | Delivery commitment belongs to the Team Lead |
@@ -134,8 +136,9 @@ Portal role does not grant source-code access (Portfolio §12). A `consultant` r
 
 **Decided 18 August 2026.** The Account Manager confirms engagement completion (`workspace.complete`), which is what removes a workspace from the delivery team's active queue and moves it to `operating`. This is a relationship decision, not a review of the delivery work.
 
+**Decided 18 August 2026.** `baseline.accept` requires one AIOne signature — `account_owner` or `solution_owner`, either is sufficient. Customer counter-signature is **optional**, captured only when the customer asks for it or their contract requires it, and recorded on the baseline as `customer_signature: {required, actor, timestamp}` so that its absence is a deliberate recorded state rather than missing data. A workspace-level policy flag marks customers for whom it is always required.
+
 Open:
 
-1. Confirm whether `baseline.accept` requires both an AIOne and a customer signature, or whether AIOne may accept on the customer's behalf with recorded evidence.
-2. Confirm the step-up window. 300 seconds is proposed.
-3. Confirm what happens to an engagement that ends without customer acceptance — abandoned, disputed or cancelled. `workspace.complete` currently requires an accepted baseline, so those workspaces would sit in the delivery queue indefinitely. A `workspace.close` authority with a recorded reason is the likely answer.
+1. Confirm the step-up window. 300 seconds is proposed.
+2. Confirm what happens to an engagement that ends without customer acceptance — abandoned, disputed or cancelled. `workspace.complete` currently requires an accepted baseline, so those workspaces would sit in the delivery queue indefinitely. A `workspace.close` authority with a recorded reason is the likely answer.

@@ -1,5 +1,7 @@
 # AIOne Odoo Solution Builder
 
+Short form: **Solution Builder**. Repository: `aione-odoo-solution-builder-cld` (`docs/20-domain/NAMING.md`).
+
 A standalone AIOne control plane that interviews business customers, produces approved Odoo Enterprise 19 solution blueprints, and provisions validated development or demonstration sandboxes.
 
 ## Current scope
@@ -11,7 +13,7 @@ The MVP covers:
 - a verified Odoo 19 capability catalogue;
 - explainable blueprint generation and approval;
 - immutable deployment manifests;
-- isolated Docker-based Odoo Enterprise 19 sandboxes;
+- isolated Docker-based Odoo Enterprise 19 sandboxes for development and demonstration purposes;
 - deterministic configuration and automated validation;
 - Hebrew RTL as the primary product experience and English US as secondary.
 
@@ -31,6 +33,8 @@ The control plane is a modular monolith with separate worker processes. Customer
 
 ## Repository map
 
+Planned structure, created during Increment 0:
+
 ```text
 apps/web                 Next.js interface and BFF
 apps/domain-api          FastAPI domain and AI service
@@ -41,7 +45,9 @@ packages/rules           Deterministic rules
 catalogue                Odoo capability catalogue
 provisioning             Sandbox drivers, handlers and validators
 database                 Migrations, policies and seeds
-docs                     Governance, architecture and handoffs
+docs                     Governance, domain vocabulary, architecture and handoffs
+packages/test-fixtures   Sanitized domain fixtures
+scripts                  Developer and CI scripts
 infrastructure           Control-plane and sandbox deployment
 tests                    Contract, integration and end-to-end tests
 ```
@@ -54,14 +60,15 @@ Read in this order:
 2. `docs/00-governance/DESIGN-AUTHORITY.md`
 3. `docs/10-product/SOURCE-DOCUMENTS.md`
 4. `docs/30-architecture/ARCHITECTURE.md`
-5. `docs/70-decisions/ADR-INDEX.md`
-6. `docs/80-handoff/INCREMENT-0.md`
+5. `docs/20-domain/` — canonical enumerations, roles and naming
+6. `docs/70-decisions/ADR-INDEX.md`
+7. `docs/80-handoff/INCREMENT-0.md`
 
-The full product design specifications named in `SOURCE-DOCUMENTS.md` must be added unchanged before implementation begins.
+The product design specifications named in `SOURCE-DOCUMENTS.md` are present and Accepted.
 
 ## Setup status
 
-This package is an implementation bootstrap, not a running application. Increment 0 creates the executable project skeleton and local environment.
+The bootstrap is complete and its decisions are Accepted as of 18 August 2026. Increment 0 creates the executable project skeleton and local environment.
 
 ## Working rules
 

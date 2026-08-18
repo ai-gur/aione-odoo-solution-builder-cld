@@ -4,7 +4,9 @@
 
 **Version:** 0.1  
 **Date:** 18 August 2026  
-**Status:** Initial design baseline  
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Depends on:** Product Constitution, Discovery Engine, Blueprint Engine and Provisioning Engine specifications
 
 ## 1. Architectural outcome
@@ -114,6 +116,7 @@ Required module boundaries:
 - Validation and Deviations
 - Notifications
 - Audit and Reporting
+- Customer Portfolio and Baselines
 - AI Gateway
 
 Modules communicate through application services and durable domain events. They must not modify another module’s tables directly.
@@ -125,7 +128,7 @@ Use one product repository for the control plane and provisioning handlers. Keep
 Recommended workspace:
 
 ```text
-odoo-solution-builder/
+aione-odoo-solution-builder-cld/
 ├── AGENTS.md
 ├── CLAUDE.md
 ├── README.md
@@ -176,10 +179,11 @@ odoo-solution-builder/
     └── end-to-end/
 
 workspace/
-├── odoo-solution-builder/         # This product
-├── odoo-19-enterprise-foundation/ # Existing reusable Foundation
-├── odoo/                           # Pinned Odoo core checkout
-└── enterprise/                     # Pinned Enterprise checkout
+├── aione-odoo-solution-builder-cld/ # This product
+├── odoo-19-enterprise-foundation/   # Existing reusable Foundation
+├── aione-odoo-addons/               # Shared reviewed AIOne addons
+├── odoo/                            # Pinned Odoo core checkout
+└── enterprise/                      # Pinned Enterprise checkout
 ```
 
 The product repository references pinned revisions. It does not copy or commit Odoo core or Enterprise source.
@@ -218,10 +222,10 @@ Schema changes use explicit versioning and compatibility rules. A worker must re
 
 - `customer_organizations`
 - `customer_contacts`
-- `implementation_projects`
-- `project_members`
+- `solution_workspaces`
+- `workspace_members`
 - `success_measures`
-- `project_state_history`
+- `workspace_state_history`
 
 ### 8.3 Discovery
 
@@ -301,6 +305,18 @@ Schema changes use explicit versioning and compatibility rules. A worker must re
 - `audit_events`
 - `outbox_events`
 - `notifications`
+
+### 8.9 Portfolio and lifecycle
+
+- `solution_baselines`
+- `baseline_components`
+- `solution_timeline_events`
+- `interview_programs`
+- `interview_overlays`
+- `repository_registrations`
+- `software_releases`
+- `release_environment_usage`
+- `solution_reviews`
 
 This is a logical data model. Physical normalization, indexes and partitions will be decided from query and retention requirements.
 
@@ -595,7 +611,7 @@ The UI does not call worker or sandbox endpoints directly.
 /app
   /portfolio
   /customers
-  /projects/[projectId]
+  /workspaces/[workspaceId]
     /overview
     /discovery
     /requirements
@@ -608,7 +624,7 @@ The UI does not call worker or sandbox endpoints directly.
   /administration
 
 /portal
-  /projects/[projectId]
+  /workspaces/[workspaceId]
     /welcome
     /interview
     /clarifications
@@ -646,9 +662,11 @@ The UI does not call worker or sandbox endpoints directly.
 
 ### Odoo targets in MVP
 
-- automated ephemeral test sandbox;
-- project development sandbox;
-- customer demonstration sandbox.
+Environment type is `development` or `sandbox`. The three MVP targets are purposes applied to those types, not additional types (`docs/20-domain/ENUMS.md`):
+
+- automated ephemeral test sandbox (`automated_test`);
+- workspace development sandbox (`project_development`);
+- customer demonstration sandbox (`customer_demonstration`).
 
 Production customer Odoo is excluded.
 
@@ -825,6 +843,8 @@ The project follows the established shared-repository model:
 - reusable Foundation remains separate from customer and product implementation.
 
 ## 28. Architecture Decision Records required before build
+
+`docs/70-decisions/ADR-INDEX.md` is the authoritative list. The twelve below were the original set; ADR-013, ADR-014 and ADR-015 were added during bootstrap review and are equally binding.
 
 Create and approve:
 

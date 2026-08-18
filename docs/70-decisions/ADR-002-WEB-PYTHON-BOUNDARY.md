@@ -1,6 +1,8 @@
 # ADR-002: Next.js and Python Service Boundary
 
-**Status:** Proposed  
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Date:** 18 August 2026
 
 ## Context

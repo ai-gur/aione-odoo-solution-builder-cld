@@ -2,7 +2,9 @@
 
 **Version:** 0.1
 **Date:** 18 August 2026
-**Status:** Proposed
+**Status:** Accepted  
+**Accepted:** 18 August 2026  
+**Approved by:** Nir Bar, founding partner, AIOne  
 **Depends on:** `docs/10-product/ODOO-SOLUTION-BUILDER-PRODUCT-CONSTITUTION.md`, `ODOO-SOLUTION-BUILDER-MVP-ARCHITECTURE-DELIVERY.md` §20, `ODOO-SOLUTION-BUILDER-DISCOVERY-ENGINE.md` §21, `ODOO-SOLUTION-BUILDER-CUSTOMER-PORTFOLIO.md` §6
 **Relationship to `docs/10-product/ODOO-SOLUTION-BUILDER-DESIGN.md`:** complements it. The style reference remains the visual direction. This document is the implementable contract. Where they disagree, MVP Architecture §20.3 wins on accessibility and RTL, and this document records the resolution.
 

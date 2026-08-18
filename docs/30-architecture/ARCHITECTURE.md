@@ -16,7 +16,8 @@ Modular control-plane monolith with independently deployed web, Python API and P
 
 - Identity and Tenancy
 - Customer Engagement
-- Discovery and Evidence
+- Discovery
+- Evidence
 - Requirements
 - Capability Catalogue
 - Blueprint
@@ -24,8 +25,11 @@ Modular control-plane monolith with independently deployed web, Python API and P
 - Environment and Provisioning
 - Validation and Deviations
 - Notifications
-- Audit
+- Audit and Reporting
+- Customer Portfolio and Baselines
 - AI Gateway
+
+The bounded engagement aggregate is the **Solution Workspace** (Constitution §7.1, ADR-013). Canonical enumerations, roles and authorities are in `docs/20-domain/`.
 
 ## Trust boundaries
 

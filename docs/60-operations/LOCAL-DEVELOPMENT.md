@@ -21,7 +21,7 @@ Keep repositories separate:
 
 ```text
 workspace/
-├── aione-odoo-solution-builder/     # This product
+├── aione-odoo-solution-builder-cld/ # This product
 ├── odoo-19-enterprise-foundation/   # Reusable Foundation
 ├── aione-odoo-addons/               # Shared reviewed AIOne addons (ADR-013)
 ├── odoo/                            # Pinned Odoo core checkout

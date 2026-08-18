@@ -156,6 +156,7 @@ def test_api() -> None:
 
 def test() -> None:
     test_contract()
+    test_catalogue()
     test_integration()
     test_api()
 
@@ -165,6 +166,15 @@ def test() -> None:
 def api_dev() -> None:
     run([venv_python("domain-api"), "-m", "uvicorn", "aione_domain.main:app",
          "--reload", "--port", "8000"], cwd=ROOT / "apps" / "domain-api")
+
+
+def catalogue_ingest() -> None:
+    """Build a catalogue draft from the pinned Odoo source."""
+    run([sys.executable, "catalogue/ingestion/ingest.py"])
+
+
+def test_catalogue() -> None:
+    run([sys.executable, "-m", "unittest", "discover", "-s", "catalogue/tests", "-v"])
 
 
 def workspace_health() -> None:
@@ -202,6 +212,8 @@ COMMANDS = {
     "api-dev": api_dev,
     "worker-dev": worker_dev,
     "workspace-health": workspace_health,
+    "catalogue-ingest": catalogue_ingest,
+    "test-catalogue": test_catalogue,
 }
 
 if __name__ == "__main__":

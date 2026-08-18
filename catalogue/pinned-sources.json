@@ -54,6 +54,11 @@
       "id": "V-01",
       "item": "The Foundation carries its own 19.0 checkouts three commits ahead of this baseline (a6e9c9fc, 71f88b1b, f1a844f2 in core). Confirm the Foundation runs correctly against the pinned revisions, or move the baseline forward to the pair it was validated with.",
       "closedBy": "First catalogue build and Foundation smoke run"
+    },
+    {
+      "id": "V-02",
+      "item": "The vendor mirror is a partial clone (blob:none) with a sparse cone checkout: full history, almost no files. Catalogue ingestion refuses it, correctly. Materialize the full tree at the pinned revisions before the first catalogue release, and keep _odoo-source until that is verified — it is currently the only complete offline copy.",
+      "closedBy": "Full working tree present at the pinned revisions, ingestion producing a release"
     }
   ]
 }

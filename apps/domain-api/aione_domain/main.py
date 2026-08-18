@@ -658,6 +658,55 @@ def submit_answer(
     return {"answer": _serialise(answer), "correlationId": correlation_id}
 
 
+@app.post("/v1/tenants/{tenant_id}/interviews/{run_id}/normalise")
+def normalise_interview(
+    tenant_id: str,
+    run_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Re-derive facts, requirements and open questions from current answers.
+
+    Deterministic: the same answers produce the same conclusions. Re-running
+    after a corrected answer supersedes the conclusions that no longer hold
+    rather than deleting them, so a reviewer can see that the system once
+    believed something different and why.
+    """
+    correlation_id = request.state.correlation_id
+    role = authorize(principal, tenant_id, "discovery.conduct", correlation_id)
+
+    try:
+        counts = discovery.normalise(
+            tenant_id=tenant_id, user_id=principal.user_id, run_id=run_id
+        )
+    except discovery.DiscoveryError as error:
+        raise HTTPException(status_code=404, detail={"error": str(error)}) from error
+
+    audit.record(
+        tenant_id=tenant_id, action="discovery.normalised",
+        correlation_id=correlation_id, outcome="succeeded",
+        actor_id=principal.user_id, actor_role=role,
+        subject_type="interview_run", subject_id=run_id, detail=counts,
+    )
+    return {**counts, "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/interviews/{run_id}/derived")
+def interview_derived(
+    tenant_id: str,
+    run_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Facts, requirements and open questions currently derived from a run."""
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "discovery.conduct", correlation_id)
+    view = discovery.derived_view(
+        tenant_id=tenant_id, user_id=principal.user_id, run_id=run_id
+    )
+    return {**view, "correlationId": correlation_id}
+
+
 @app.get("/v1/tenants/{tenant_id}/interviews/{run_id}/answers/{question_key}/history")
 def answer_history(
     tenant_id: str,

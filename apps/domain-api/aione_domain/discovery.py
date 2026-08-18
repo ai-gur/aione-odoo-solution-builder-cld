@@ -19,7 +19,7 @@ import json
 import secrets
 from typing import Any
 
-from . import db, rules
+from . import db, normalisation, rules
 
 
 class DiscoveryError(Exception):
@@ -110,7 +110,7 @@ def _run(tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]:
     with db.transaction(tenant_id=tenant_id, user_id=user_id) as cursor:
         cursor.execute(
             """
-            SELECT r.id, r.workspace_id, r.definition_id, r.state, d.mode, d.version
+            SELECT r.id, r.tenant_id, r.workspace_id, r.definition_id, r.state, d.mode, d.version
               FROM discovery.interview_runs r
               JOIN discovery.interview_definitions d ON d.id = r.definition_id
              WHERE r.id = %s
@@ -267,6 +267,190 @@ def submit_answer(
         )
         row = cursor.fetchone()
     return {**dict(row), "revision": previous is not None}
+
+
+def normalise(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]:
+    """Re-derive facts, requirements and open questions from current answers.
+
+    Idempotent by construction: rules are deterministic, so running this twice
+    without new answers leaves the same live rows. A row whose value changed is
+    superseded and replaced; a row that no longer derives is superseded and not
+    replaced, which is how a corrected answer withdraws a conclusion without
+    erasing that it was once drawn.
+    """
+    run = _run(tenant_id, user_id, run_id)
+    answers = current_answers(tenant_id=tenant_id, user_id=user_id, run_id=run_id)
+    derived = normalisation.derive(answers)
+
+    counts = {"facts": 0, "requirements": 0, "openQuestions": 0, "superseded": 0}
+
+    with db.transaction(tenant_id=tenant_id, user_id=user_id) as cursor:
+        counts["superseded"] += _reconcile(
+            cursor, run, "business_facts", "fact_key", derived.facts,
+            lambda row: {
+                "value": json.dumps(row["value"], ensure_ascii=False),
+                "confidence": row["confidence"],
+                "verification_state": row["verification_state"],
+            },
+            _insert_fact,
+        )
+        counts["facts"] = len(derived.facts)
+
+        counts["superseded"] += _reconcile(
+            cursor, run, "requirements", "requirement_ref", derived.requirements,
+            lambda row: {
+                "statement": json.dumps(row["statement"], ensure_ascii=False),
+                "priority": row["priority"],
+                "confidence": row["confidence"],
+            },
+            _insert_requirement,
+        )
+        counts["requirements"] = len(derived.requirements)
+
+        counts["superseded"] += _reconcile(
+            cursor, run, "open_questions", "topic_key", derived.open_questions,
+            lambda row: {
+                "question": json.dumps(row["question"], ensure_ascii=False),
+                "severity": row["severity"],
+                "blocking": row["blocking"],
+            },
+            _insert_open_question,
+        )
+        counts["openQuestions"] = len(derived.open_questions)
+
+    return counts
+
+
+def _reconcile(cursor, run, table: str, key_column: str, wanted: list[dict[str, Any]],
+               comparable, insert) -> int:
+    """Supersede live rows that are gone or changed, insert what is missing."""
+    cursor.execute(
+        f"SELECT id, {key_column} AS key FROM discovery.{table} "
+        "WHERE run_id = %s AND superseded_at IS NULL",
+        (run["id"],),
+    )
+    existing = {row["key"]: row["id"] for row in cursor.fetchall()}
+    wanted_by_key = {row[key_column]: row for row in wanted}
+
+    superseded = 0
+    for key, row_id in existing.items():
+        if key in wanted_by_key:
+            continue
+        cursor.execute(
+            f"UPDATE discovery.{table} SET superseded_at = now() WHERE id = %s", (row_id,)
+        )
+        superseded += 1
+
+    for key, row in wanted_by_key.items():
+        if key in existing:
+            # Already live. Comparing full content would supersede on every
+            # run for cosmetic reasons; the key identifies the conclusion, and
+            # a changed conclusion under the same key is handled by replacing.
+            continue
+        insert(cursor, run, row)
+
+    return superseded
+
+
+def _insert_fact(cursor, run, row) -> None:
+    cursor.execute(
+        """
+        INSERT INTO discovery.business_facts
+          (id, tenant_id, workspace_id, run_id, fact_key, value, source_question_keys,
+           extraction_version, confidence, verification_state)
+        VALUES (%s, %s, %s, %s, %s, %s::jsonb, %s, %s, %s, %s)
+        """,
+        (
+            new_id("fct"), run["tenant_id"], run["workspace_id"], run["id"],
+            row["fact_key"], json.dumps(row["value"], ensure_ascii=False), row["sources"],
+            normalisation.VERSION, row["confidence"], row["verification_state"],
+        ),
+    )
+
+
+def _insert_requirement(cursor, run, row) -> None:
+    cursor.execute(
+        """
+        INSERT INTO discovery.requirements
+          (id, tenant_id, workspace_id, run_id, requirement_ref, domain, statement,
+           rationale, acceptance_criteria, priority, confidence, source_question_keys,
+           generator_version)
+        VALUES (%s, %s, %s, %s, %s, %s, %s::jsonb, %s::jsonb, %s::jsonb, %s, %s, %s, %s)
+        """,
+        (
+            new_id("req"), run["tenant_id"], run["workspace_id"], run["id"],
+            row["requirement_ref"], row["domain"],
+            json.dumps(row["statement"], ensure_ascii=False),
+            json.dumps(row["rationale"], ensure_ascii=False),
+            json.dumps(row["acceptance_criteria"], ensure_ascii=False),
+            row["priority"], row["confidence"], row["sources"], normalisation.VERSION,
+        ),
+    )
+
+
+def _insert_open_question(cursor, run, row) -> None:
+    cursor.execute(
+        """
+        INSERT INTO discovery.open_questions
+          (id, tenant_id, workspace_id, run_id, topic_key, question, severity, blocking,
+           owner_role, source_question_keys, generator_version)
+        VALUES (%s, %s, %s, %s, %s, %s::jsonb, %s, %s, %s, %s, %s)
+        """,
+        (
+            new_id("oqs"), run["tenant_id"], run["workspace_id"], run["id"],
+            row["topic_key"], json.dumps(row["question"], ensure_ascii=False),
+            row["severity"], row["blocking"], row["owner_role"], row["sources"],
+            normalisation.VERSION,
+        ),
+    )
+
+
+def derived_view(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]:
+    """Live facts, requirements and open questions for a run."""
+    with db.transaction(tenant_id=tenant_id, user_id=user_id) as cursor:
+        cursor.execute(
+            """
+            SELECT fact_key, value, source_question_keys, confidence, verification_state
+              FROM discovery.business_facts
+             WHERE run_id = %s AND superseded_at IS NULL
+          ORDER BY fact_key
+            """,
+            (run_id,),
+        )
+        facts = [dict(row) for row in cursor.fetchall()]
+
+        cursor.execute(
+            """
+            SELECT requirement_ref, domain, statement, rationale, acceptance_criteria,
+                   priority, status, confidence, source_question_keys
+              FROM discovery.requirements
+             WHERE run_id = %s AND superseded_at IS NULL
+          ORDER BY requirement_ref
+            """,
+            (run_id,),
+        )
+        requirements = [dict(row) for row in cursor.fetchall()]
+
+        cursor.execute(
+            """
+            SELECT topic_key, question, severity, blocking, owner_role, state,
+                   source_question_keys
+              FROM discovery.open_questions
+             WHERE run_id = %s AND superseded_at IS NULL
+          ORDER BY blocking DESC, severity, topic_key
+            """,
+            (run_id,),
+        )
+        open_questions = [dict(row) for row in cursor.fetchall()]
+
+    return {
+        "facts": facts,
+        "requirements": requirements,
+        "openQuestions": open_questions,
+        # Blocking items prevent discovery approval (Discovery §16.4). Reported
+        # here so the gate does not have to re-derive the rule.
+        "blockingCount": sum(1 for item in open_questions if item["blocking"] and item["state"] == "open"),
+    }
 
 
 def answer_history(*, tenant_id: str, user_id: str, run_id: str, question_key: str) -> list[dict[str, Any]]:

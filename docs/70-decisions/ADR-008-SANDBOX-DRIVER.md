@@ -20,6 +20,12 @@ Implement one Docker sandbox driver first. Execute provisioning through a runner
 - Keep the driver contract provider-neutral.
 - Prefer rebuilding disposable failed sandboxes.
 
+## Amendment 1 — delivery routes share one pinned source (18 August 2026)
+
+Two customer delivery routes are planned: a remote server, and an offline package for an on-premise installation activated with the customer's own Odoo licence key. They are two drivers, not two sources. Both resolve to the revisions pinned in `catalogue/pinned-sources.json`, and the offline package is a release artifact built from those revisions with a recorded digest — never a separately maintained copy of files.
+
+The licence key is a secret resolved by reference at deployment (ADR-010). It appears in no manifest, no artifact and no repository file.
+
 ## Consequences
 
 - Fast path using the existing Foundation

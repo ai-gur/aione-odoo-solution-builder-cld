@@ -118,7 +118,7 @@ AIOne provides, and delay in any of these directly delays the dependent incremen
 
 | # | Dependency | Needed by |
 | --- | --- | --- |
-| A-01 | Pinned Odoo 19 core, Enterprise and Foundation checkouts, and confirmation of which are authoritative | Increment 4 (currently outstanding) |
+| A-01 | Pinned Odoo 19 core, Enterprise and Foundation checkouts | **Closed 18 Aug 2026** — recorded in `catalogue/pinned-sources.json` |
 | A-02 | Shared AIOne addons repository, or confirmation that none exists yet | Increment 4 |
 | A-03 | Docker infrastructure for sandbox hosting, isolated per environment | Increment 5 |
 | A-04 | Odoo Enterprise licensing valid for provisioned sandboxes | Increment 5 |
@@ -162,7 +162,7 @@ These are the decisions this document cannot state on AIOne's behalf. Each block
 
 | # | Open item | Blocks |
 | --- | --- | --- |
-| O-01 | Which Odoo checkouts are authoritative: `_odoo-source`, `AIOne Odoo Vendor/odoo`, and whether `AIOne Odoo Platform` is the Foundation | Increment 4 |
+| ~~O-01~~ | ~~Which Odoo checkouts are authoritative~~ | **Closed 18 Aug 2026.** Foundation is `AIOne Internal Odoo 19e` v1.1.0; the vendor mirror is `AIOne Odoo Vendor/odoo`, pinned at the revisions in `catalogue/pinned-sources.json`; `_odoo-source` is retired |
 | O-02 | Whether a shared AIOne addons repository exists | Increment 4 |
 | O-03 | Data residency and privacy position (D-01) | Increment 3 |
 | O-04 | Accessibility coordinator appointment and contact (D-06) | Customer-facing release |

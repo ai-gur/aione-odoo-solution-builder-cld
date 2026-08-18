@@ -20,6 +20,12 @@ Build immutable catalogue releases from pinned Odoo core, Enterprise, localizati
 - Approved blueprints retain their original catalogue release.
 - Start with pilot scope rather than all Odoo applications.
 
+## Amendment 1 — one vendor mirror (18 August 2026)
+
+Three Odoo 19.0 checkouts existed on the build machine, 118 commits apart, two of them tracking the moving `19.0` branch. A catalogue built from one would describe code a deployment from another does not contain, which is exactly the unverified technical claim this ADR exists to prevent.
+
+There is now one vendor mirror, pinned by full revision in `catalogue/pinned-sources.json`, held at a detached revision rather than on a branch. A revision change is a catalogue release requiring re-verification, not an edit. `scripts/workspace_health.py` reports drift without correcting it.
+
 ## Consequences
 
 - Significant initial verification work

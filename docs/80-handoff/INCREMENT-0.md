@@ -152,7 +152,7 @@ As a maintainer, every pull request runs required formatting, linting, type, uni
 13. Unsupported contract version is rejected.
 14. Audit events contain actor, tenant, action and correlation identifier.
 15. Logs and test output contain no configured secret values.
-16. Workspace health reports all four repository revisions or clear missing-path errors.
+16. Workspace health reports every pinned repository revision, or clear missing-path errors. Satisfied by `python scripts/run.py workspace-health` against `catalogue/pinned-sources.json`.
 17. CI passes from a clean checkout.
 
 ## Required deliverables

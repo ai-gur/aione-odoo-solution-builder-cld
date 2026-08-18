@@ -1,0 +1,59 @@
+{
+  "$comment": "Source provenance for catalogue releases and deployment manifests. Every technical claim the product makes about Odoo is true of exactly these revisions and no others (ADR-007). Changing a revision here is a catalogue release, not an edit: it requires re-verification, because 19.0 is a rolling branch and a week of upstream fixes moved it 118 commits.",
+  "schemaVersion": "1.0.0",
+  "baselineKey": "odoo19-baseline-2026-08-17",
+  "recordedAt": "2026-08-18",
+  "sources": {
+    "odoo_core": {
+      "repository": "https://github.com/odoo/odoo.git",
+      "branch": "19.0",
+      "revision": "8a41156804c55cec83c3c05c6b0ea890414a2c6b",
+      "envPath": "ODOO_CORE_PATH",
+      "edition": "community",
+      "role": "Odoo core. Provides the base addons every deployment installs."
+    },
+    "odoo_enterprise": {
+      "repository": "https://github.com/odoo/enterprise.git",
+      "branch": "19.0",
+      "revision": "d1003683e0105a38c8aeab0fb04ea676f0eb1e2a",
+      "envPath": "ODOO_ENTERPRISE_PATH",
+      "edition": "enterprise",
+      "role": "Enterprise addons. Licensed; activation requires the customer's own Odoo licence key.",
+      "licence": "OEEL. The key is a secret resolved by reference at deployment (ADR-010) and never appears in a manifest, an artifact or this file."
+    },
+    "foundation": {
+      "repository": "AIOne Internal Odoo 19e",
+      "revision": "b4c1da05adcba5e42c4c6ab35bab04163cda545b",
+      "version": "1.1.0",
+      "envPath": "ODOO_FOUNDATION_PATH",
+      "role": "The runtime topology every sandbox is built from. Mounts core and enterprise read-only and executes odoo-bin from the mount, so the pinned revisions above are the code that actually runs.",
+      "images": {
+        "$comment": "Digest-pinned in the Foundation compose file, recorded here so a catalogue release captures the whole runtime rather than only the Python source.",
+        "odoo_runtime": "odoo@sha256:94a4f480b8039dc9ca2bca9e77e59f97d3311f66e2aad663cf2670be9c66d4ea",
+        "postgres": "postgres@sha256:95206741a5b214807675e14165369d05b93a9cf692223b616d07cca227e74b0b"
+      }
+    }
+  },
+  "deliveryDrivers": {
+    "$comment": "Two ways to reach a customer environment, one source of truth. Both resolve to the revisions above, so a blueprint approved against this baseline describes the system either way (ADR-008).",
+    "remote": {
+      "state": "planned",
+      "description": "AIOne-controlled or customer-provided server reached over an authorized connection. The pinned revisions are checked out or mounted on the target."
+    },
+    "on_premise_package": {
+      "state": "planned",
+      "description": "Offline archive for a physical installation. Built from the pinned revisions as a release artifact with a recorded digest, never assembled from a separately maintained copy of files. Odoo activation on the target uses the customer's own licence key, held in the secret provider."
+    }
+  },
+  "retired": {
+    "$comment": "Recorded so the reason survives the deletion.",
+    "_odoo-source": "A third checkout on branch 19.0, 118 commits behind this baseline. Retired 18 August 2026: a second copy of Odoo on a moving branch means the catalogue can describe code that a deployment does not contain."
+  },
+  "verificationItems": [
+    {
+      "id": "V-01",
+      "item": "The Foundation carries its own 19.0 checkouts three commits ahead of this baseline (a6e9c9fc, 71f88b1b, f1a844f2 in core). Confirm the Foundation runs correctly against the pinned revisions, or move the baseline forward to the pair it was validated with.",
+      "closedBy": "First catalogue build and Foundation smoke run"
+    }
+  ]
+}

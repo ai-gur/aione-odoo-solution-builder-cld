@@ -140,6 +140,9 @@ def test_integration() -> None:
     env = test_env()
     run([sys.executable, "-m", "unittest", "discover", "-s", "tests/integration",
          "-p", "test_tenant_isolation.py", "-v"], env=env)
+    # Needs no database; it reads the workspace and writes nothing.
+    run([sys.executable, "-m", "unittest", "discover", "-s", "tests/integration",
+         "-p", "test_workspace_health.py", "-v"], env=env)
     # The job tests need the worker's dependencies.
     run([venv_python("worker"), "-m", "unittest", "discover", "-s", "tests/integration",
          "-p", "test_durable_jobs.py", "-v"], env=env)
@@ -162,6 +165,11 @@ def test() -> None:
 def api_dev() -> None:
     run([venv_python("domain-api"), "-m", "uvicorn", "aione_domain.main:app",
          "--reload", "--port", "8000"], cwd=ROOT / "apps" / "domain-api")
+
+
+def workspace_health() -> None:
+    """Verify the Odoo workspace paths and revisions. Never mutates them."""
+    run([sys.executable, "scripts/workspace_health.py"])
 
 
 def worker_dev() -> None:
@@ -193,6 +201,7 @@ COMMANDS = {
     "test-api": test_api,
     "api-dev": api_dev,
     "worker-dev": worker_dev,
+    "workspace-health": workspace_health,
 }
 
 if __name__ == "__main__":

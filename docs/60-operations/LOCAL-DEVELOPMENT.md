@@ -22,13 +22,32 @@ Keep repositories separate:
 ```text
 workspace/
 ├── aione-odoo-solution-builder-cld/ # This product
-├── odoo-19-enterprise-foundation/   # Reusable Foundation
-├── aione-odoo-addons/               # Shared reviewed AIOne addons (ADR-013)
-├── odoo/                            # Pinned Odoo core checkout
-└── enterprise/                      # Pinned Enterprise checkout
+├── AIOne Internal Odoo 19e/         # The Foundation (FOUNDATION-VERSION 1.1.0)
+└── AIOne Odoo Vendor/odoo/
+    ├── odoo/                        # Pinned Odoo core checkout
+    └── enterprise/                  # Pinned Enterprise checkout
 ```
 
-Four repositories are recorded by the workspace health command: Foundation, AIOne addons, Odoo core and Enterprise. Their paths are supplied through `ODOO_FOUNDATION_PATH`, `AIONE_ADDONS_PATH`, `ODOO_CORE_PATH` and `ODOO_ENTERPRISE_PATH`.
+**One vendor mirror, pinned by revision.** `catalogue/pinned-sources.json` records the
+exact core and Enterprise revisions every catalogue release and manifest is built
+against. Both delivery routes — a remote server and an offline on-premise package —
+resolve to those revisions, so a blueprint approved against a baseline describes the
+system either way (ADR-007, ADR-008).
+
+The Foundation holds no Odoo source of its own. It mounts core and Enterprise
+read-only and executes `odoo-bin` from the mount, so the pinned revisions are the code
+that actually runs.
+
+Paths are supplied through `ODOO_FOUNDATION_PATH`, `ODOO_CORE_PATH` and
+`ODOO_ENTERPRISE_PATH`. Verify them with:
+
+```text
+python scripts/run.py workspace-health
+```
+
+The check is strictly non-mutating: it never fetches or checks out, because reading a
+workspace must not change it. A drifted revision is reported rather than corrected —
+moving a baseline is a catalogue release, not an edit.
 
 Paths are supplied through `.env.local`, which is never committed.
 

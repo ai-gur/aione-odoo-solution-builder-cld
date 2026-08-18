@@ -1,0 +1,15 @@
+{
+  "name": "@aione/solution-builder",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AIOne Odoo Solution Builder control plane",
+  "engines": {
+    "node": ">=24.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "packageManager": "pnpm@11.17.0",
+  "scripts": {
+    "test:contracts": "node --test --experimental-strip-types packages/contracts/ts/test/*.test.ts",
+    "check": "pnpm -r --if-present check"
+  }
+}

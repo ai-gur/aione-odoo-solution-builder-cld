@@ -1,0 +1,156 @@
+{
+  "description": "Cross-language canonicalization vectors (ADR-015). Both the TypeScript and Python implementations must produce exactly these canonical strings. Expected values are written by hand from RFC 8785, not generated from either implementation.",
+  "cases": [
+    {
+      "name": "empty_object",
+      "value": {},
+      "canonical": "{}"
+    },
+    {
+      "name": "empty_array",
+      "value": [],
+      "canonical": "[]"
+    },
+    {
+      "name": "key_ordering_is_by_code_unit_not_alphabetical",
+      "value": {
+        "b": 1,
+        "a": 2,
+        "C": 3
+      },
+      "canonical": "{\"C\":3,\"a\":2,\"b\":1}"
+    },
+    {
+      "name": "nested_objects_and_arrays_keep_array_order",
+      "value": {
+        "z": [
+          3,
+          1,
+          {
+            "b": true,
+            "a": null
+          }
+        ],
+        "y": "x"
+      },
+      "canonical": "{\"y\":\"x\",\"z\":[3,1,{\"a\":null,\"b\":true}]}"
+    },
+    {
+      "name": "ecmascript_number_formatting",
+      "value": [
+        0,
+        1.0,
+        100.0,
+        0.1,
+        1000000000000000.0,
+        1e-06,
+        1e-07,
+        1.5e-07,
+        -1.5,
+        9007199254740991
+      ],
+      "canonical": "[0,1,100,0.1,1000000000000000,0.000001,1e-7,1.5e-7,-1.5,9007199254740991]"
+    },
+    {
+      "name": "negative_zero_serializes_as_zero",
+      "value": {
+        "n": -0.0
+      },
+      "canonical": "{\"n\":0}"
+    },
+    {
+      "name": "string_escapes",
+      "value": {
+        "s": "a\"b\\c\td\ne"
+      },
+      "canonical": "{\"s\":\"a\\\"b\\\\c\\td\\ne\"}"
+    },
+    {
+      "name": "control_character_uses_u_escape",
+      "value": {
+        "s": "a\u0001b"
+      },
+      "canonical": "{\"s\":\"a\\u0001b\"}"
+    },
+    {
+      "name": "non_ascii_is_literal_not_escaped",
+      "value": {
+        "he": "שלום",
+        "sym": "€"
+      },
+      "canonical": "{\"he\":\"שלום\",\"sym\":\"€\"}"
+    },
+    {
+      "name": "non_ascii_keys_sort_after_ascii",
+      "value": {
+        "€": 1,
+        "a": 2,
+        "ש": 3
+      },
+      "canonical": "{\"a\":2,\"ש\":3,\"€\":1}"
+    },
+    {
+      "name": "realistic_manifest_head",
+      "value": {
+        "kind": "OdooSandboxManifest",
+        "schemaVersion": "1.0.0",
+        "metadata": {
+          "manifestId": "mf_01JQZX3K8YB2N4V6R8T0W2C5E7",
+          "workspaceId": "wsp_01JQZX3K8YB2N4V6R8T0W2C5E8",
+          "blueprintVersion": 1,
+          "catalogueRelease": "odoo19-catalogue-2026-08-01"
+        },
+        "spec": {
+          "target": {
+            "edition": "enterprise",
+            "version": "19.0"
+          },
+          "languages": [
+            "he_IL",
+            "en_US"
+          ]
+        }
+      },
+      "canonical": "{\"kind\":\"OdooSandboxManifest\",\"metadata\":{\"blueprintVersion\":1,\"catalogueRelease\":\"odoo19-catalogue-2026-08-01\",\"manifestId\":\"mf_01JQZX3K8YB2N4V6R8T0W2C5E7\",\"workspaceId\":\"wsp_01JQZX3K8YB2N4V6R8T0W2C5E8\"},\"schemaVersion\":\"1.0.0\",\"spec\":{\"languages\":[\"he_IL\",\"en_US\"],\"target\":{\"edition\":\"enterprise\",\"version\":\"19.0\"}}}"
+    }
+  ],
+  "digestExclusions": {
+    "description": "A document's own checksum and its appended approvals are excluded from its digest. Both implementations must agree on this set.",
+    "kind": "OdooSandboxManifest",
+    "document": {
+      "kind": "OdooSandboxManifest",
+      "schemaVersion": "1.0.0",
+      "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "approvals": [
+        {
+          "actor": "usr_example",
+          "role": "solution_owner"
+        }
+      ],
+      "spec": {
+        "languages": [
+          "he_IL"
+        ]
+      }
+    },
+    "equivalentDocument": {
+      "kind": "OdooSandboxManifest",
+      "schemaVersion": "1.0.0",
+      "checksum": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "approvals": [],
+      "spec": {
+        "languages": [
+          "he_IL"
+        ]
+      }
+    }
+  },
+  "rejected": {
+    "description": "Values both implementations must refuse. Numbers beyond the IEEE-754 safe integer range are the important case: Python would canonicalize the exact integer and JavaScript a rounded double, so the same document would digest differently in each language.",
+    "unsafeNumbers": [
+      9007199254740992,
+      -9007199254740992,
+      1e+21
+    ]
+  }
+}

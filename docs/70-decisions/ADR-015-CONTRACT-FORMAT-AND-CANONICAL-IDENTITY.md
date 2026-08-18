@@ -47,6 +47,14 @@ Every asynchronous envelope declares `schemaVersion`. A consumer accepts an equa
 
 `apiVersion: aione.odoo/v1alpha1` in Provisioning §4.3 is replaced by `kind` plus `schemaVersion` so that one versioning rule governs every contract. That specification requires a corresponding amendment.
 
+### Amendment 1 — numeric range in canonicalized documents (18 August 2026)
+
+Numbers in a canonicalized document are limited to the IEEE-754 safe integer range, magnitude ≤ 9007199254740991. Larger magnitudes must be strings.
+
+Found while implementing the cross-language fixtures. Python parses `12345678901234567890` as an exact integer and canonicalizes it as written; JavaScript parses the same literal as a double and canonicalizes `12345678901234567000`. The same document would therefore digest differently in each language, which is precisely the failure the canonicalization rule exists to prevent — and it would have been silent, because both outputs are individually well-formed.
+
+Both implementations now refuse such values with an error naming the path, rather than producing a digest that cannot be reproduced. No contract needs the range: money is integer minor units, checksums and revisions are opaque strings, and counts and versions are small.
+
 ### Primitive conventions
 
 - Timestamps: RFC 3339 in UTC with a `Z` suffix, microsecond precision. Durations: ISO 8601.

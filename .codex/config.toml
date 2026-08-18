@@ -1,9 +1,0 @@
-#:schema https://developers.openai.com/codex/config-schema.json
-
-# Repository-scoped configuration loads only when the project is trusted.
-approval_policy = "on-request"
-sandbox_mode = "workspace-write"
-web_search = "cached"
-model_reasoning_effort = "high"
-project_doc_max_bytes = 65536
-

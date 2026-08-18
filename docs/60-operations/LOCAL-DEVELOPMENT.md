@@ -21,11 +21,14 @@ Keep repositories separate:
 
 ```text
 workspace/
-├── aione-odoo-solution-builder/
-├── odoo-19-enterprise-foundation/
-├── odoo/
-└── enterprise/
+├── aione-odoo-solution-builder/     # This product
+├── odoo-19-enterprise-foundation/   # Reusable Foundation
+├── aione-odoo-addons/               # Shared reviewed AIOne addons (ADR-013)
+├── odoo/                            # Pinned Odoo core checkout
+└── enterprise/                      # Pinned Enterprise checkout
 ```
+
+Four repositories are recorded by the workspace health command: Foundation, AIOne addons, Odoo core and Enterprise. Their paths are supplied through `ODOO_FOUNDATION_PATH`, `AIONE_ADDONS_PATH`, `ODOO_CORE_PATH` and `ODOO_ENTERPRISE_PATH`.
 
 Paths are supplied through `.env.local`, which is never committed.
 

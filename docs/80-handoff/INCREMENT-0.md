@@ -122,7 +122,7 @@ As a developer, I can change a shared example schema and see incompatible TypeSc
 
 ### I0-08 Workspace health
 
-As an Odoo developer, I can verify that the Foundation, core and Enterprise paths exist and record their current revisions without modifying them.
+As an Odoo developer, I can verify that the Foundation, AIOne addons, Odoo core and Enterprise paths exist and record their current revisions without modifying them.
 
 ### I0-09 Audit baseline
 

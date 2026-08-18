@@ -455,7 +455,7 @@ Managed records store or reference:
 - source blueprint decision;
 - last applied manifest revision;
 - content fingerprint where appropriate;
-- management policy: controlled, mergeable or observe-only.
+- management policy: controlled, mergeable, observe-only or unmanaged (ADR-009).
 
 Odoo XML/CSV data packages should use external identifiers. `noupdate` behavior must be chosen explicitly because it changes whether later module updates may reapply data.
 
@@ -813,7 +813,9 @@ Conceptual declaration:
   ownership:
     name: controlled
     countryRef: controlled
-    currencyRef: observe_after_accounting_activation
+    currencyRef:
+      policy: observe_only
+      condition: accounting_activated
   traceability:
     decisions: [BP-ORG-001]
     requirements: [REQ-ORG-001]

@@ -14,6 +14,11 @@
 | ADR-010 | Secrets and short-lived job authorization | Proposed |
 | ADR-011 | Audit-event integrity and retention | Proposed |
 | ADR-012 | Isolated evidence processing | Proposed |
+| ADR-013 | Customer workspaces and conditional repositories | Proposed |
+| ADR-014 | Identity, session and data-access boundary | Proposed |
+| ADR-015 | Contract format, canonical serialization and identity conventions | Proposed |
 
 No ADR is implementation authority until its status is Accepted.
+
+This index is the authoritative list of decision records. MVP Architecture §28 names twelve ADRs required before build; that list is historical and does not limit this index.
 

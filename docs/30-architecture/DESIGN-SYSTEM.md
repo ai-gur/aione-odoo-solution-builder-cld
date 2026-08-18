@@ -157,7 +157,10 @@ Hebrew has no ascender/descender rhythm, so every step gains line height under `
 
 ## 5. Accessibility contract
 
-Target: **WCAG 2.2 Level AA**, plus the Israeli standard IS 5568 expectations for the customer-facing portal.
+Two targets apply together:
+
+- **WCAG 2.2 Level AA** — the internal engineering target for both surfaces.
+- **IS 5568 part 1, Level AA (42 check criteria)** — the legal requirement for the customer-facing portal under the Equal Rights Regulations, carrying statutory exposure per claim. It is built on WCAG 2.0, so WCAG 2.2 AA covers most of it, but several IS 5568 items are not reachable from WCAG 2.2 alone and are listed explicitly below (items 12–17). Where the Israeli check sheet assigns a stricter level than WCAG — notably 1.2.1 and 2.4.10 — the Israeli level governs.
 
 1. **Contrast.** Text ≥4.5:1 (≥3:1 at 24px+, or 19px+ bold). UI component boundaries and meaningful graphics ≥3:1. The token tables above are the allowlist; no ad-hoc colors.
 2. **Focus appearance (2.4.11, 2.4.13).** Every interactive element shows a 2px `--color-focus-ring` outline at 2px offset. Focus is never removed, never clipped by `overflow: hidden`, and never hidden behind sticky headers or the interview progress bar.
@@ -171,6 +174,17 @@ Target: **WCAG 2.2 Level AA**, plus the Israeli standard IS 5568 expectations fo
 10. **Tables.** Every data table has a responsive alternative below 768px (stacked card list), header association, and a caption.
 11. **Testing.** Automated axe checks plus keyboard-only and screen-reader passes in Hebrew and English on: interview step, evidence upload, approval dialog, provisioning run view, portfolio table.
 
+Additional IS 5568 items that WCAG 2.2 AA conformance does not by itself guarantee:
+
+12. **Text resize and reflow (1.4.4).** No loss of information or function at 200% text size. Verified in Hebrew, where strings run longer than the English equivalents.
+13. **Timing is adjustable (2.2.1).** Any session timeout, interview auto-expiry or save-and-resume link expiry must warn before it expires and allow the respondent to extend or cancel it. A silent session expiry mid-interview is a conformance failure, not only a usability one.
+14. **Language of parts (3.1.2).** Every change of language inside content carries a `lang` attribute — English module names, product names and quoted source excerpts inside Hebrew text, and Hebrew customer content inside the English interface. This is separate from the direction handling in §6.3; `<bdi>` fixes direction, `lang` fixes pronunciation and is what a screen reader needs.
+15. **Multiple ways to reach a page (2.4.5).** Portal and workspace pages are reachable by more than one route, except pages that are a step in, or the result of, a process — the interview steps are exempt on that basis.
+16. **Error prevention for consequential actions (3.3.4).** Any action that creates a legal or financial commitment, or changes or deletes user data, is reversible, or validated, or confirmed in a review-before-submit step. This maps directly to the product's approval gates: blueprint approval, manifest authorization, deviation acceptance and provisioning start all render a review-and-confirm step showing exactly what is being approved, including the content hash.
+17. **Valid markup and unique identifiers (4.1.1).** Correct nesting, no duplicate attributes, unique `id` values — enforced in CI rather than by review.
+
+**Accessibility statement.** The portal publishes an accessibility statement page (הצהרת נגישות), linked from the footer of every page and reachable in one click. It is a legal requirement independent of technical conformance and must contain all seven required items: the standard and conformance level targeted (naming IS 5568, not only WCAG), the measures implemented, **known limitations with expected fix dates**, the name of the accessibility coordinator, a phone number, an email address, and both the date of the last audit and the date the statement was updated. If there are no known limitations, that is stated explicitly rather than left blank. The statement page is itself audited like any other page.
+
 ## 6. RTL and bilingual behavior
 
 ### 6.1 Direction
@@ -182,6 +196,8 @@ Target: **WCAG 2.2 Level AA**, plus the Israeli standard IS 5568 expectations fo
 ### 6.2 Logical properties
 
 Component CSS uses `padding-inline`, `margin-inline-start/end`, `inset-inline`, `border-inline-start`, `text-align: start/end`, and logical radius (`border-start-start-radius`). Physical `left`/`right` is permitted only in the explicitly non-mirrored cases listed in §6.4.
+
+The classic failure is the visually-hidden pattern: `left: -9999px` on a skip link becomes unreachable rather than hidden under RTL. Use `inset-inline-start` or a clip-based visually-hidden utility.
 
 ### 6.3 Bidirectional content
 
@@ -307,4 +323,4 @@ shadcn ships its own semantic variables. The mapping is fixed here so the two sy
 1. Dark theme is out of scope for the MVP; the token structure supports adding it later. Confirm.
 2. The charting palette (fit dimensions, portfolio analytics) is not yet defined; it must be categorical, AA-compliant and free of state colors.
 3. Print and PDF styling for the blueprint, release package and traceability report is undefined; those are customer deliverables and need their own tokens.
-4. Confirm whether customer-facing surfaces must meet IS 5568 in addition to WCAG 2.2 AA, and whether an accessibility statement page is required at launch.
+4. IS 5568 conformance and the accessibility statement are settled in §5 — they are required, not optional. Two facts are still needed from AIOne: whether AIOne employs 25 or more people (which triggers the duty to appoint a named accessibility coordinator rather than merely providing an enquiry route), and who that coordinator and enquiry contact will be. The statement cannot ship with placeholders.

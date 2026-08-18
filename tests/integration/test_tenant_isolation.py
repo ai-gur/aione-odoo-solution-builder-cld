@@ -17,6 +17,10 @@ import unittest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
 
+import os  # noqa: E402
+
+os.environ.setdefault("AIONE_DATABASE", "aione_control_test")
+
 from scripts.db import psql, run_psql  # noqa: E402
 
 API_USER = "app_api"

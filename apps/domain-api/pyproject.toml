@@ -7,7 +7,13 @@ dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.32",
     "psycopg[binary,pool]>=3.2",
+    # The shared canonicalizer. Every content hash in the platform comes from
+    # one implementation (ADR-015); a second one here would be a review defect.
+    "aione-contracts",
 ]
+
+[tool.uv.sources]
+aione-contracts = { path = "../../packages/contracts/python", editable = true }
 
 [dependency-groups]
 dev = [

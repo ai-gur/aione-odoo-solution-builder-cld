@@ -33,12 +33,45 @@ def venv_python(app: str) -> str:
     return str(candidate)
 
 
-def run(command: list[str], *, cwd: pathlib.Path | None = None) -> None:
+TEST_DATABASE = "aione_control_test"
+TEST_DSN = f"postgresql://app_api:local_dev_only@localhost:55432/{TEST_DATABASE}"
+TEST_WORKER_DSN = f"postgresql://app_worker:local_dev_only@localhost:55432/{TEST_DATABASE}"
+
+
+def run(
+    command: list[str], *, cwd: pathlib.Path | None = None, env: dict[str, str] | None = None
+) -> None:
     printable = " ".join(command)
     print(f"\n> {printable}", flush=True)
-    result = subprocess.run(command, cwd=str(cwd or ROOT))
+    result = subprocess.run(command, cwd=str(cwd or ROOT), env=env)
     if result.returncode != 0:
         raise SystemExit(result.returncode)
+
+
+def test_env() -> dict[str, str]:
+    """Environment pointing every suite at the test database.
+
+    Tests clean up after themselves, and a suite that deletes a user cascades
+    to their memberships. Sharing a database with local development means that
+    cleanup silently empties the developer's fixture, and the symptom appears
+    later as a blank screen rather than as a test failure.
+    """
+    return {
+        **os.environ,
+        "AIONE_DATABASE": TEST_DATABASE,
+        "DATABASE_URL_API": TEST_DSN,
+        "DATABASE_URL_WORKER": TEST_WORKER_DSN,
+        "APP_ENVIRONMENT": "local",
+        "AUTH_MODE": "dev",
+    }
+
+
+def db_test_prepare() -> None:
+    """Create, migrate and seed the test database. Safe to re-run."""
+    env = test_env()
+    run([sys.executable, "scripts/db.py", "create"], env=env)
+    run([sys.executable, "scripts/db.py", "migrate"], env=env)
+    run([sys.executable, "scripts/seed_interviews.py"], env=env)
 
 
 # --- stack ------------------------------------------------------------------
@@ -103,16 +136,19 @@ def test_contract() -> None:
 
 
 def test_integration() -> None:
+    db_test_prepare()
+    env = test_env()
     run([sys.executable, "-m", "unittest", "discover", "-s", "tests/integration",
-         "-p", "test_tenant_isolation.py", "-v"])
+         "-p", "test_tenant_isolation.py", "-v"], env=env)
     # The job tests need the worker's dependencies.
     run([venv_python("worker"), "-m", "unittest", "discover", "-s", "tests/integration",
-         "-p", "test_durable_jobs.py", "-v"])
+         "-p", "test_durable_jobs.py", "-v"], env=env)
 
 
 def test_api() -> None:
+    db_test_prepare()
     run([venv_python("domain-api"), "-m", "unittest", "discover", "-s", "tests", "-v"],
-        cwd=ROOT / "apps" / "domain-api")
+        cwd=ROOT / "apps" / "domain-api", env=test_env())
 
 
 def test() -> None:
@@ -150,6 +186,7 @@ COMMANDS = {
     "db-reset": db_reset,
     "db-seed": db_seed,
     "db-seed-dev": db_seed_dev,
+    "db-test-prepare": db_test_prepare,
     "test": test,
     "test-contract": test_contract,
     "test-integration": test_integration,

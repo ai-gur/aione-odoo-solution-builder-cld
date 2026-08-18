@@ -707,6 +707,87 @@ def interview_derived(
     return {**view, "correlationId": correlation_id}
 
 
+@app.get("/v1/tenants/{tenant_id}/interviews/{run_id}/readiness")
+def interview_readiness(
+    tenant_id: str,
+    run_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Whether discovery could be approved, and every reason it could not."""
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "discovery.conduct", correlation_id)
+    state = discovery.readiness(
+        tenant_id=tenant_id, user_id=principal.user_id, run_id=run_id
+    )
+    return {**state, "correlationId": correlation_id}
+
+
+@app.post("/v1/tenants/{tenant_id}/interviews/{run_id}/approve", status_code=201)
+def approve_discovery(
+    tenant_id: str,
+    run_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Approve discovery, creating an immutable version.
+
+    The first approval gate in the product. It refuses while any required
+    question is unanswered or any blocking open question remains, because an
+    approved version is what the Blueprint Engine is allowed to read, and a
+    blueprint built on unresolved discovery is not traceable to anything.
+    """
+    correlation_id = request.state.correlation_id
+    role = authorize(principal, tenant_id, "discovery.approve", correlation_id)
+
+    try:
+        version = discovery.approve(
+            tenant_id=tenant_id, user_id=principal.user_id,
+            actor_role=role, run_id=run_id,
+        )
+    except discovery.ApprovalBlocked as blocked:
+        audit.record(
+            tenant_id=tenant_id, action="discovery.approve",
+            correlation_id=correlation_id, outcome="denied",
+            actor_id=principal.user_id, actor_role=role,
+            subject_type="interview_run", subject_id=run_id,
+            detail={"reasons": [reason["reason"] for reason in blocked.reasons]},
+        )
+        raise HTTPException(
+            status_code=409,
+            detail={"error": "discovery_not_ready", "reasons": blocked.reasons},
+        ) from blocked
+    except discovery.DiscoveryError as error:
+        raise HTTPException(status_code=409, detail={"error": str(error)}) from error
+
+    audit.record(
+        tenant_id=tenant_id, action="discovery.approved",
+        correlation_id=correlation_id, outcome="succeeded",
+        actor_id=principal.user_id, actor_role=role,
+        subject_type="discovery_version", subject_id=version["id"],
+        subject_version=str(version["version"]),
+        # The digest is what makes this approval provable later.
+        detail={"digest": version["content_digest"]},
+    )
+    return {"version": _serialise(version), "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/workspaces/{workspace_id}/discovery-versions")
+def discovery_versions(
+    tenant_id: str,
+    workspace_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Approved discovery versions for a workspace, newest first."""
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "workspace.read", correlation_id)
+    rows = discovery.approved_versions(
+        tenant_id=tenant_id, user_id=principal.user_id, workspace_id=workspace_id
+    )
+    return {"versions": [_serialise(row) for row in rows], "correlationId": correlation_id}
+
+
 @app.get("/v1/tenants/{tenant_id}/interviews/{run_id}/answers/{question_key}/history")
 def answer_history(
     tenant_id: str,

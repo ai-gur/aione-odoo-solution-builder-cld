@@ -66,6 +66,11 @@ jobs:
       - name: Seed interview definitions
         run: python scripts/run.py db-seed
 
+      # Tests run against their own database, so a suite cleaning up after
+      # itself cannot empty local development data.
+      - name: Prepare the test database
+        run: python scripts/run.py db-test-prepare
+
       # Tenant isolation, audit immutability and the durable job path. These
       # run as the API's own database role, so a policy regression fails here
       # rather than in production.

@@ -19,6 +19,8 @@ import json
 import secrets
 from typing import Any
 
+from aione_contracts import digest
+
 from . import db, normalisation, rules
 
 
@@ -451,6 +453,171 @@ def derived_view(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]
         # here so the gate does not have to re-derive the rule.
         "blockingCount": sum(1 for item in open_questions if item["blocking"] and item["state"] == "open"),
     }
+
+
+class ApprovalBlocked(Exception):
+    """Discovery cannot be approved yet. Carries every reason, not the first.
+
+    A gate that reports one blocker at a time turns a review into a queue of
+    round trips; the consultant should see the whole list once.
+    """
+
+    def __init__(self, reasons: list[dict[str, Any]]) -> None:
+        super().__init__(f"{len(reasons)} blocker(s)")
+        self.reasons = reasons
+
+
+def readiness(*, tenant_id: str, user_id: str, run_id: str) -> dict[str, Any]:
+    """Whether an approved discovery version could be created right now."""
+    plan = question_plan(tenant_id=tenant_id, user_id=user_id, run_id=run_id, locale="en_US")
+    view = derived_view(tenant_id=tenant_id, user_id=user_id, run_id=run_id)
+
+    reasons: list[dict[str, Any]] = []
+
+    outstanding = plan["progress"]["outstandingRequired"]
+    if outstanding:
+        reasons.append({
+            "reason": "outstanding_required_questions",
+            "questionKeys": outstanding,
+        })
+
+    blocking = [
+        item for item in view["openQuestions"]
+        if item["blocking"] and item["state"] == "open"
+    ]
+    if blocking:
+        # Discovery §16.4: no blocking item may remain. This is why open
+        # questions carry `blocking` as a property rather than the gate
+        # deciding severity for itself at approval time.
+        reasons.append({
+            "reason": "blocking_open_questions",
+            "topics": [item["topic_key"] for item in blocking],
+        })
+
+    red = [item for item in view["requirements"] if item["confidence"] == "red"]
+    if red:
+        reasons.append({
+            "reason": "red_confidence_requirements",
+            "requirements": [item["requirement_ref"] for item in red],
+        })
+
+    return {
+        "ready": not reasons,
+        "reasons": reasons,
+        "answered": plan["progress"]["answered"],
+        "applicable": plan["progress"]["applicable"],
+    }
+
+
+def approve(*, tenant_id: str, user_id: str, actor_role: str, run_id: str) -> dict[str, Any]:
+    """Create an immutable approved discovery version.
+
+    The snapshot holds the answers as given plus everything derived from them,
+    and its digest is computed with the shared canonicalizer, so anyone holding
+    the snapshot can recompute the hash in either language and confirm nothing
+    changed (ADR-015).
+    """
+    state = readiness(tenant_id=tenant_id, user_id=user_id, run_id=run_id)
+    if not state["ready"]:
+        raise ApprovalBlocked(state["reasons"])
+
+    run = _run(tenant_id, user_id, run_id)
+    if run["state"] == "approved_for_blueprint":
+        raise DiscoveryError("this interview has already been approved")
+
+    answers = current_answers(tenant_id=tenant_id, user_id=user_id, run_id=run_id)
+    view = derived_view(tenant_id=tenant_id, user_id=user_id, run_id=run_id)
+
+    with db.transaction(tenant_id=tenant_id, user_id=user_id) as cursor:
+        cursor.execute(
+            """
+            SELECT coalesce(max(version), 0) + 1 AS next
+              FROM discovery.discovery_versions
+             WHERE workspace_id = %s
+            """,
+            (run["workspace_id"],),
+        )
+        version = cursor.fetchone()["next"]
+
+        cursor.execute(
+            """
+            SELECT question_key, raw_value, answer_source, confidence, answered_by, created_at
+              FROM discovery.answers
+             WHERE run_id = %s AND superseded_at IS NULL
+          ORDER BY question_key
+            """,
+            (run_id,),
+        )
+        answer_rows = [
+            {
+                "questionKey": row["question_key"],
+                "value": row["raw_value"],
+                "source": row["answer_source"],
+                "confidence": row["confidence"],
+                "answeredBy": row["answered_by"],
+                # Timestamps are RFC 3339 in the snapshot, so the digest does
+                # not depend on how a driver renders a datetime.
+                "answeredAt": row["created_at"].isoformat(),
+            }
+            for row in cursor.fetchall()
+        ]
+
+        content = {
+            "kind": "DiscoveryPackage",
+            "schemaVersion": "1.0.0",
+            "workspaceId": run["workspace_id"],
+            "runId": run_id,
+            "mode": run["mode"],
+            "definitionVersion": run["version"],
+            "answers": answer_rows,
+            "facts": view["facts"],
+            "requirements": view["requirements"],
+            "openQuestions": view["openQuestions"],
+        }
+        content_digest = digest(content)
+
+        version_id = new_id("dsv")
+        cursor.execute(
+            """
+            INSERT INTO discovery.discovery_versions
+              (id, tenant_id, workspace_id, run_id, version, content, content_digest,
+               definition_key, definition_version, approved_by, approved_role)
+            VALUES (%s, %s, %s, %s, %s, %s::jsonb, %s, %s, %s, %s, %s)
+         RETURNING id, version, content_digest, approved_at
+            """,
+            (
+                version_id, tenant_id, run["workspace_id"], run_id, version,
+                json.dumps(content, ensure_ascii=False), content_digest,
+                "quick_start", run["version"], user_id, actor_role,
+            ),
+        )
+        row = cursor.fetchone()
+
+        cursor.execute(
+            """
+            UPDATE discovery.interview_runs
+               SET state = 'approved_for_blueprint', completed_at = now()
+             WHERE id = %s
+            """,
+            (run_id,),
+        )
+
+    return dict(row)
+
+
+def approved_versions(*, tenant_id: str, user_id: str, workspace_id: str) -> list[dict[str, Any]]:
+    with db.transaction(tenant_id=tenant_id, user_id=user_id) as cursor:
+        cursor.execute(
+            """
+            SELECT id, version, content_digest, definition_version,
+                   approved_by, approved_role, approved_at
+              FROM discovery.discovery_versions
+             WHERE workspace_id = %s
+          ORDER BY version DESC
+            """,
+            (workspace_id,),
+        )
+        return [dict(row) for row in cursor.fetchall()]
 
 
 def answer_history(*, tenant_id: str, user_id: str, run_id: str, question_key: str) -> list[dict[str, Any]]:

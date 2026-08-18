@@ -26,9 +26,17 @@ import redis  # noqa: E402
 
 from aione_worker.relay import QUEUE_KEY, Relay  # noqa: E402
 from aione_worker.runtime import Worker  # noqa: E402
+import os  # noqa: E402
+
+os.environ.setdefault("AIONE_DATABASE", "aione_control_test")
+
 from scripts.db import psql  # noqa: E402
 
-WORKER_DSN = "postgresql://app_worker:local_dev_only@localhost:55432/aione_control"
+import os
+WORKER_DSN = os.environ.get(
+    "DATABASE_URL_WORKER",
+    "postgresql://app_worker:local_dev_only@localhost:55432/aione_control_test",
+)
 REDIS_URL = "redis://localhost:56379/0"
 TENANT = "ten_01JQZX3K8YB2N4V6R8T0W2C5J1"
 

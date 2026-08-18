@@ -18,10 +18,11 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[3]))
 
 os.environ.setdefault(
     "DATABASE_URL_API",
-    "postgresql://app_api:local_dev_only@localhost:55432/aione_control",
+    "postgresql://app_api:local_dev_only@localhost:55432/aione_control_test",
 )
 os.environ.setdefault("APP_ENVIRONMENT", "local")
 os.environ.setdefault("AUTH_MODE", "dev")
+os.environ.setdefault("AIONE_DATABASE", "aione_control_test")
 
 from fastapi.testclient import TestClient  # noqa: E402
 

@@ -15,6 +15,7 @@ Usage:
 
 from __future__ import annotations
 
+import os
 import pathlib
 import subprocess
 import sys
@@ -22,7 +23,10 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 COMPOSE_FILE = ROOT / "infrastructure" / "control-plane" / "compose.yaml"
 MIGRATIONS_DIR = ROOT / "database" / "migrations"
-DATABASE = "aione_control"
+# Tests and local development must not share a database: a test that cleans up
+# after itself will otherwise delete the developer's fixture, and the failure
+# shows up later as an empty screen rather than as a test problem.
+DATABASE = os.environ.get("AIONE_DATABASE", "aione_control")
 
 LEDGER_SQL = """
 CREATE TABLE IF NOT EXISTS public.schema_migrations (
@@ -107,13 +111,25 @@ def status() -> None:
         print(f"{'applied' if path.name in done else 'pending':>8}  {path.name}")
 
 
+def create() -> None:
+    """Create the database if it does not exist."""
+    existing = psql(
+        f"SELECT 1 FROM pg_database WHERE datname = '{DATABASE}';", database="postgres"
+    )
+    if existing.strip() == "1":
+        print(f"{DATABASE} exists")
+        return
+    psql(f'CREATE DATABASE "{DATABASE}";', database="postgres")
+    print(f"created {DATABASE}")
+
+
 def reset() -> None:
     psql(f'DROP DATABASE IF EXISTS "{DATABASE}" WITH (FORCE);', database="postgres")
     psql(f'CREATE DATABASE "{DATABASE}";', database="postgres")
     print(f"recreated {DATABASE}")
 
 
-COMMANDS = {"migrate": migrate, "status": status, "reset": reset}
+COMMANDS = {"migrate": migrate, "status": status, "reset": reset, "create": create}
 
 if __name__ == "__main__":
     if len(sys.argv) != 2 or sys.argv[1] not in COMMANDS:

@@ -180,6 +180,11 @@ def catalogue_ingest() -> None:
     run([sys.executable, "catalogue/ingestion/ingest.py"])
 
 
+def catalogue_evidence() -> None:
+    """Extract capability evidence for the pilot scope from pinned source."""
+    run([sys.executable, "catalogue/ingestion/extract_evidence.py"])
+
+
 def test_catalogue() -> None:
     run([sys.executable, "-m", "unittest", "discover", "-s", "catalogue/tests", "-v"])
 
@@ -220,6 +225,7 @@ COMMANDS = {
     "worker-dev": worker_dev,
     "workspace-health": workspace_health,
     "catalogue-ingest": catalogue_ingest,
+    "catalogue-evidence": catalogue_evidence,
     "test-catalogue": test_catalogue,
 }
 

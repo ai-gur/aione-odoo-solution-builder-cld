@@ -1,0 +1,4268 @@
+{
+  "kind": "CapabilityEvidence",
+  "schemaVersion": "1.0.0",
+  "scopeKey": "il-b2b-wholesale-distribution",
+  "baselineKey": "odoo19-baseline-2026-08-17",
+  "modules": [
+    {
+      "technicalName": "account",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:34235a7a6f23978650873b8a339555dca25ff5b7666b9514a6ccd1048630387f",
+      "models": {
+        "defines": [
+          {
+            "model": "account.account",
+            "evidence": "models/account_account.py:20"
+          },
+          {
+            "model": "account.account.tag",
+            "evidence": "models/account_account_tag.py:8"
+          },
+          {
+            "model": "account.accrued.orders.wizard",
+            "evidence": "wizard/accrued_orders.py:13"
+          },
+          {
+            "model": "account.automatic.entry.wizard",
+            "evidence": "wizard/account_automatic_entry_wizard.py:15"
+          },
+          {
+            "model": "account.autopost.bills.wizard",
+            "evidence": "wizard/account_autopost_bills_wizard.py:5"
+          },
+          {
+            "model": "account.bank.statement",
+            "evidence": "models/account_bank_statement.py:11"
+          },
+          {
+            "model": "account.bank.statement.line",
+            "evidence": "models/account_bank_statement_line.py:12"
+          },
+          {
+            "model": "account.cash.rounding",
+            "evidence": "models/account_cash_rounding.py:15"
+          },
+          {
+            "model": "account.chart.template",
+            "evidence": "models/chart_template.py:74"
+          },
+          {
+            "model": "account.code.mapping",
+            "evidence": "models/account_code_mapping.py:14"
+          },
+          {
+            "model": "account.document.import.mixin",
+            "evidence": "models/account_document_import_mixin.py:127"
+          },
+          {
+            "model": "account.financial.year.op",
+            "evidence": "wizard/setup_wizards.py:11"
+          },
+          {
+            "model": "account.fiscal.position",
+            "evidence": "models/partner.py:27"
+          },
+          {
+            "model": "account.fiscal.position.account",
+            "evidence": "models/partner.py:310"
+          },
+          {
+            "model": "account.full.reconcile",
+            "evidence": "models/account_full_reconcile.py:6"
+          },
+          {
+            "model": "account.group",
+            "evidence": "models/account_account.py:1516"
+          },
+          {
+            "model": "account.incoterms",
+            "evidence": "models/account_incoterms.py:8"
+          },
+          {
+            "model": "account.invoice.report",
+            "evidence": "report/account_invoice_report.py:12"
+          },
+          {
+            "model": "account.journal",
+            "evidence": "models/account_journal.py:43"
+          },
+          {
+            "model": "account.journal.group",
+            "evidence": "models/account_journal.py:17"
+          },
+          {
+            "model": "account.lock_exception",
+            "evidence": "models/account_lock_exception.py:12"
+          },
+          {
+            "model": "account.merge.wizard",
+            "evidence": "wizard/account_merge_wizard.py:9"
+          },
+          {
+            "model": "account.merge.wizard.line",
+            "evidence": "wizard/account_merge_wizard.py:224"
+          },
+          {
+            "model": "account.move",
+            "evidence": "models/account_move.py:74"
+          },
+          {
+            "model": "account.move.line",
+            "evidence": "models/account_move_line.py:20"
+          },
+          {
+            "model": "account.move.reversal",
+            "evidence": "wizard/account_move_reversal.py:11"
+          },
+          {
+            "model": "account.move.send",
+            "evidence": "models/account_move_send.py:18"
+          },
+          {
+            "model": "account.move.send.batch.wizard",
+            "evidence": "wizard/account_move_send_batch_wizard.py:9"
+          },
+          {
+            "model": "account.move.send.wizard",
+            "evidence": "wizard/account_move_send_wizard.py:10"
+          },
+          {
+            "model": "account.partial.reconcile",
+            "evidence": "models/account_partial_reconcile.py:11"
+          },
+          {
+            "model": "account.payment",
+            "evidence": "models/account_payment.py:8"
+          },
+          {
+            "model": "account.payment.method",
+            "evidence": "models/account_payment_method.py:8"
+          },
+          {
+            "model": "account.payment.method.line",
+            "evidence": "models/account_payment_method.py:96"
+          },
+          {
+            "model": "account.payment.register",
+            "evidence": "wizard/account_payment_register.py:13"
+          },
+          {
+            "model": "account.payment.term",
+            "evidence": "models/account_payment_term.py:12"
+          },
+          {
+            "model": "account.payment.term.line",
+            "evidence": "models/account_payment_term.py:282"
+          },
+          {
+            "model": "account.reconcile.model",
+            "evidence": "models/account_reconcile_model.py:92"
+          },
+          {
+            "model": "account.reconcile.model.line",
+            "evidence": "models/account_reconcile_model.py:9"
+          },
+          {
+            "model": "account.report",
+            "evidence": "models/account_report.py:45"
+          },
+          {
+            "model": "account.report.column",
+            "evidence": "models/account_report.py:933"
+          },
+          {
+            "model": "account.report.expression",
+            "evidence": "models/account_report.py:580"
+          },
+          {
+            "model": "account.report.external.value",
+            "evidence": "models/account_report.py:948"
+          },
+          {
+            "model": "account.report.line",
+            "evidence": "models/account_report.py:350"
+          },
+          {
+            "model": "account.resequence.wizard",
+            "evidence": "wizard/account_resequence.py:12"
+          },
+          {
+            "model": "account.root",
+            "evidence": "models/account_root.py:10"
+          },
+          {
+            "model": "account.secure.entries.wizard",
+            "evidence": "wizard/account_secure_entries_wizard.py:12"
+          },
+          {
+            "model": "account.setup.bank.manual.config",
+            "evidence": "wizard/setup_wizards.py:95"
+          },
+          {
+            "model": "account.tax",
+            "evidence": "models/account_tax.py:72"
+          },
+          {
+            "model": "account.tax.group",
+            "evidence": "models/account_tax.py:26"
+          },
+          {
+            "model": "account.tax.repartition.line",
+            "evidence": "models/account_tax.py:5260"
+          },
+          {
+            "model": "report.account.report_hash_integrity",
+            "evidence": "report/account_hash_integrity_templates.py:8"
+          },
+          {
+            "model": "report.account.report_invoice",
+            "evidence": "report/account_invoice_report.py:172"
+          },
+          {
+            "model": "report.account.report_invoice_with_payments",
+            "evidence": "report/account_invoice_report.py:195"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/company.py:71"
+          },
+          {
+            "model": "res.partner.bank",
+            "evidence": "models/res_partner_bank.py:14"
+          },
+          {
+            "model": "sequence.mixin",
+            "evidence": "models/sequence_mixin.py:24"
+          },
+          {
+            "model": "validate.account.move",
+            "evidence": "wizard/account_validate_account_move.py:6"
+          }
+        ],
+        "extends": [
+          {
+            "model": "account.analytic.account",
+            "evidence": "models/account_analytic_account.py:7"
+          },
+          {
+            "model": "account.analytic.applicability",
+            "evidence": "models/account_analytic_plan.py:7"
+          },
+          {
+            "model": "account.analytic.distribution.model",
+            "evidence": "models/account_analytic_distribution_model.py:7"
+          },
+          {
+            "model": "account.analytic.line",
+            "evidence": "models/account_analytic_line.py:9"
+          },
+          {
+            "model": "account.chart.template",
+            "evidence": "demo/account_demo.py:15"
+          },
+          {
+            "model": "account.document.import.mixin",
+            "evidence": "models/account_move.py:75"
+          },
+          {
+            "model": "account.journal",
+            "evidence": "models/account_journal_dashboard.py:25"
+          },
+          {
+            "model": "account.move",
+            "evidence": "models/account_bank_statement_line.py:840"
+          },
+          {
+            "model": "account.move.line",
+            "evidence": "models/account_move_line_tax_details.py:8"
+          },
+          {
+            "model": "account.move.send",
+            "evidence": "wizard/account_move_send_batch_wizard.py:10"
+          },
+          {
+            "model": "analytic.mixin",
+            "evidence": "models/account_move_line.py:21"
+          },
+          {
+            "model": "base.document.layout",
+            "evidence": "wizard/base_document_layout.py:5"
+          },
+          {
+            "model": "base.partner.merge.automatic.wizard",
+            "evidence": "models/merge_partner_automatic.py:6"
+          },
+          {
+            "model": "decimal.precision",
+            "evidence": "models/decimal_precision.py:5"
+          },
+          {
+            "model": "digest.digest",
+            "evidence": "models/digest.py:9"
+          },
+          {
+            "model": "ir.actions.report",
+            "evidence": "models/ir_actions_report.py:11"
+          },
+          {
+            "model": "ir.attachment",
+            "evidence": "models/ir_attachment.py:11"
+          },
+          {
+            "model": "ir.http",
+            "evidence": "models/ir_http.py:5"
+          },
+          {
+            "model": "ir.module.module",
+            "evidence": "models/ir_module.py:25"
+          },
+          {
+            "model": "kpi.provider",
+            "evidence": "models/kpi_provider.py:6"
+          },
+          {
+            "model": "mail.activity.mixin",
+            "evidence": "models/account_account.py:21"
+          },
+          {
+            "model": "mail.alias.mixin.optional",
+            "evidence": "models/account_journal.py:46"
+          },
+          {
+            "model": "mail.composer.mixin",
+            "evidence": "wizard/account_move_send_wizard.py:11"
+          },
+          {
+            "model": "mail.message",
+            "evidence": "models/mail_message.py:34"
+          },
+          {
+            "model": "mail.template",
+            "evidence": "models/mail_template.py:6"
+          },
+          {
+            "model": "mail.thread",
+            "evidence": "models/account_account.py:21"
+          },
+          {
+            "model": "mail.thread.main.attachment",
+            "evidence": "models/account_move.py:75"
+          },
+          {
+            "model": "mail.tracking.value",
+            "evidence": "models/mail_tracking_value.py:7"
+          },
+          {
+            "model": "onboarding.onboarding",
+            "evidence": "models/onboarding_onboarding.py:7"
+          },
+          {
+            "model": "onboarding.onboarding.step",
+            "evidence": "models/onboarding_onboarding_step.py:7"
+          },
+          {
+            "model": "portal.mixin",
+            "evidence": "models/account_journal.py:46"
+          },
+          {
+            "model": "product.catalog.mixin",
+            "evidence": "models/account_move.py:75"
+          },
+          {
+            "model": "product.category",
+            "evidence": "models/product.py:15"
+          },
+          {
+            "model": "product.product",
+            "evidence": "models/product.py:216"
+          },
+          {
+            "model": "product.template",
+            "evidence": "models/product.py:38"
+          },
+          {
+            "model": "report.account.report_invoice",
+            "evidence": "report/account_invoice_report.py:197"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/company.py:72"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:9"
+          },
+          {
+            "model": "res.country.group",
+            "evidence": "models/res_country_group.py:7"
+          },
+          {
+            "model": "res.currency",
+            "evidence": "models/res_currency.py:10"
+          },
+          {
+            "model": "res.groups",
+            "evidence": "models/res_users.py:9"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/partner.py:333"
+          },
+          {
+            "model": "res.partner.bank",
+            "evidence": "models/res_partner_bank.py:15"
+          },
+          {
+            "model": "sequence.mixin",
+            "evidence": "models/account_move.py:75"
+          },
+          {
+            "model": "uom.uom",
+            "evidence": "models/uom_uom.py:39"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "base.default_user_group",
+          "name": null,
+          "evidence": "demo/account_demo.xml"
+        },
+        {
+          "xmlId": "group_account_basic",
+          "name": "Basic",
+          "evidence": "security/account_security.xml"
+        },
+        {
+          "xmlId": "group_account_invoice",
+          "name": "Invoicing",
+          "evidence": "security/account_security.xml"
+        },
+        {
+          "xmlId": "group_account_manager",
+          "name": "Administrator",
+          "evidence": "security/account_security.xml"
+        },
+        {
+          "xmlId": "group_account_readonly",
+          "name": "Show Accounting Features - Readonly",
+          "evidence": "security/account_security.xml"
+        },
+        {
+          "xmlId": "group_account_secured",
+          "name": "Show Inalterability Features",
+          "evidence": "security/account_security.xml"
+        },
+        {
+          "xmlId": "group_account_user",
+          "name": "Show Full Accounting Features",
+          "evidence": "security/account_security.xml"
+        },
+        {
+          "xmlId": "group_cash_rounding",
+          "name": "Allow the cash rounding management",
+          "evidence": "security/account_security.xml"
+        },
+        {
+          "xmlId": "group_delivery_invoice_address",
+          "name": "Delivery Address",
+          "evidence": "security/account_security.xml"
+        },
+        {
+          "xmlId": "group_partial_purchase_deductibility",
+          "name": "Partial Purchase Deductibility",
+          "evidence": "security/account_security.xml"
+        },
+        {
+          "xmlId": "group_validate_bank_account",
+          "name": "Validate bank account",
+          "evidence": "security/account_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 125,
+        "models": [
+          "account.model_account_accrued_orders_wizard",
+          "account.model_account_move",
+          "account.model_account_move_line",
+          "analytic.model_account_analytic_account",
+          "analytic.model_account_analytic_applicability",
+          "analytic.model_account_analytic_distribution_model",
+          "analytic.model_account_analytic_plan",
+          "base.model_res_currency",
+          "base.model_res_currency_rate",
+          "model_account_account",
+          "model_account_account_tag",
+          "model_account_analytic_line",
+          "model_account_automatic_entry_wizard",
+          "model_account_autopost_bills_wizard",
+          "model_account_bank_statement",
+          "model_account_bank_statement_line",
+          "model_account_cash_rounding",
+          "model_account_code_mapping",
+          "model_account_financial_year_op",
+          "model_account_fiscal_position",
+          "model_account_fiscal_position_account",
+          "model_account_full_reconcile",
+          "model_account_group",
+          "model_account_incoterms",
+          "model_account_invoice_report",
+          "model_account_journal",
+          "model_account_journal_group",
+          "model_account_lock_exception",
+          "model_account_merge_wizard",
+          "model_account_merge_wizard_line",
+          "model_account_move",
+          "model_account_move_line",
+          "model_account_move_reversal",
+          "model_account_move_send_batch_wizard",
+          "model_account_move_send_wizard",
+          "model_account_partial_reconcile",
+          "model_account_payment",
+          "model_account_payment_method",
+          "model_account_payment_method_line",
+          "model_account_payment_register",
+          "model_account_payment_term",
+          "model_account_payment_term_line",
+          "model_account_reconcile_model",
+          "model_account_reconcile_model_line",
+          "model_account_report",
+          "model_account_report_column",
+          "model_account_report_expression",
+          "model_account_report_external_value",
+          "model_account_report_line",
+          "model_account_resequence_wizard",
+          "model_account_root",
+          "model_account_secure_entries_wizard",
+          "model_account_setup_bank_manual_config",
+          "model_account_tax",
+          "model_account_tax_group",
+          "model_account_tax_repartition_line",
+          "model_res_partner",
+          "model_validate_account_move",
+          "product.model_product_product"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "account_cash_basis_base_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:108"
+        },
+        {
+          "field": "account_default_credit_limit",
+          "type": "Monetary",
+          "evidence": "models/res_config_settings.py:143"
+        },
+        {
+          "field": "account_discount_expense_allocation_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:188"
+        },
+        {
+          "field": "account_discount_income_allocation_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:181"
+        },
+        {
+          "field": "account_fiscal_country_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:115"
+        },
+        {
+          "field": "account_journal_early_pay_discount_gain_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:170"
+        },
+        {
+          "field": "account_journal_early_pay_discount_loss_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:161"
+        },
+        {
+          "field": "account_journal_suspense_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:61"
+        },
+        {
+          "field": "account_price_include",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:51"
+        },
+        {
+          "field": "account_storno",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:152"
+        },
+        {
+          "field": "account_use_credit_limit",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:140"
+        },
+        {
+          "field": "autopost_bills",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:207"
+        },
+        {
+          "field": "chart_template",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:36"
+        },
+        {
+          "field": "country_code",
+          "type": "Char",
+          "evidence": "models/res_config_settings.py:149"
+        },
+        {
+          "field": "currency_exchange_journal_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:14"
+        },
+        {
+          "field": "currency_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:12"
+        },
+        {
+          "field": "display_account_storno",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:153"
+        },
+        {
+          "field": "display_invoice_amount_total_words",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:125"
+        },
+        {
+          "field": "display_invoice_tax_company_currency",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:130"
+        },
+        {
+          "field": "expense_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:209"
+        },
+        {
+          "field": "expense_currency_exchange_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:28"
+        },
+        {
+          "field": "force_restrictive_audit_trail",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:204"
+        },
+        {
+          "field": "group_cash_rounding",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:80"
+        },
+        {
+          "field": "group_sale_delivery_address",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:156"
+        },
+        {
+          "field": "has_accounting_entries",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:11"
+        },
+        {
+          "field": "has_chart_of_accounts",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:35"
+        },
+        {
+          "field": "income_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:208"
+        },
+        {
+          "field": "income_currency_exchange_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:21"
+        },
+        {
+          "field": "incoterm_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:119"
+        },
+        {
+          "field": "invoice_terms",
+          "type": "Html",
+          "evidence": "models/res_config_settings.py:120"
+        },
+        {
+          "field": "invoice_terms_html",
+          "type": "Html",
+          "evidence": "models/res_config_settings.py:121"
+        },
+        {
+          "field": "is_account_peppol_eligible",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:197"
+        },
+        {
+          "field": "link_qr_code",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:118"
+        },
+        {
+          "field": "module_account_accountant",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:79"
+        },
+        {
+          "field": "module_account_bank_statement_extract",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:97"
+        },
+        {
+          "field": "module_account_bank_statement_import_qif",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:91"
+        },
+        {
+          "field": "module_account_batch_payment",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:86"
+        },
+        {
+          "field": "module_account_budget",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:82"
+        },
+        {
+          "field": "module_account_check_printing",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:85"
+        },
+        {
+          "field": "module_account_extract",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:95"
+        },
+        {
+          "field": "module_account_intrastat",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:93"
+        },
+        {
+          "field": "module_account_invoice_extract",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:96"
+        },
+        {
+          "field": "module_account_iso20022",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:89"
+        },
+        {
+          "field": "module_account_payment",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:83"
+        },
+        {
+          "field": "module_account_peppol",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:99"
+        },
+        {
+          "field": "module_account_reports",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:84"
+        },
+        {
+          "field": "module_account_sepa_direct_debit",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:90"
+        },
+        {
+          "field": "module_currency_rate_live",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:92"
+        },
+        {
+          "field": "module_product_margin",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:94"
+        },
+        {
+          "field": "module_snailmail_account",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:98"
+        },
+        {
+          "field": "preview_ready",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:135"
+        },
+        {
+          "field": "purchase_tax_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:44"
+        },
+        {
+          "field": "qr_code",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:117"
+        },
+        {
+          "field": "quick_edit_mode",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:159"
+        },
+        {
+          "field": "restrictive_audit_trail",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:203"
+        },
+        {
+          "field": "sale_tax_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:37"
+        },
+        {
+          "field": "show_sale_receipts",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:81"
+        },
+        {
+          "field": "tax_calculation_rounding_method",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:59"
+        },
+        {
+          "field": "tax_cash_basis_journal_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:101"
+        },
+        {
+          "field": "tax_exigibility",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:100"
+        },
+        {
+          "field": "terms_type",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:123"
+        },
+        {
+          "field": "transfer_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:71"
+        },
+        {
+          "field": "use_invoice_terms",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:137"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "base",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:a0bca70fbd781b1625e459af425be629b1d300e599d77b36e838f516d4ca86bb",
+      "models": {
+        "defines": [
+          {
+            "model": "_unknown",
+            "evidence": "models/ir_model.py:211"
+          },
+          {
+            "model": "avatar.mixin",
+            "evidence": "models/avatar_mixin.py:23"
+          },
+          {
+            "model": "base",
+            "evidence": "models/ir_model.py:202"
+          },
+          {
+            "model": "base.enable.profiling.wizard",
+            "evidence": "models/ir_profile.py:232"
+          },
+          {
+            "model": "base.language.export",
+            "evidence": "wizard/base_export_language.py:14"
+          },
+          {
+            "model": "base.language.import",
+            "evidence": "wizard/base_import_language.py:17"
+          },
+          {
+            "model": "base.language.install",
+            "evidence": "wizard/base_language_install.py:7"
+          },
+          {
+            "model": "base.module.uninstall",
+            "evidence": "wizard/base_module_uninstall.py:8"
+          },
+          {
+            "model": "base.module.update",
+            "evidence": "wizard/base_module_update.py:7"
+          },
+          {
+            "model": "base.module.upgrade",
+            "evidence": "wizard/base_module_upgrade.py:9"
+          },
+          {
+            "model": "base.partner.merge.automatic.wizard",
+            "evidence": "wizard/base_partner_merge.py:36"
+          },
+          {
+            "model": "base.partner.merge.line",
+            "evidence": "wizard/base_partner_merge.py:20"
+          },
+          {
+            "model": "change.password.own",
+            "evidence": "models/res_users.py:1487"
+          },
+          {
+            "model": "change.password.user",
+            "evidence": "models/res_users.py:1471"
+          },
+          {
+            "model": "change.password.wizard",
+            "evidence": "models/res_users.py:1448"
+          },
+          {
+            "model": "decimal.precision",
+            "evidence": "models/decimal_precision.py:10"
+          },
+          {
+            "model": "format.address.mixin",
+            "evidence": "models/res_partner.py:62"
+          },
+          {
+            "model": "format.vat.label.mixin",
+            "evidence": "models/res_partner.py:46"
+          },
+          {
+            "model": "image.mixin",
+            "evidence": "models/image_mixin.py:8"
+          },
+          {
+            "model": "ir.actions.act_url",
+            "evidence": "models/ir_actions.py:446"
+          },
+          {
+            "model": "ir.actions.act_window",
+            "evidence": "models/ir_actions.py:262"
+          },
+          {
+            "model": "ir.actions.act_window.view",
+            "evidence": "models/ir_actions.py:412"
+          },
+          {
+            "model": "ir.actions.act_window_close",
+            "evidence": "models/ir_actions.py:429"
+          },
+          {
+            "model": "ir.actions.actions",
+            "evidence": "models/ir_actions.py:56"
+          },
+          {
+            "model": "ir.actions.client",
+            "evidence": "models/ir_actions.py:1427"
+          },
+          {
+            "model": "ir.actions.report",
+            "evidence": "models/ir_actions_report.py:158"
+          },
+          {
+            "model": "ir.actions.server",
+            "evidence": "models/ir_actions.py:586"
+          },
+          {
+            "model": "ir.actions.server.history",
+            "evidence": "models/ir_actions.py:504"
+          },
+          {
+            "model": "ir.actions.todo",
+            "evidence": "models/ir_actions.py:1351"
+          },
+          {
+            "model": "ir.asset",
+            "evidence": "models/ir_asset.py:60"
+          },
+          {
+            "model": "ir.attachment",
+            "evidence": "models/ir_attachment.py:75"
+          },
+          {
+            "model": "ir.autovacuum",
+            "evidence": "models/ir_autovacuum.py:24"
+          },
+          {
+            "model": "ir.binary",
+            "evidence": "models/ir_binary.py:20"
+          },
+          {
+            "model": "ir.config_parameter",
+            "evidence": "models/ir_config_parameter.py:30"
+          },
+          {
+            "model": "ir.cron",
+            "evidence": "models/ir_cron.py:99"
+          },
+          {
+            "model": "ir.cron.progress",
+            "evidence": "models/ir_cron.py:919"
+          },
+          {
+            "model": "ir.cron.trigger",
+            "evidence": "models/ir_cron.py:898"
+          },
+          {
+            "model": "ir.default",
+            "evidence": "models/ir_default.py:15"
+          },
+          {
+            "model": "ir.demo",
+            "evidence": "models/ir_demo.py:8"
+          },
+          {
+            "model": "ir.demo_failure",
+            "evidence": "models/ir_demo_failure.py:7"
+          },
+          {
+            "model": "ir.demo_failure.wizard",
+            "evidence": "models/ir_demo_failure.py:16"
+          },
+          {
+            "model": "ir.embedded.actions",
+            "evidence": "models/ir_embedded_actions.py:9"
+          },
+          {
+            "model": "ir.exports",
+            "evidence": "models/ir_exports.py:8"
+          },
+          {
+            "model": "ir.exports.line",
+            "evidence": "models/ir_exports.py:18"
+          },
+          {
+            "model": "ir.fields.converter",
+            "evidence": "models/ir_fields.py:45"
+          },
+          {
+            "model": "ir.filters",
+            "evidence": "models/ir_filters.py:8"
+          },
+          {
+            "model": "ir.http",
+            "evidence": "models/ir_http.py:139"
+          },
+          {
+            "model": "ir.logging",
+            "evidence": "models/ir_logging.py:6"
+          },
+          {
+            "model": "ir.mail_server",
+            "evidence": "models/ir_mail_server.py:142"
+          },
+          {
+            "model": "ir.model",
+            "evidence": "models/ir_model.py:216"
+          },
+          {
+            "model": "ir.model.access",
+            "evidence": "models/ir_model.py:2081"
+          },
+          {
+            "model": "ir.model.constraint",
+            "evidence": "models/ir_model.py:1863"
+          },
+          {
+            "model": "ir.model.data",
+            "evidence": "models/ir_model.py:2237"
+          },
+          {
+            "model": "ir.model.fields",
+            "evidence": "models/ir_model.py:517"
+          },
+          {
+            "model": "ir.model.fields.selection",
+            "evidence": "models/ir_model.py:1516"
+          },
+          {
+            "model": "ir.model.inherit",
+            "evidence": "models/ir_model.py:1431"
+          },
+          {
+            "model": "ir.model.relation",
+            "evidence": "models/ir_model.py:2019"
+          },
+          {
+            "model": "ir.module.category",
+            "evidence": "models/ir_module.py:77"
+          },
+          {
+            "model": "ir.module.module",
+            "evidence": "models/ir_module.py:158"
+          },
+          {
+            "model": "ir.module.module.dependency",
+            "evidence": "models/ir_module.py:1001"
+          },
+          {
+            "model": "ir.module.module.exclusion",
+            "evidence": "models/ir_module.py:1067"
+          },
+          {
+            "model": "ir.profile",
+            "evidence": "models/ir_profile.py:22"
+          },
+          {
+            "model": "ir.qweb",
+            "evidence": "models/ir_qweb.py:692"
+          },
+          {
+            "model": "ir.qweb.field",
+            "evidence": "models/ir_qweb_fields.py:58"
+          },
+          {
+            "model": "ir.qweb.field.barcode",
+            "evidence": "models/ir_qweb_fields.py:782"
+          },
+          {
+            "model": "ir.qweb.field.contact",
+            "evidence": "models/ir_qweb_fields.py:822"
+          },
+          {
+            "model": "ir.qweb.field.date",
+            "evidence": "models/ir_qweb_fields.py:260"
+          },
+          {
+            "model": "ir.qweb.field.datetime",
+            "evidence": "models/ir_qweb_fields.py:278"
+          },
+          {
+            "model": "ir.qweb.field.duration",
+            "evidence": "models/ir_qweb_fields.py:654"
+          },
+          {
+            "model": "ir.qweb.field.float",
+            "evidence": "models/ir_qweb_fields.py:207"
+          },
+          {
+            "model": "ir.qweb.field.float_time",
+            "evidence": "models/ir_qweb_fields.py:603"
+          },
+          {
+            "model": "ir.qweb.field.html",
+            "evidence": "models/ir_qweb_fields.py:419"
+          },
+          {
+            "model": "ir.qweb.field.image",
+            "evidence": "models/ir_qweb_fields.py:447"
+          },
+          {
+            "model": "ir.qweb.field.image_url",
+            "evidence": "models/ir_qweb_fields.py:482"
+          },
+          {
+            "model": "ir.qweb.field.integer",
+            "evidence": "models/ir_qweb_fields.py:186"
+          },
+          {
+            "model": "ir.qweb.field.many2many",
+            "evidence": "models/ir_qweb_fields.py:393"
+          },
+          {
+            "model": "ir.qweb.field.many2one",
+            "evidence": "models/ir_qweb_fields.py:378"
+          },
+          {
+            "model": "ir.qweb.field.monetary",
+            "evidence": "models/ir_qweb_fields.py:505"
+          },
+          {
+            "model": "ir.qweb.field.one2many",
+            "evidence": "models/ir_qweb_fields.py:406"
+          },
+          {
+            "model": "ir.qweb.field.qweb",
+            "evidence": "models/ir_qweb_fields.py:899"
+          },
+          {
+            "model": "ir.qweb.field.relative",
+            "evidence": "models/ir_qweb_fields.py:746"
+          },
+          {
+            "model": "ir.qweb.field.selection",
+            "evidence": "models/ir_qweb_fields.py:349"
+          },
+          {
+            "model": "ir.qweb.field.text",
+            "evidence": "models/ir_qweb_fields.py:336"
+          },
+          {
+            "model": "ir.qweb.field.time",
+            "evidence": "models/ir_qweb_fields.py:619"
+          },
+          {
+            "model": "ir.rule",
+            "evidence": "models/ir_rule.py:16"
+          },
+          {
+            "model": "ir.sequence",
+            "evidence": "models/ir_sequence.py:93"
+          },
+          {
+            "model": "ir.sequence.date_range",
+            "evidence": "models/ir_sequence.py:296"
+          },
+          {
+            "model": "ir.ui.menu",
+            "evidence": "models/ir_ui_menu.py:17"
+          },
+          {
+            "model": "ir.ui.view",
+            "evidence": "models/ir_ui_view.py:140"
+          },
+          {
+            "model": "ir.ui.view.custom",
+            "evidence": "models/ir_ui_view.py:67"
+          },
+          {
+            "model": "properties.base.definition",
+            "evidence": "models/properties_base_definition.py:9"
+          },
+          {
+            "model": "properties.base.definition.mixin",
+            "evidence": "models/properties_base_definition_mixin.py:11"
+          },
+          {
+            "model": "report.base.report_irmodulereference",
+            "evidence": "report/report_base_report_irmodulereference.py:8"
+          },
+          {
+            "model": "report.layout",
+            "evidence": "models/report_layout.py:8"
+          },
+          {
+            "model": "report.paperformat",
+            "evidence": "models/report_paperformat.py:166"
+          },
+          {
+            "model": "res.bank",
+            "evidence": "models/res_bank.py:17"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:32"
+          },
+          {
+            "model": "res.config",
+            "evidence": "models/res_config.py:20"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config.py:149"
+          },
+          {
+            "model": "res.country",
+            "evidence": "models/res_country.py:33"
+          },
+          {
+            "model": "res.country.group",
+            "evidence": "models/res_country.py:172"
+          },
+          {
+            "model": "res.country.state",
+            "evidence": "models/res_country.py:199"
+          },
+          {
+            "model": "res.currency",
+            "evidence": "models/res_currency.py:21"
+          },
+          {
+            "model": "res.currency.rate",
+            "evidence": "models/res_currency.py:347"
+          },
+          {
+            "model": "res.device",
+            "evidence": "models/res_device.py:175"
+          },
+          {
+            "model": "res.device.log",
+            "evidence": "models/res_device.py:17"
+          },
+          {
+            "model": "res.groups",
+            "evidence": "models/res_groups.py:10"
+          },
+          {
+            "model": "res.groups.privilege",
+            "evidence": "models/res_groups_privilege.py:5"
+          },
+          {
+            "model": "res.lang",
+            "evidence": "models/res_lang.py:50"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:185"
+          },
+          {
+            "model": "res.partner.bank",
+            "evidence": "models/res_bank.py:74"
+          },
+          {
+            "model": "res.partner.category",
+            "evidence": "models/res_partner.py:140"
+          },
+          {
+            "model": "res.partner.industry",
+            "evidence": "models/res_partner.py:1261"
+          },
+          {
+            "model": "res.users",
+            "evidence": "models/res_users.py:163"
+          },
+          {
+            "model": "res.users.apikeys",
+            "evidence": "models/res_users.py:1520"
+          },
+          {
+            "model": "res.users.apikeys.description",
+            "evidence": "models/res_users.py:1754"
+          },
+          {
+            "model": "res.users.apikeys.show",
+            "evidence": "models/res_users.py:1838"
+          },
+          {
+            "model": "res.users.deletion",
+            "evidence": "models/res_users_deletion.py:20"
+          },
+          {
+            "model": "res.users.identitycheck",
+            "evidence": "models/res_users.py:1409"
+          },
+          {
+            "model": "res.users.log",
+            "evidence": "models/res_users.py:135"
+          },
+          {
+            "model": "res.users.settings",
+            "evidence": "models/res_users_settings.py:8"
+          },
+          {
+            "model": "reset.view.arch.wizard",
+            "evidence": "models/ir_ui_view.py:2648"
+          },
+          {
+            "model": "server.action.history.wizard",
+            "evidence": "models/ir_actions.py:466"
+          },
+          {
+            "model": "wizard.ir.model.menu.create",
+            "evidence": "wizard/wizard_ir_model_menu_create.py:5"
+          }
+        ],
+        "extends": [
+          {
+            "model": "avatar.mixin",
+            "evidence": "models/res_partner.py:187"
+          },
+          {
+            "model": "base",
+            "evidence": "models/ir_ui_view.py:2729"
+          },
+          {
+            "model": "format.address.mixin",
+            "evidence": "models/res_company.py:35"
+          },
+          {
+            "model": "format.vat.label.mixin",
+            "evidence": "models/res_company.py:35"
+          },
+          {
+            "model": "image.mixin",
+            "evidence": "models/avatar_mixin.py:24"
+          },
+          {
+            "model": "ir.actions.actions",
+            "evidence": "models/ir_actions.py:265"
+          },
+          {
+            "model": "ir.qweb.field",
+            "evidence": "models/ir_qweb_fields.py:188"
+          },
+          {
+            "model": "ir.qweb.field.image",
+            "evidence": "models/ir_qweb_fields.py:484"
+          },
+          {
+            "model": "ir.qweb.field.many2one",
+            "evidence": "models/ir_qweb_fields.py:824"
+          },
+          {
+            "model": "properties.base.definition.mixin",
+            "evidence": "models/res_partner.py:187"
+          },
+          {
+            "model": "res.currency",
+            "evidence": "tests/test_install_addons/test_install_auto/models/res_currency.py:7"
+          },
+          {
+            "model": "res.device.log",
+            "evidence": "models/res_device.py:176"
+          },
+          {
+            "model": "res.users",
+            "evidence": "models/res_users.py:1353"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "base.group_portal",
+          "name": null,
+          "evidence": "data/res_users_demo.xml"
+        },
+        {
+          "xmlId": "default_user_group",
+          "name": "Default access for new users",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_allow_export",
+          "name": "Allowed",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_erp_manager",
+          "name": "Access Rights",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_multi_company",
+          "name": "Multi Companies",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_multi_currency",
+          "name": "Multi Currencies",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_no_one",
+          "name": "Technical Features",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_partner_manager",
+          "name": "Creation",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_portal",
+          "name": "Role / Portal",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_public",
+          "name": "Role / Public",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_sanitize_override",
+          "name": "Bypass HTML Field Sanitize",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_system",
+          "name": "Role / Administrator",
+          "evidence": "security/base_groups.xml"
+        },
+        {
+          "xmlId": "group_user",
+          "name": "Role / User",
+          "evidence": "security/base_groups.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 146,
+        "models": [
+          "base.model_properties_base_definition",
+          "base.model_res_device",
+          "base.model_res_device_log",
+          "model_base_enable_profiling_wizard",
+          "model_base_language_export",
+          "model_base_language_import",
+          "model_base_language_install",
+          "model_base_module_uninstall",
+          "model_base_module_update",
+          "model_base_module_upgrade",
+          "model_base_partner_merge_automatic_wizard",
+          "model_base_partner_merge_line",
+          "model_change_password_own",
+          "model_change_password_user",
+          "model_change_password_wizard",
+          "model_decimal_precision",
+          "model_ir_actions_act_url",
+          "model_ir_actions_act_window",
+          "model_ir_actions_act_window_close",
+          "model_ir_actions_act_window_view",
+          "model_ir_actions_actions",
+          "model_ir_actions_client",
+          "model_ir_actions_report",
+          "model_ir_actions_server",
+          "model_ir_actions_server_history",
+          "model_ir_actions_todo",
+          "model_ir_asset",
+          "model_ir_attachment",
+          "model_ir_config_parameter",
+          "model_ir_cron",
+          "model_ir_cron_progress",
+          "model_ir_cron_trigger",
+          "model_ir_default",
+          "model_ir_demo",
+          "model_ir_demo_failure",
+          "model_ir_demo_failure_wizard",
+          "model_ir_embedded_actions",
+          "model_ir_exports",
+          "model_ir_exports_line",
+          "model_ir_filters",
+          "model_ir_logging",
+          "model_ir_mail_server",
+          "model_ir_model",
+          "model_ir_model_access",
+          "model_ir_model_constraint",
+          "model_ir_model_data",
+          "model_ir_model_fields",
+          "model_ir_model_fields_selection",
+          "model_ir_model_inherit",
+          "model_ir_model_relation",
+          "model_ir_module_category",
+          "model_ir_module_module",
+          "model_ir_module_module_dependency",
+          "model_ir_module_module_exclusion",
+          "model_ir_profile",
+          "model_ir_rule",
+          "model_ir_sequence",
+          "model_ir_sequence_date_range",
+          "model_ir_ui_menu",
+          "model_ir_ui_view",
+          "model_ir_ui_view_custom",
+          "model_report_layout",
+          "model_report_paperformat",
+          "model_res_bank",
+          "model_res_company",
+          "model_res_config",
+          "model_res_config_settings",
+          "model_res_country",
+          "model_res_country_group",
+          "model_res_country_state",
+          "model_res_currency",
+          "model_res_currency_rate",
+          "model_res_groups",
+          "model_res_groups_privilege",
+          "model_res_lang",
+          "model_res_partner",
+          "model_res_partner_bank",
+          "model_res_partner_category",
+          "model_res_partner_industry",
+          "model_res_users",
+          "model_res_users_apikeys",
+          "model_res_users_apikeys_description",
+          "model_res_users_apikeys_show",
+          "model_res_users_deletion",
+          "model_res_users_identitycheck",
+          "model_res_users_log",
+          "model_res_users_settings",
+          "model_reset_view_arch_wizard",
+          "model_server_action_history_wizard",
+          "model_wizard_ir_model_menu_create"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "base_setup",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:cd6f6dac8ebd0980b5b0f35dca57f92b4b8b0c4c4d952c2725efed4acea87e59",
+      "models": {
+        "defines": [
+          {
+            "model": "kpi.provider",
+            "evidence": "models/kpi_provider.py:5"
+          }
+        ],
+        "extends": [
+          {
+            "model": "ir.http",
+            "evidence": "models/ir_http.py:7"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:9"
+          },
+          {
+            "model": "res.users",
+            "evidence": "models/res_users.py:10"
+          }
+        ]
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 0,
+        "models": [],
+        "evidence": null
+      },
+      "configSettings": [
+        {
+          "field": "active_user_count",
+          "type": "Integer",
+          "evidence": "models/res_config_settings.py:40"
+        },
+        {
+          "field": "company_count",
+          "type": "Integer",
+          "evidence": "models/res_config_settings.py:39"
+        },
+        {
+          "field": "company_country_code",
+          "type": "Char",
+          "evidence": "models/res_config_settings.py:44"
+        },
+        {
+          "field": "company_country_group_codes",
+          "type": "Json",
+          "evidence": "models/res_config_settings.py:45"
+        },
+        {
+          "field": "company_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:11"
+        },
+        {
+          "field": "company_informations",
+          "type": "Text",
+          "evidence": "models/res_config_settings.py:43"
+        },
+        {
+          "field": "company_name",
+          "type": "Char",
+          "evidence": "models/res_config_settings.py:42"
+        },
+        {
+          "field": "external_report_layout_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:37"
+        },
+        {
+          "field": "group_multi_currency",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:34"
+        },
+        {
+          "field": "is_root_company",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:13"
+        },
+        {
+          "field": "language_count",
+          "type": "Integer",
+          "evidence": "models/res_config_settings.py:41"
+        },
+        {
+          "field": "module_account_inter_company_rules",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:24"
+        },
+        {
+          "field": "module_auth_ldap",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:23"
+        },
+        {
+          "field": "module_auth_oauth",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:22"
+        },
+        {
+          "field": "module_base_geolocalize",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:29"
+        },
+        {
+          "field": "module_base_import",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:14"
+        },
+        {
+          "field": "module_google_address_autocomplete",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:32"
+        },
+        {
+          "field": "module_google_calendar",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:15"
+        },
+        {
+          "field": "module_google_recaptcha",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:30"
+        },
+        {
+          "field": "module_mail_plugin",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:19"
+        },
+        {
+          "field": "module_microsoft_calendar",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:17"
+        },
+        {
+          "field": "module_partner_autocomplete",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:28"
+        },
+        {
+          "field": "module_sms",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:27"
+        },
+        {
+          "field": "module_voip",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:25"
+        },
+        {
+          "field": "module_web_unsplash",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:26"
+        },
+        {
+          "field": "module_website_cf_turnstile",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:31"
+        },
+        {
+          "field": "profiling_enabled_until",
+          "type": "Datetime",
+          "evidence": "models/res_config_settings.py:46"
+        },
+        {
+          "field": "report_footer",
+          "type": "Html",
+          "evidence": "models/res_config_settings.py:33"
+        },
+        {
+          "field": "show_effect",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:38"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "board",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:dd5a9c71bb6e2bf33db3455fe6226558462fead2032c5ff372890e9e3be0a519",
+      "models": {
+        "defines": [
+          {
+            "model": "board.board",
+            "evidence": "models/board.py:8"
+          }
+        ],
+        "extends": []
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 1,
+        "models": [
+          "model_board_board"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "crm",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:bed25e0257118be15432acd0e508f2de54c6350a9eda6a4e6d5fe3724680fb6c",
+      "models": {
+        "defines": [
+          {
+            "model": "crm.activity.report",
+            "evidence": "report/crm_activity_report.py:10"
+          },
+          {
+            "model": "crm.lead",
+            "evidence": "models/crm_lead.py:85"
+          },
+          {
+            "model": "crm.lead.lost",
+            "evidence": "wizard/crm_lead_lost.py:10"
+          },
+          {
+            "model": "crm.lead.pls.update",
+            "evidence": "wizard/crm_lead_pls_update.py:8"
+          },
+          {
+            "model": "crm.lead.scoring.frequency",
+            "evidence": "models/crm_lead_scoring_frequency.py:8"
+          },
+          {
+            "model": "crm.lead.scoring.frequency.field",
+            "evidence": "models/crm_lead_scoring_frequency.py:19"
+          },
+          {
+            "model": "crm.lead2opportunity.partner",
+            "evidence": "wizard/crm_lead_to_opportunity.py:10"
+          },
+          {
+            "model": "crm.lead2opportunity.partner.mass",
+            "evidence": "wizard/crm_lead_to_opportunity_mass.py:8"
+          },
+          {
+            "model": "crm.lost.reason",
+            "evidence": "models/crm_lost_reason.py:8"
+          },
+          {
+            "model": "crm.merge.opportunity",
+            "evidence": "wizard/crm_merge_opportunities.py:17"
+          },
+          {
+            "model": "crm.recurring.plan",
+            "evidence": "models/crm_recurring_plan.py:8"
+          },
+          {
+            "model": "crm.stage",
+            "evidence": "models/crm_stage.py:20"
+          },
+          {
+            "model": "crm.team",
+            "evidence": "models/crm_team.py:19"
+          }
+        ],
+        "extends": [
+          {
+            "model": "calendar.event",
+            "evidence": "models/calendar.py:8"
+          },
+          {
+            "model": "crm.lead2opportunity.partner",
+            "evidence": "wizard/crm_lead_to_opportunity_mass.py:10"
+          },
+          {
+            "model": "crm.team",
+            "evidence": "models/crm_team.py:20"
+          },
+          {
+            "model": "crm.team.member",
+            "evidence": "models/crm_team_member.py:16"
+          },
+          {
+            "model": "digest.digest",
+            "evidence": "models/digest.py:9"
+          },
+          {
+            "model": "format.address.mixin",
+            "evidence": "models/crm_lead.py:88"
+          },
+          {
+            "model": "ir.config_parameter",
+            "evidence": "models/ir_config_parameter.py:9"
+          },
+          {
+            "model": "mail.activity",
+            "evidence": "models/mail_activity.py:8"
+          },
+          {
+            "model": "mail.activity.mixin",
+            "evidence": "models/crm_lead.py:88"
+          },
+          {
+            "model": "mail.alias.mixin",
+            "evidence": "models/crm_team.py:20"
+          },
+          {
+            "model": "mail.thread.blacklist",
+            "evidence": "models/crm_lead.py:88"
+          },
+          {
+            "model": "mail.thread.cc",
+            "evidence": "models/crm_lead.py:88"
+          },
+          {
+            "model": "mail.thread.phone",
+            "evidence": "models/crm_lead.py:88"
+          },
+          {
+            "model": "mail.tracking.duration.mixin",
+            "evidence": "models/crm_lead.py:88"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:12"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:7"
+          },
+          {
+            "model": "res.users",
+            "evidence": "models/res_users.py:5"
+          },
+          {
+            "model": "utm.campaign",
+            "evidence": "models/utm.py:8"
+          },
+          {
+            "model": "utm.mixin",
+            "evidence": "models/crm_lead.py:88"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "group_use_lead",
+          "name": "Show Lead Menu",
+          "evidence": "security/crm_security.xml"
+        },
+        {
+          "xmlId": "group_use_recurring_revenues",
+          "name": "Show Recurring Revenues Menu",
+          "evidence": "security/crm_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 32,
+        "models": [
+          "base.model_res_partner",
+          "base.model_res_partner_category",
+          "calendar.model_calendar_event",
+          "calendar.model_calendar_event_type",
+          "mail.model_mail_activity_plan",
+          "mail.model_mail_activity_plan_template",
+          "mail.model_mail_activity_type",
+          "model_crm_activity_report",
+          "model_crm_lead",
+          "model_crm_lead2opportunity_partner",
+          "model_crm_lead2opportunity_partner_mass",
+          "model_crm_lead_lost",
+          "model_crm_lead_pls_update",
+          "model_crm_lead_scoring_frequency",
+          "model_crm_lead_scoring_frequency_field",
+          "model_crm_lost_reason",
+          "model_crm_merge_opportunity",
+          "model_crm_recurring_plan",
+          "model_crm_stage"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "crm_auto_assignment_action",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:22"
+        },
+        {
+          "field": "crm_auto_assignment_interval_number",
+          "type": "Integer",
+          "evidence": "models/res_config_settings.py:33"
+        },
+        {
+          "field": "crm_auto_assignment_interval_type",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:27"
+        },
+        {
+          "field": "crm_auto_assignment_run_datetime",
+          "type": "Datetime",
+          "evidence": "models/res_config_settings.py:37"
+        },
+        {
+          "field": "crm_use_auto_assignment",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:20"
+        },
+        {
+          "field": "group_use_lead",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:14"
+        },
+        {
+          "field": "group_use_recurring_revenues",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:15"
+        },
+        {
+          "field": "is_membership_multi",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:17"
+        },
+        {
+          "field": "lead_enrich_auto",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:44"
+        },
+        {
+          "field": "lead_mining_in_pipeline",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:48"
+        },
+        {
+          "field": "module_crm_iap_enrich",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:42"
+        },
+        {
+          "field": "module_crm_iap_mine",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:41"
+        },
+        {
+          "field": "module_partnership",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:18"
+        },
+        {
+          "field": "module_website_crm_iap_reveal",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:43"
+        },
+        {
+          "field": "predictive_lead_scoring_field_labels",
+          "type": "Char",
+          "evidence": "models/res_config_settings.py:53"
+        },
+        {
+          "field": "predictive_lead_scoring_fields",
+          "type": "Many2many",
+          "evidence": "models/res_config_settings.py:51"
+        },
+        {
+          "field": "predictive_lead_scoring_fields_str",
+          "type": "Char",
+          "evidence": "models/res_config_settings.py:52"
+        },
+        {
+          "field": "predictive_lead_scoring_start_date",
+          "type": "Date",
+          "evidence": "models/res_config_settings.py:49"
+        },
+        {
+          "field": "predictive_lead_scoring_start_date_str",
+          "type": "Char",
+          "evidence": "models/res_config_settings.py:50"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "delivery",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:ea0d45c3aedb068e375f7b4ae3a0505eb5d8068fb3b936da8731681bcdee144f",
+      "models": {
+        "defines": [
+          {
+            "model": "choose.delivery.carrier",
+            "evidence": "wizard/choose_delivery_carrier.py:8"
+          },
+          {
+            "model": "delivery.carrier",
+            "evidence": "models/delivery_carrier.py:14"
+          },
+          {
+            "model": "delivery.price.rule",
+            "evidence": "models/delivery_price_rule.py:17"
+          },
+          {
+            "model": "delivery.zip.prefix",
+            "evidence": "models/delivery_zip_prefix.py:8"
+          },
+          {
+            "model": "ir.module.module",
+            "evidence": "models/ir_module_module.py:7"
+          }
+        ],
+        "extends": [
+          {
+            "model": "ir.http",
+            "evidence": "models/ir_http.py:7"
+          },
+          {
+            "model": "ir.module.module",
+            "evidence": "models/ir_module_module.py:8"
+          },
+          {
+            "model": "payment.provider",
+            "evidence": "models/payment_provider.py:10"
+          },
+          {
+            "model": "payment.transaction",
+            "evidence": "models/payment_transaction.py:7"
+          },
+          {
+            "model": "product.category",
+            "evidence": "models/product_category.py:8"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:8"
+          },
+          {
+            "model": "sale.order",
+            "evidence": "models/sale_order.py:10"
+          },
+          {
+            "model": "sale.order.line",
+            "evidence": "models/sale_order_line.py:7"
+          }
+        ]
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 10,
+        "models": [
+          "model_choose_delivery_carrier",
+          "model_delivery_carrier",
+          "model_delivery_price_rule",
+          "model_delivery_zip_prefix"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "l10n_il",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:79f8440c0c8e825b643b02fb9872205465fd4eb697285279fa6cf9452c20caed",
+      "models": {
+        "defines": [],
+        "extends": [
+          {
+            "model": "account.chart.template",
+            "evidence": "models/template_il.py:7"
+          }
+        ]
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 0,
+        "models": [],
+        "evidence": null
+      },
+      "configSettings": [],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "l10n_il_reports",
+      "source": "odoo_enterprise",
+      "manifestDigest": "sha256:1d1d3411fa59a0ad02935252a04eb27428d01f95bffb45346a933aca8c5d8194",
+      "models": {
+        "defines": [],
+        "extends": []
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 0,
+        "models": [],
+        "evidence": null
+      },
+      "configSettings": [],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "product",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:b7b2759efd7de449097e00d7160cb6cdec4adfd50b02c1cdc878168f8296bb95",
+      "models": {
+        "defines": [
+          {
+            "model": "product.attribute",
+            "evidence": "models/product_attribute.py:8"
+          },
+          {
+            "model": "product.attribute.custom.value",
+            "evidence": "models/product_attribute_custom_value.py:7"
+          },
+          {
+            "model": "product.attribute.value",
+            "evidence": "models/product_attribute_value.py:12"
+          },
+          {
+            "model": "product.catalog.mixin",
+            "evidence": "models/product_catalog_mixin.py:13"
+          },
+          {
+            "model": "product.category",
+            "evidence": "models/product_category.py:9"
+          },
+          {
+            "model": "product.combo",
+            "evidence": "models/product_combo.py:8"
+          },
+          {
+            "model": "product.combo.item",
+            "evidence": "models/product_combo_item.py:8"
+          },
+          {
+            "model": "product.document",
+            "evidence": "models/product_document.py:9"
+          },
+          {
+            "model": "product.label.layout",
+            "evidence": "wizard/product_label_layout.py:10"
+          },
+          {
+            "model": "product.pricelist",
+            "evidence": "models/product_pricelist.py:10"
+          },
+          {
+            "model": "product.pricelist.item",
+            "evidence": "models/product_pricelist_item.py:9"
+          },
+          {
+            "model": "product.product",
+            "evidence": "models/product_product.py:17"
+          },
+          {
+            "model": "product.supplierinfo",
+            "evidence": "models/product_supplierinfo.py:8"
+          },
+          {
+            "model": "product.tag",
+            "evidence": "models/product_tag.py:8"
+          },
+          {
+            "model": "product.template",
+            "evidence": "models/product_template.py:19"
+          },
+          {
+            "model": "product.template.attribute.exclusion",
+            "evidence": "models/product_template_attribute_exclusion.py:7"
+          },
+          {
+            "model": "product.template.attribute.line",
+            "evidence": "models/product_template_attribute_line.py:12"
+          },
+          {
+            "model": "product.template.attribute.value",
+            "evidence": "models/product_template_attribute_value.py:14"
+          },
+          {
+            "model": "product.uom",
+            "evidence": "models/product_uom.py:9"
+          },
+          {
+            "model": "report.product.report_pricelist",
+            "evidence": "report/product_pricelist_report.py:7"
+          },
+          {
+            "model": "report.product.report_producttemplatelabel2x7",
+            "evidence": "report/product_label_report.py:62"
+          },
+          {
+            "model": "report.product.report_producttemplatelabel4x12",
+            "evidence": "report/product_label_report.py:78"
+          },
+          {
+            "model": "report.product.report_producttemplatelabel4x12noprice",
+            "evidence": "report/product_label_report.py:86"
+          },
+          {
+            "model": "report.product.report_producttemplatelabel4x7",
+            "evidence": "report/product_label_report.py:70"
+          },
+          {
+            "model": "report.product.report_producttemplatelabel_dymo",
+            "evidence": "report/product_label_report.py:94"
+          },
+          {
+            "model": "update.product.attribute.value",
+            "evidence": "wizard/update_product_attribute_value.py:8"
+          }
+        ],
+        "extends": [
+          {
+            "model": "image.mixin",
+            "evidence": "models/product_template.py:20"
+          },
+          {
+            "model": "ir.attachment",
+            "evidence": "models/ir_attachment.py:7"
+          },
+          {
+            "model": "mail.activity.mixin",
+            "evidence": "models/product_pricelist.py:11"
+          },
+          {
+            "model": "mail.thread",
+            "evidence": "models/product_category.py:10"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:7"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:7"
+          },
+          {
+            "model": "res.country.group",
+            "evidence": "models/res_country_group.py:8"
+          },
+          {
+            "model": "res.currency",
+            "evidence": "models/res_currency.py:8"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:7"
+          },
+          {
+            "model": "uom.uom",
+            "evidence": "models/uom_uom.py:9"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "base.default_user_group",
+          "name": null,
+          "evidence": "data/product_demo.xml"
+        },
+        {
+          "xmlId": "base.group_user",
+          "name": null,
+          "evidence": "data/product_demo.xml"
+        },
+        {
+          "xmlId": "group_product_manager",
+          "name": "Create",
+          "evidence": "security/product_security.xml"
+        },
+        {
+          "xmlId": "group_product_pricelist",
+          "name": "Basic Pricelists",
+          "evidence": "security/product_security.xml"
+        },
+        {
+          "xmlId": "group_product_variant",
+          "name": "Manage Product Variants",
+          "evidence": "security/product_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 38,
+        "models": [
+          "model_product_attribute",
+          "model_product_attribute_custom_value",
+          "model_product_attribute_value",
+          "model_product_category",
+          "model_product_combo",
+          "model_product_combo_item",
+          "model_product_document",
+          "model_product_label_layout",
+          "model_product_pricelist",
+          "model_product_pricelist_item",
+          "model_product_product",
+          "model_product_supplierinfo",
+          "model_product_tag",
+          "model_product_template",
+          "model_product_template_attribute_exclusion",
+          "model_product_template_attribute_line",
+          "model_product_template_attribute_value",
+          "model_product_uom",
+          "model_uom_uom",
+          "model_update_product_attribute_value"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "group_product_pricelist",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:12"
+        },
+        {
+          "field": "group_product_variant",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:10"
+        },
+        {
+          "field": "group_uom",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:9"
+        },
+        {
+          "field": "module_loyalty",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:11"
+        },
+        {
+          "field": "product_volume_volume_in_cubic_feet",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:18"
+        },
+        {
+          "field": "product_weight_in_lbs",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:14"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "purchase",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:ae458146e9fd2756da11eedb427d3fee14a34dc63f63dce0e8eb043b7164137f",
+      "models": {
+        "defines": [
+          {
+            "model": "bill.to.po.wizard",
+            "evidence": "wizard/bill_to_po_wizard.py:7"
+          },
+          {
+            "model": "purchase.bill.line.match",
+            "evidence": "models/purchase_bill_line_match.py:10"
+          },
+          {
+            "model": "purchase.bill.union",
+            "evidence": "report/purchase_bill.py:9"
+          },
+          {
+            "model": "purchase.order",
+            "evidence": "models/purchase_order.py:22"
+          },
+          {
+            "model": "purchase.order.line",
+            "evidence": "models/purchase_order_line.py:14"
+          },
+          {
+            "model": "purchase.report",
+            "evidence": "report/purchase_report.py:14"
+          }
+        ],
+        "extends": [
+          {
+            "model": "account.analytic.account",
+            "evidence": "models/analytic_account.py:8"
+          },
+          {
+            "model": "account.analytic.applicability",
+            "evidence": "models/analytic_applicability.py:7"
+          },
+          {
+            "model": "account.document.import.mixin",
+            "evidence": "models/purchase_order.py:23"
+          },
+          {
+            "model": "account.move",
+            "evidence": "models/account_invoice.py:17"
+          },
+          {
+            "model": "account.move.line",
+            "evidence": "models/account_invoice.py:525"
+          },
+          {
+            "model": "account.tax",
+            "evidence": "models/account_tax.py:7"
+          },
+          {
+            "model": "analytic.mixin",
+            "evidence": "models/purchase_order_line.py:15"
+          },
+          {
+            "model": "ir.actions.report",
+            "evidence": "models/ir_actions_report.py:8"
+          },
+          {
+            "model": "mail.activity.mixin",
+            "evidence": "models/purchase_order.py:23"
+          },
+          {
+            "model": "mail.thread",
+            "evidence": "models/purchase_order.py:23"
+          },
+          {
+            "model": "portal.mixin",
+            "evidence": "models/purchase_order.py:23"
+          },
+          {
+            "model": "product.catalog.mixin",
+            "evidence": "models/purchase_order.py:23"
+          },
+          {
+            "model": "product.product",
+            "evidence": "models/product.py:59"
+          },
+          {
+            "model": "product.supplierinfo",
+            "evidence": "models/product.py:145"
+          },
+          {
+            "model": "product.template",
+            "evidence": "models/product.py:11"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:8"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:8"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:7"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "base.default_user_group",
+          "name": null,
+          "evidence": "data/purchase_demo.xml"
+        },
+        {
+          "xmlId": "base.group_user",
+          "name": null,
+          "evidence": "security/purchase_security.xml"
+        },
+        {
+          "xmlId": "group_purchase_manager",
+          "name": "Administrator",
+          "evidence": "security/purchase_security.xml"
+        },
+        {
+          "xmlId": "group_purchase_user",
+          "name": "User",
+          "evidence": "security/purchase_security.xml"
+        },
+        {
+          "xmlId": "group_send_reminder",
+          "name": "Send an automatic reminder email to confirm delivery",
+          "evidence": "security/purchase_security.xml"
+        },
+        {
+          "xmlId": "group_warning_purchase",
+          "name": "A warning can be set on a product or a customer (Purchase)",
+          "evidence": "security/purchase_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 35,
+        "models": [
+          "account.model_account_account",
+          "account.model_account_account_tag",
+          "account.model_account_analytic_line",
+          "account.model_account_fiscal_position",
+          "account.model_account_journal",
+          "account.model_account_move",
+          "account.model_account_move_line",
+          "account.model_account_partial_reconcile",
+          "account.model_account_tax",
+          "base.model_res_partner",
+          "model_bill_to_po_wizard",
+          "model_purchase_bill_line_match",
+          "model_purchase_bill_union",
+          "model_purchase_order",
+          "model_purchase_order_line",
+          "model_purchase_report",
+          "product.model_product_pricelist_item",
+          "product.model_product_product",
+          "product.model_product_supplierinfo",
+          "product.model_product_template",
+          "purchase.model_purchase_order",
+          "purchase.model_purchase_order_line"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "company_currency_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:15"
+        },
+        {
+          "field": "group_send_reminder",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:21"
+        },
+        {
+          "field": "group_warning_purchase",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:16"
+        },
+        {
+          "field": "lock_confirmed_po",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:10"
+        },
+        {
+          "field": "module_account_3way_match",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:17"
+        },
+        {
+          "field": "module_purchase_product_matrix",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:19"
+        },
+        {
+          "field": "module_purchase_requisition",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:18"
+        },
+        {
+          "field": "po_double_validation",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:13"
+        },
+        {
+          "field": "po_double_validation_amount",
+          "type": "Monetary",
+          "evidence": "models/res_config_settings.py:14"
+        },
+        {
+          "field": "po_lock",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:11"
+        },
+        {
+          "field": "po_order_approval",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:12"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "purchase_stock",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:328cdd3772285b943bb9531e05c0a3bea723962039f8885b578ec6848df4b8cb",
+      "models": {
+        "defines": [
+          {
+            "model": "vendor.delay.report",
+            "evidence": "report/vendor_delay_report.py:9"
+          }
+        ],
+        "extends": [
+          {
+            "model": "account.move",
+            "evidence": "models/account_invoice.py:10"
+          },
+          {
+            "model": "account.move.line",
+            "evidence": "models/account_move_line.py:10"
+          },
+          {
+            "model": "product.product",
+            "evidence": "models/product.py:35"
+          },
+          {
+            "model": "product.replenish",
+            "evidence": "wizard/product_replenish.py:8"
+          },
+          {
+            "model": "product.supplierinfo",
+            "evidence": "models/product.py:259"
+          },
+          {
+            "model": "product.template",
+            "evidence": "models/product.py:14"
+          },
+          {
+            "model": "purchase.order",
+            "evidence": "models/purchase_order.py:14"
+          },
+          {
+            "model": "purchase.order.line",
+            "evidence": "models/purchase_order_line.py:11"
+          },
+          {
+            "model": "purchase.report",
+            "evidence": "report/purchase_report.py:9"
+          },
+          {
+            "model": "report.stock.report_stock_rule",
+            "evidence": "report/report_stock_rule.py:8"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:8"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:8"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:11"
+          },
+          {
+            "model": "stock.forecasted_product_product",
+            "evidence": "report/stock_forecasted.py:8"
+          },
+          {
+            "model": "stock.lot",
+            "evidence": "models/stock.py:333"
+          },
+          {
+            "model": "stock.move",
+            "evidence": "models/stock_move.py:13"
+          },
+          {
+            "model": "stock.picking",
+            "evidence": "models/stock.py:11"
+          },
+          {
+            "model": "stock.reference",
+            "evidence": "models/stock_reference.py:5"
+          },
+          {
+            "model": "stock.replenish.mixin",
+            "evidence": "models/stock_replenish_mixin.py:7"
+          },
+          {
+            "model": "stock.replenishment.info",
+            "evidence": "wizard/stock_replenishment_info.py:8"
+          },
+          {
+            "model": "stock.replenishment.option",
+            "evidence": "wizard/stock_replenishment_info.py:31"
+          },
+          {
+            "model": "stock.return.picking",
+            "evidence": "models/stock.py:126"
+          },
+          {
+            "model": "stock.route",
+            "evidence": "models/stock_rule.py:406"
+          },
+          {
+            "model": "stock.rule",
+            "evidence": "models/stock_rule.py:16"
+          },
+          {
+            "model": "stock.warehouse",
+            "evidence": "models/stock.py:46"
+          },
+          {
+            "model": "stock.warehouse.orderpoint",
+            "evidence": "models/stock.py:142"
+          },
+          {
+            "model": "stock_account.stock.valuation.report",
+            "evidence": "report/stock_valuation_report.py:5"
+          }
+        ]
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 14,
+        "models": [
+          "model_purchase_order",
+          "model_purchase_order_line",
+          "model_vendor_delay_report",
+          "stock.model_stock_location",
+          "stock.model_stock_move",
+          "stock.model_stock_picking",
+          "stock.model_stock_warehouse",
+          "stock.model_stock_warehouse_orderpoint"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "days_to_purchase",
+          "type": "Float",
+          "evidence": "models/res_config_settings.py:11"
+        },
+        {
+          "field": "is_installed_sale",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:13"
+        },
+        {
+          "field": "module_stock_dropshipping",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:10"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "sale",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:a1b2e20367c758048b4facb7d17e0f4766a7b4a1d0f7aa58bde75157b2af1d85",
+      "models": {
+        "defines": [
+          {
+            "model": "account.move",
+            "evidence": "models/account_move.py:7"
+          },
+          {
+            "model": "sale.advance.payment.inv",
+            "evidence": "wizard/sale_make_invoice_advance.py:10"
+          },
+          {
+            "model": "sale.mass.cancel.orders",
+            "evidence": "wizard/mass_cancel_orders.py:7"
+          },
+          {
+            "model": "sale.order",
+            "evidence": "models/sale_order.py:35"
+          },
+          {
+            "model": "sale.order.discount",
+            "evidence": "wizard/sale_order_discount.py:12"
+          },
+          {
+            "model": "sale.order.line",
+            "evidence": "models/sale_order_line.py:13"
+          },
+          {
+            "model": "sale.report",
+            "evidence": "report/sale_report.py:9"
+          }
+        ],
+        "extends": [
+          {
+            "model": "account.analytic.applicability",
+            "evidence": "models/analytic.py:13"
+          },
+          {
+            "model": "account.analytic.line",
+            "evidence": "models/analytic.py:7"
+          },
+          {
+            "model": "account.chart.template",
+            "evidence": "models/chart_template.py:5"
+          },
+          {
+            "model": "account.document.import.mixin",
+            "evidence": "models/sale_order.py:36"
+          },
+          {
+            "model": "account.invoice.report",
+            "evidence": "report/account_invoice_report.py:8"
+          },
+          {
+            "model": "account.move",
+            "evidence": "models/account_move.py:8"
+          },
+          {
+            "model": "account.move.line",
+            "evidence": "models/account_move_line.py:9"
+          },
+          {
+            "model": "analytic.mixin",
+            "evidence": "models/sale_order_line.py:14"
+          },
+          {
+            "model": "base.document.layout",
+            "evidence": "wizard/base_document_layout.py:7"
+          },
+          {
+            "model": "crm.team",
+            "evidence": "models/crm_team.py:9"
+          },
+          {
+            "model": "ir.actions.report",
+            "evidence": "models/ir_actions_report.py:8"
+          },
+          {
+            "model": "ir.config_parameter",
+            "evidence": "models/ir_config_parameter.py:10"
+          },
+          {
+            "model": "mail.activity.mixin",
+            "evidence": "models/sale_order.py:36"
+          },
+          {
+            "model": "mail.thread",
+            "evidence": "models/sale_order.py:36"
+          },
+          {
+            "model": "payment.link.wizard",
+            "evidence": "wizard/payment_link_wizard.py:7"
+          },
+          {
+            "model": "payment.provider",
+            "evidence": "models/payment_provider.py:7"
+          },
+          {
+            "model": "payment.transaction",
+            "evidence": "models/payment_transaction.py:12"
+          },
+          {
+            "model": "portal.mixin",
+            "evidence": "models/sale_order.py:36"
+          },
+          {
+            "model": "product.attribute.custom.value",
+            "evidence": "models/product_product.py:127"
+          },
+          {
+            "model": "product.catalog.mixin",
+            "evidence": "models/sale_order.py:36"
+          },
+          {
+            "model": "product.document",
+            "evidence": "models/product_document.py:7"
+          },
+          {
+            "model": "product.pricelist.item",
+            "evidence": "models/product_pricelist_item.py:5"
+          },
+          {
+            "model": "product.product",
+            "evidence": "models/product_product.py:11"
+          },
+          {
+            "model": "product.template",
+            "evidence": "models/product_template.py:11"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:8"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "wizard/res_config_settings.py:7"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:8"
+          },
+          {
+            "model": "utm.campaign",
+            "evidence": "models/utm_campaign.py:8"
+          },
+          {
+            "model": "utm.mixin",
+            "evidence": "models/account_move.py:8"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "group_auto_done_setting",
+          "name": "Lock Confirmed Sales",
+          "evidence": "security/res_groups.xml"
+        },
+        {
+          "xmlId": "group_discount_per_so_line",
+          "name": "Discount on lines",
+          "evidence": "security/res_groups.xml"
+        },
+        {
+          "xmlId": "group_proforma_sales",
+          "name": "Pro-forma Invoices",
+          "evidence": "security/res_groups.xml"
+        },
+        {
+          "xmlId": "group_warning_sale",
+          "name": "A warning can be set on a product or a customer (Sale)",
+          "evidence": "security/res_groups.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 39,
+        "models": [
+          "account.model_account_account",
+          "account.model_account_account_tag",
+          "account.model_account_journal",
+          "account.model_account_move",
+          "account.model_account_move_line",
+          "account.model_account_move_send_batch_wizard",
+          "account.model_account_move_send_wizard",
+          "account.model_account_partial_reconcile",
+          "account.model_account_payment_term",
+          "account.model_account_tax",
+          "account.model_account_tax_group",
+          "analytic.model_account_analytic_account",
+          "base.model_res_partner",
+          "mail.model_mail_activity_plan",
+          "mail.model_mail_activity_plan_template",
+          "mail.model_mail_activity_type",
+          "model_sale_advance_payment_inv",
+          "model_sale_mass_cancel_orders",
+          "model_sale_order",
+          "model_sale_order_discount",
+          "model_sale_order_line",
+          "model_sale_report",
+          "payment.model_payment_link_wizard",
+          "product.model_product_attribute_custom_value",
+          "product.model_product_document",
+          "product.model_product_pricelist",
+          "product.model_product_pricelist_item",
+          "sale.model_sale_order",
+          "sale.model_sale_order_line",
+          "uom.model_uom_uom"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "automatic_invoice",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:31"
+        },
+        {
+          "field": "default_invoice_policy",
+          "type": "Selection",
+          "evidence": "wizard/res_config_settings.py:10"
+        },
+        {
+          "field": "downpayment_account_id",
+          "type": "Many2one",
+          "evidence": "wizard/res_config_settings.py:60"
+        },
+        {
+          "field": "group_auto_done_setting",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:20"
+        },
+        {
+          "field": "group_discount_per_so_line",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:22"
+        },
+        {
+          "field": "group_proforma_sales",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:24"
+        },
+        {
+          "field": "group_warning_sale",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:27"
+        },
+        {
+          "field": "invoice_mail_template_id",
+          "type": "Many2one",
+          "evidence": "wizard/res_config_settings.py:41"
+        },
+        {
+          "field": "module_delivery",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:63"
+        },
+        {
+          "field": "module_delivery_bpost",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:64"
+        },
+        {
+          "field": "module_delivery_dhl",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:65"
+        },
+        {
+          "field": "module_delivery_easypost",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:66"
+        },
+        {
+          "field": "module_delivery_envia",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:67"
+        },
+        {
+          "field": "module_delivery_fedex_rest",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:68"
+        },
+        {
+          "field": "module_delivery_sendcloud",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:69"
+        },
+        {
+          "field": "module_delivery_shiprocket",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:70"
+        },
+        {
+          "field": "module_delivery_starshipit",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:71"
+        },
+        {
+          "field": "module_delivery_ups_rest",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:72"
+        },
+        {
+          "field": "module_delivery_usps_rest",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:73"
+        },
+        {
+          "field": "module_product_email_template",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:75"
+        },
+        {
+          "field": "module_sale_amazon",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:76"
+        },
+        {
+          "field": "module_sale_commission",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:77"
+        },
+        {
+          "field": "module_sale_gelato",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:78"
+        },
+        {
+          "field": "module_sale_loyalty",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:79"
+        },
+        {
+          "field": "module_sale_margin",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:80"
+        },
+        {
+          "field": "module_sale_pdf_quote_builder",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:81"
+        },
+        {
+          "field": "module_sale_product_matrix",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:82"
+        },
+        {
+          "field": "module_sale_shopee",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:83"
+        },
+        {
+          "field": "portal_confirmation_pay",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:54"
+        },
+        {
+          "field": "portal_confirmation_sign",
+          "type": "Boolean",
+          "evidence": "wizard/res_config_settings.py:51"
+        },
+        {
+          "field": "prepayment_percent",
+          "type": "Float",
+          "evidence": "wizard/res_config_settings.py:57"
+        },
+        {
+          "field": "quotation_validity_days",
+          "type": "Integer",
+          "evidence": "wizard/res_config_settings.py:48"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "sale_management",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:e58ff032021e60c9a975400750545e459483bf5ab47713d34439784fa8b72147",
+      "models": {
+        "defines": [
+          {
+            "model": "sale.order.template",
+            "evidence": "models/sale_order_template.py:9"
+          },
+          {
+            "model": "sale.order.template.line",
+            "evidence": "models/sale_order_template_line.py:8"
+          }
+        ],
+        "extends": [
+          {
+            "model": "digest.digest",
+            "evidence": "models/digest.py:8"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:7"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:7"
+          },
+          {
+            "model": "sale.order",
+            "evidence": "models/sale_order.py:12"
+          },
+          {
+            "model": "sale.order.line",
+            "evidence": "models/sale_order_line.py:7"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "base.group_user",
+          "name": null,
+          "evidence": "data/sale_order_template_demo.xml"
+        },
+        {
+          "xmlId": "group_sale_order_template",
+          "name": "Quotation Templates",
+          "evidence": "security/sale_management_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 5,
+        "models": [
+          "model_sale_order_template",
+          "model_sale_order_template_line"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "company_so_template_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:11"
+        },
+        {
+          "field": "group_sale_order_template",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:9"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "sale_stock",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:8525b98c0780c09567623d63767531ef3d27a8e6b956eea3b512a943708b7c35",
+      "models": {
+        "defines": [],
+        "extends": [
+          {
+            "model": "account.accrued.orders.wizard",
+            "evidence": "wizard/accrued_orders.py:5"
+          },
+          {
+            "model": "account.move",
+            "evidence": "models/account_move.py:12"
+          },
+          {
+            "model": "account.move.line",
+            "evidence": "models/account_move.py:156"
+          },
+          {
+            "model": "product.template",
+            "evidence": "models/product_template.py:8"
+          },
+          {
+            "model": "report.stock.report_stock_rule",
+            "evidence": "report/report_stock_rule.py:8"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:8"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:8"
+          },
+          {
+            "model": "res.users",
+            "evidence": "models/res_users.py:8"
+          },
+          {
+            "model": "sale.order",
+            "evidence": "models/sale_order.py:15"
+          },
+          {
+            "model": "sale.order.line",
+            "evidence": "models/sale_order_line.py:13"
+          },
+          {
+            "model": "sale.report",
+            "evidence": "report/sale_report.py:8"
+          },
+          {
+            "model": "stock.forecasted_product_product",
+            "evidence": "report/stock_forecasted.py:8"
+          },
+          {
+            "model": "stock.lot",
+            "evidence": "models/stock.py:328"
+          },
+          {
+            "model": "stock.move",
+            "evidence": "models/stock.py:16"
+          },
+          {
+            "model": "stock.move.line",
+            "evidence": "models/stock.py:169"
+          },
+          {
+            "model": "stock.picking",
+            "evidence": "models/stock.py:185"
+          },
+          {
+            "model": "stock.reference",
+            "evidence": "models/stock_reference.py:5"
+          },
+          {
+            "model": "stock.return.picking",
+            "evidence": "wizard/stock_picking_return.py:17"
+          },
+          {
+            "model": "stock.return.picking.line",
+            "evidence": "wizard/stock_picking_return.py:7"
+          },
+          {
+            "model": "stock.route",
+            "evidence": "models/stock.py:11"
+          },
+          {
+            "model": "stock.rule",
+            "evidence": "models/stock.py:176"
+          },
+          {
+            "model": "stock.rules.report",
+            "evidence": "wizard/stock_rules_report.py:8"
+          },
+          {
+            "model": "stock_account.stock.valuation.report",
+            "evidence": "report/stock_valuation_report.py:5"
+          }
+        ]
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 16,
+        "models": [
+          "account.model_account_journal",
+          "account.model_account_partial_reconcile",
+          "model_sale_order",
+          "model_sale_order_line",
+          "stock.model_stock_location",
+          "stock.model_stock_move",
+          "stock.model_stock_package_type",
+          "stock.model_stock_picking",
+          "stock.model_stock_rule",
+          "stock.model_stock_warehouse",
+          "stock.model_stock_warehouse_orderpoint"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "default_picking_policy",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:15"
+        },
+        {
+          "field": "security_lead",
+          "type": "Float",
+          "evidence": "models/res_config_settings.py:10"
+        },
+        {
+          "field": "use_security_lead",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:11"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "stock",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:a4a7f5019d32fccee0d1960f4df825ce8bb27d01e4af39c2b7a27cc64d4bae7d",
+      "models": {
+        "defines": [
+          {
+            "model": "lot.label.layout",
+            "evidence": "wizard/stock_lot_label_layout.py:9"
+          },
+          {
+            "model": "picking.label.type",
+            "evidence": "wizard/stock_label_type.py:8"
+          },
+          {
+            "model": "product.removal",
+            "evidence": "models/product_strategy.py:9"
+          },
+          {
+            "model": "product.replenish",
+            "evidence": "wizard/product_replenish.py:10"
+          },
+          {
+            "model": "report.stock.label_lot_template_view",
+            "evidence": "report/product_label_report.py:56"
+          },
+          {
+            "model": "report.stock.label_product_product_view",
+            "evidence": "report/product_label_report.py:13"
+          },
+          {
+            "model": "report.stock.quantity",
+            "evidence": "report/report_stock_quantity.py:8"
+          },
+          {
+            "model": "report.stock.report_reception",
+            "evidence": "report/report_stock_reception.py:11"
+          },
+          {
+            "model": "report.stock.report_stock_rule",
+            "evidence": "report/report_stock_rule.py:9"
+          },
+          {
+            "model": "stock.backorder.confirmation",
+            "evidence": "wizard/stock_backorder_confirmation.py:17"
+          },
+          {
+            "model": "stock.backorder.confirmation.line",
+            "evidence": "wizard/stock_backorder_confirmation.py:8"
+          },
+          {
+            "model": "stock.forecasted_product_product",
+            "evidence": "report/stock_forecasted.py:12"
+          },
+          {
+            "model": "stock.forecasted_product_template",
+            "evidence": "report/stock_forecasted.py:507"
+          },
+          {
+            "model": "stock.inventory.adjustment.name",
+            "evidence": "wizard/stock_inventory_adjustment_name.py:8"
+          },
+          {
+            "model": "stock.inventory.conflict",
+            "evidence": "wizard/stock_inventory_conflict.py:8"
+          },
+          {
+            "model": "stock.inventory.warning",
+            "evidence": "wizard/stock_inventory_warning.py:8"
+          },
+          {
+            "model": "stock.location",
+            "evidence": "models/stock_location.py:14"
+          },
+          {
+            "model": "stock.lot",
+            "evidence": "models/stock_lot.py:25"
+          },
+          {
+            "model": "stock.move",
+            "evidence": "models/stock_move.py:19"
+          },
+          {
+            "model": "stock.move.line",
+            "evidence": "models/stock_move_line.py:16"
+          },
+          {
+            "model": "stock.orderpoint.snooze",
+            "evidence": "wizard/stock_orderpoint_snooze.py:9"
+          },
+          {
+            "model": "stock.package",
+            "evidence": "models/stock_package.py:18"
+          },
+          {
+            "model": "stock.package.destination",
+            "evidence": "wizard/stock_package_destination.py:7"
+          },
+          {
+            "model": "stock.package.history",
+            "evidence": "models/stock_package_history.py:7"
+          },
+          {
+            "model": "stock.package.type",
+            "evidence": "models/stock_package_type.py:8"
+          },
+          {
+            "model": "stock.picking",
+            "evidence": "models/stock_picking.py:539"
+          },
+          {
+            "model": "stock.picking.type",
+            "evidence": "models/stock_picking.py:21"
+          },
+          {
+            "model": "stock.put.in.pack",
+            "evidence": "wizard/stock_put_in_pack.py:7"
+          },
+          {
+            "model": "stock.putaway.rule",
+            "evidence": "models/product_strategy.py:17"
+          },
+          {
+            "model": "stock.quant",
+            "evidence": "models/stock_quant.py:20"
+          },
+          {
+            "model": "stock.quant.relocate",
+            "evidence": "wizard/stock_quant_relocate.py:10"
+          },
+          {
+            "model": "stock.quantity.history",
+            "evidence": "wizard/stock_quantity_history.py:9"
+          },
+          {
+            "model": "stock.reference",
+            "evidence": "models/stock_reference.py:5"
+          },
+          {
+            "model": "stock.replenish.mixin",
+            "evidence": "models/stock_replenish_mixin.py:8"
+          },
+          {
+            "model": "stock.replenishment.info",
+            "evidence": "wizard/stock_replenishment_info.py:17"
+          },
+          {
+            "model": "stock.replenishment.option",
+            "evidence": "wizard/stock_replenishment_info.py:197"
+          },
+          {
+            "model": "stock.request.count",
+            "evidence": "wizard/stock_request_count.py:8"
+          },
+          {
+            "model": "stock.return.picking",
+            "evidence": "wizard/stock_picking_return.py:87"
+          },
+          {
+            "model": "stock.return.picking.line",
+            "evidence": "wizard/stock_picking_return.py:8"
+          },
+          {
+            "model": "stock.route",
+            "evidence": "models/stock_location.py:518"
+          },
+          {
+            "model": "stock.rule",
+            "evidence": "models/stock_rule.py:44"
+          },
+          {
+            "model": "stock.rules.report",
+            "evidence": "wizard/stock_rules_report.py:8"
+          },
+          {
+            "model": "stock.scrap",
+            "evidence": "models/stock_scrap.py:11"
+          },
+          {
+            "model": "stock.scrap.reason.tag",
+            "evidence": "models/stock_scrap.py:238"
+          },
+          {
+            "model": "stock.storage.category",
+            "evidence": "models/stock_storage_category.py:8"
+          },
+          {
+            "model": "stock.storage.category.capacity",
+            "evidence": "models/stock_storage_category.py:49"
+          },
+          {
+            "model": "stock.traceability.report",
+            "evidence": "report/stock_traceability.py:22"
+          },
+          {
+            "model": "stock.warehouse",
+            "evidence": "models/stock_warehouse.py:24"
+          },
+          {
+            "model": "stock.warehouse.orderpoint",
+            "evidence": "models/stock_orderpoint.py:23"
+          },
+          {
+            "model": "stock.warn.insufficient.qty",
+            "evidence": "wizard/stock_warn_insufficient_qty.py:9"
+          },
+          {
+            "model": "stock.warn.insufficient.qty.scrap",
+            "evidence": "wizard/stock_warn_insufficient_qty.py:36"
+          }
+        ],
+        "extends": [
+          {
+            "model": "barcode.rule",
+            "evidence": "models/barcode.py:8"
+          },
+          {
+            "model": "ir.actions.report",
+            "evidence": "models/ir_actions_report.py:5"
+          },
+          {
+            "model": "mail.activity.mixin",
+            "evidence": "models/stock_lot.py:26"
+          },
+          {
+            "model": "mail.thread",
+            "evidence": "models/stock_lot.py:26"
+          },
+          {
+            "model": "product.catalog.mixin",
+            "evidence": "models/product_catalog_mixin.py:7"
+          },
+          {
+            "model": "product.category",
+            "evidence": "models/product.py:1292"
+          },
+          {
+            "model": "product.label.layout",
+            "evidence": "wizard/product_label_layout.py:18"
+          },
+          {
+            "model": "product.product",
+            "evidence": "models/product.py:48"
+          },
+          {
+            "model": "product.template",
+            "evidence": "models/product.py:820"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:7"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:9"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:8"
+          },
+          {
+            "model": "res.users",
+            "evidence": "models/res_users.py:7"
+          },
+          {
+            "model": "stock.forecasted_product_product",
+            "evidence": "report/stock_forecasted.py:509"
+          },
+          {
+            "model": "stock.replenish.mixin",
+            "evidence": "wizard/product_replenish.py:11"
+          },
+          {
+            "model": "stock.warn.insufficient.qty",
+            "evidence": "wizard/stock_warn_insufficient_qty.py:37"
+          },
+          {
+            "model": "uom.uom",
+            "evidence": "models/product.py:1356"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "base.default_user_group",
+          "name": null,
+          "evidence": "data/stock_demo.xml"
+        },
+        {
+          "xmlId": "base.group_multi_company",
+          "name": null,
+          "evidence": "data/stock_demo.xml"
+        },
+        {
+          "xmlId": "base.group_portal",
+          "name": null,
+          "evidence": "data/stock_demo.xml"
+        },
+        {
+          "xmlId": "base.group_user",
+          "name": null,
+          "evidence": "data/stock_demo.xml"
+        },
+        {
+          "xmlId": "group_adv_location",
+          "name": "Manage Push and Pull inventory flows",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_lot_on_delivery_slip",
+          "name": "Display Serial & Lot Number in Delivery Slips",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_production_lot",
+          "name": "Manage Lots / Serial Numbers",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_reception_report",
+          "name": "Use Reception Report",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_stock_lot_print_gs1",
+          "name": "Print GS1 Barcodes for Lot & Serial Numbers",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_stock_manager",
+          "name": "Administrator",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_stock_multi_locations",
+          "name": "Manage Multiple Stock Locations",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_stock_multi_warehouses",
+          "name": "Manage Multiple Warehouses",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_stock_sign_delivery",
+          "name": "Require a signature on your delivery orders",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_stock_user",
+          "name": "User",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_tracking_lot",
+          "name": "Manage Packages",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_tracking_owner",
+          "name": "Manage Different Stock Owners",
+          "evidence": "security/stock_security.xml"
+        },
+        {
+          "xmlId": "group_warning_stock",
+          "name": "A warning can be set on a partner (Stock)",
+          "evidence": "security/stock_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 77,
+        "models": [
+          "barcodes.model_barcode_nomenclature",
+          "barcodes.model_barcode_rule",
+          "base.model_res_partner",
+          "model_lot_label_layout",
+          "model_picking_label_type",
+          "model_product_removal",
+          "model_product_replenish",
+          "model_report_stock_quantity",
+          "model_stock_backorder_confirmation",
+          "model_stock_backorder_confirmation_line",
+          "model_stock_inventory_adjustment_name",
+          "model_stock_inventory_conflict",
+          "model_stock_inventory_warning",
+          "model_stock_location",
+          "model_stock_lot",
+          "model_stock_move",
+          "model_stock_move_line",
+          "model_stock_orderpoint_snooze",
+          "model_stock_package",
+          "model_stock_package_destination",
+          "model_stock_package_history",
+          "model_stock_package_type",
+          "model_stock_picking",
+          "model_stock_picking_type",
+          "model_stock_put_in_pack",
+          "model_stock_putaway_rule",
+          "model_stock_quant",
+          "model_stock_quant_relocate",
+          "model_stock_quantity_history",
+          "model_stock_replenishment_info",
+          "model_stock_replenishment_option",
+          "model_stock_request_count",
+          "model_stock_return_picking",
+          "model_stock_return_picking_line",
+          "model_stock_route",
+          "model_stock_rule",
+          "model_stock_rules_report",
+          "model_stock_scrap",
+          "model_stock_scrap_reason_tag",
+          "model_stock_storage_category",
+          "model_stock_storage_category_capacity",
+          "model_stock_traceability_report",
+          "model_stock_warehouse",
+          "model_stock_warehouse_orderpoint",
+          "model_stock_warn_insufficient_qty_scrap",
+          "product.model_product_attribute",
+          "product.model_product_attribute_value",
+          "product.model_product_pricelist",
+          "product.model_product_product",
+          "product.model_product_template",
+          "product.model_update_product_attribute_value",
+          "stock.model_stock_reference"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "annual_inventory_day",
+          "type": "Integer",
+          "evidence": "models/res_config_settings.py:49"
+        },
+        {
+          "field": "annual_inventory_month",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:48"
+        },
+        {
+          "field": "barcode_separator",
+          "type": "Char",
+          "evidence": "models/res_config_settings.py:52"
+        },
+        {
+          "field": "group_lot_on_delivery_slip",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:17"
+        },
+        {
+          "field": "group_stock_adv_location",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:23"
+        },
+        {
+          "field": "group_stock_lot_print_gs1",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:15"
+        },
+        {
+          "field": "group_stock_multi_locations",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:46"
+        },
+        {
+          "field": "group_stock_production_lot",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:13"
+        },
+        {
+          "field": "group_stock_reception_report",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:50"
+        },
+        {
+          "field": "group_stock_sign_delivery",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:27"
+        },
+        {
+          "field": "group_stock_tracking_lot",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:19"
+        },
+        {
+          "field": "group_stock_tracking_owner",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:21"
+        },
+        {
+          "field": "group_warning_stock",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:26"
+        },
+        {
+          "field": "horizon_days",
+          "type": "Float",
+          "evidence": "models/res_config_settings.py:59"
+        },
+        {
+          "field": "module_delivery",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:33"
+        },
+        {
+          "field": "module_delivery_bpost",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:38"
+        },
+        {
+          "field": "module_delivery_dhl",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:34"
+        },
+        {
+          "field": "module_delivery_easypost",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:39"
+        },
+        {
+          "field": "module_delivery_envia",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:43"
+        },
+        {
+          "field": "module_delivery_fedex_rest",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:35"
+        },
+        {
+          "field": "module_delivery_sendcloud",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:40"
+        },
+        {
+          "field": "module_delivery_shiprocket",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:41"
+        },
+        {
+          "field": "module_delivery_starshipit",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:42"
+        },
+        {
+          "field": "module_delivery_ups_rest",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:36"
+        },
+        {
+          "field": "module_delivery_usps_rest",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:37"
+        },
+        {
+          "field": "module_product_expiry",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:11"
+        },
+        {
+          "field": "module_quality_control",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:44"
+        },
+        {
+          "field": "module_quality_control_worksheet",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:45"
+        },
+        {
+          "field": "module_stock_barcode",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:29"
+        },
+        {
+          "field": "module_stock_barcode_barcodelookup",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:30"
+        },
+        {
+          "field": "module_stock_dropshipping",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:51"
+        },
+        {
+          "field": "module_stock_fleet",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:55"
+        },
+        {
+          "field": "module_stock_picking_batch",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:28"
+        },
+        {
+          "field": "module_stock_sms",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:32"
+        },
+        {
+          "field": "replenish_on_order",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:56"
+        },
+        {
+          "field": "stock_confirmation_type",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:58"
+        },
+        {
+          "field": "stock_move_email_validation",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:31"
+        },
+        {
+          "field": "stock_text_confirmation",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:57"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "stock_account",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:c4bf52c1ea1743a9dfee192c5981ee19c0b570e25bcda8e13d94c96e4df8a5e9",
+      "models": {
+        "defines": [
+          {
+            "model": "product.value",
+            "evidence": "models/product_value.py:14"
+          },
+          {
+            "model": "stock.avco.report",
+            "evidence": "report/stock_avco_audit_report.py:7"
+          },
+          {
+            "model": "stock_account.stock.valuation.report",
+            "evidence": "report/stock_valuation_report.py:7"
+          }
+        ],
+        "extends": [
+          {
+            "model": "account.account",
+            "evidence": "models/account_account.py:5"
+          },
+          {
+            "model": "account.analytic.account",
+            "evidence": "models/analytic_account.py:31"
+          },
+          {
+            "model": "account.analytic.plan",
+            "evidence": "models/analytic_account.py:6"
+          },
+          {
+            "model": "account.chart.template",
+            "evidence": "models/account_chart_template.py:9"
+          },
+          {
+            "model": "account.move",
+            "evidence": "models/account_move.py:6"
+          },
+          {
+            "model": "account.move.line",
+            "evidence": "models/account_move_line.py:5"
+          },
+          {
+            "model": "product.category",
+            "evidence": "models/product.py:735"
+          },
+          {
+            "model": "product.product",
+            "evidence": "models/product.py:166"
+          },
+          {
+            "model": "product.template",
+            "evidence": "models/product.py:12"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:10"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:5"
+          },
+          {
+            "model": "stock.forecasted_product_product",
+            "evidence": "report/stock_forecasted.py:9"
+          },
+          {
+            "model": "stock.inventory.adjustment.name",
+            "evidence": "wizard/stock_inventory_adjustment_name.py:5"
+          },
+          {
+            "model": "stock.location",
+            "evidence": "models/stock_location.py:9"
+          },
+          {
+            "model": "stock.lot",
+            "evidence": "models/stock_lot.py:7"
+          },
+          {
+            "model": "stock.move",
+            "evidence": "models/stock_move.py:18"
+          },
+          {
+            "model": "stock.move.line",
+            "evidence": "models/stock_move_line.py:5"
+          },
+          {
+            "model": "stock.picking",
+            "evidence": "models/stock_picking.py:9"
+          },
+          {
+            "model": "stock.picking.type",
+            "evidence": "models/stock_picking_type.py:7"
+          },
+          {
+            "model": "stock.quant",
+            "evidence": "models/stock_quant.py:8"
+          },
+          {
+            "model": "stock.return.picking.line",
+            "evidence": "wizard/stock_picking_return.py:8"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "group_lot_on_invoice",
+          "name": "Display Serial & Lot Number on Invoices",
+          "evidence": "security/stock_account_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 9,
+        "models": [
+          "account.model_account_account",
+          "account.model_account_journal",
+          "model_product_value",
+          "model_stock_move",
+          "stock.model_stock_picking",
+          "stock_account.model_stock_avco_report"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "group_lot_on_invoice",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:9"
+        },
+        {
+          "field": "module_stock_landed_costs",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:7"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "uom",
+      "source": "odoo_core",
+      "manifestDigest": "sha256:ba9808ce5480a9bd618cffff8bab44b735d1fd8d23cf077b52fd8881803071a1",
+      "models": {
+        "defines": [
+          {
+            "model": "uom.uom",
+            "evidence": "models/uom_uom.py:18"
+          }
+        ],
+        "extends": []
+      },
+      "securityGroups": [
+        {
+          "xmlId": "group_uom",
+          "name": "Manage Multiple Units of Measure",
+          "evidence": "security/uom_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 2,
+        "models": [
+          "model_uom_uom"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    }
+  ]
+}

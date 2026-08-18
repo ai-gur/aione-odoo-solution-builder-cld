@@ -1,0 +1,22 @@
+{
+  "$comment": "The first catalogue release covers one archetype, not all 1440 modules (MVP Architecture §16.3). Israeli B2B wholesale distribution: order to cash, procure to pay, stock, and the Israeli accounting boundary.",
+  "scopeKey": "il-b2b-wholesale-distribution",
+  "baselineKey": "odoo19-baseline-2026-08-17",
+  "archetype": {
+    "he_IL": "מפיץ סיטונאי ישראלי בין עסקים",
+    "en_US": "Israeli B2B wholesale distributor"
+  },
+  "domains": {
+    "CRM": ["crm"],
+    "SAL": ["sale", "sale_management", "sale_stock", "product"],
+    "PUR": ["purchase", "purchase_stock"],
+    "INV": ["stock", "stock_account", "delivery", "uom"],
+    "FIN": ["account", "l10n_il", "l10n_il_reports"],
+    "SEC": ["base", "base_setup"],
+    "REP": ["board"]
+  },
+  "notes": [
+    "Modules listed here are the business-selected set. Their transitive dependencies come from the release and are recorded as technical dependencies, not as scope decisions (Blueprint §13).",
+    "Nothing here asserts that a module satisfies a requirement. That is a fit assessment, made per requirement against verified capabilities."
+  ]
+}

@@ -19,8 +19,13 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: local_dev_only
       POSTGRES_DB: aione_control
-      # Deterministic collation, so ordering behaves the same on every machine.
-      LANG: C
+      # UTF-8 is not optional: Hebrew is the primary product language, and a
+      # SQL_ASCII cluster stores whatever bytes it is handed without validating
+      # them — psycopg then returns bytes instead of str, and any Hebrew round
+      # trip depends on nothing in the stack disagreeing about encoding.
+      # C collation keeps ordering deterministic across machines; language-aware
+      # sorting is a presentation concern, applied per query where needed.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C" 
     ports:
       - "55432:5432"
     volumes:

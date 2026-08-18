@@ -18,15 +18,18 @@ help:
 	@echo "test              all tests"
 	@echo "test-contract     shared contract tests in both ecosystems"
 	@echo "test-integration  database, policy and isolation tests"
+	@echo "test-api          domain API tests"
+	@echo "api-dev           run the domain API on :8000"
 
 bootstrap:
 	pnpm install
 	cd packages/contracts/python && uv sync
+	cd apps/domain-api && uv sync
 
 check:
 	@echo "no checks wired yet"
 
-test: test-contract test-integration
+test: test-contract test-integration test-api
 
 stack-up:
 	$(COMPOSE) up -d
@@ -52,6 +55,12 @@ db-reset:
 # stack to be up and migrated.
 test-integration:
 	python -m unittest discover -s tests/integration -v
+
+test-api:
+	cd apps/domain-api && .venv/Scripts/python.exe -m unittest discover -s tests
+
+api-dev:
+	cd apps/domain-api && .venv/Scripts/python.exe -m uvicorn aione_domain.main:app --reload --port 8000
 
 # Both suites read the same fixtures. Passing here and there is what proves the
 # TypeScript and Python canonicalizers agree byte for byte (ADR-015).

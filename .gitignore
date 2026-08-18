@@ -36,3 +36,7 @@ Thumbs.db
 # Skills
 .claude/skills
 
+
+# Python virtual environments and lockfile noise
+.venv/
+uv.lock

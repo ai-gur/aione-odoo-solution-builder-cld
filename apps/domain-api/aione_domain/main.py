@@ -21,7 +21,7 @@ from datetime import datetime
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 
-from . import audit, authorization, db, identity, workspaces
+from . import audit, authorization, db, discovery, identity, workspaces
 from .config import ConfigurationError, Settings, load_settings
 
 logger = logging.getLogger("aione.domain")
@@ -550,5 +550,127 @@ def workspace_history(
     authorize(principal, tenant_id, "workspace.read", correlation_id)
     rows = workspaces.workspace_history(
         tenant_id=tenant_id, user_id=principal.user_id, workspace_id=workspace_id
+    )
+    return {"history": [_serialise(row) for row in rows], "correlationId": correlation_id}
+
+
+# ---------------------------------------------------------------------------
+# Discovery interviews (Increment 2)
+# ---------------------------------------------------------------------------
+
+
+@app.post("/v1/tenants/{tenant_id}/workspaces/{workspace_id}/interviews", status_code=201)
+def start_interview(
+    tenant_id: str,
+    workspace_id: str,
+    request: Request,
+    body: dict | None = None,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Start or resume the workspace's interview.
+
+    Resuming is the default. Starting a second run would ask the customer for
+    information they have already given, which Discovery §3.6 forbids.
+    """
+    correlation_id = request.state.correlation_id
+    role = authorize(principal, tenant_id, "discovery.conduct", correlation_id)
+    mode = str((body or {}).get("mode") or "quick_start")
+
+    try:
+        run = discovery.start_run(
+            tenant_id=tenant_id, user_id=principal.user_id,
+            workspace_id=workspace_id, mode=mode,
+        )
+    except discovery.DiscoveryError as error:
+        raise HTTPException(status_code=409, detail={"error": str(error)}) from error
+
+    if not run["resumed"]:
+        audit.record(
+            tenant_id=tenant_id, action="discovery.run.started",
+            correlation_id=correlation_id, outcome="succeeded",
+            actor_id=principal.user_id, actor_role=role,
+            subject_type="interview_run", subject_id=run["id"],
+            detail={"mode": mode, "workspaceId": workspace_id},
+        )
+
+    return {"run": _serialise(run), "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/interviews/{run_id}")
+def get_interview(
+    tenant_id: str,
+    run_id: str,
+    request: Request,
+    locale: str = "he_IL",
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """The interview plan: every question, whether it applies, and why."""
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "discovery.conduct", correlation_id)
+
+    try:
+        plan = discovery.question_plan(
+            tenant_id=tenant_id, user_id=principal.user_id, run_id=run_id, locale=locale
+        )
+    except discovery.DiscoveryError as error:
+        raise HTTPException(status_code=404, detail={"error": str(error)}) from error
+
+    return {**plan, "correlationId": correlation_id}
+
+
+@app.post("/v1/tenants/{tenant_id}/interviews/{run_id}/answers")
+def submit_answer(
+    tenant_id: str,
+    run_id: str,
+    request: Request,
+    body: dict,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Record an answer. A second answer to the same question supersedes the
+    first; neither row is lost."""
+    correlation_id = request.state.correlation_id
+    role = authorize(principal, tenant_id, "discovery.conduct", correlation_id)
+
+    question_key = str(body.get("questionKey", "")).strip()
+    if not question_key or "value" not in body:
+        raise HTTPException(status_code=400, detail={"error": "questionKey_and_value_required"})
+
+    try:
+        answer = discovery.submit_answer(
+            tenant_id=tenant_id, user_id=principal.user_id, run_id=run_id,
+            question_key=question_key, raw_value=body["value"],
+            answer_source=str(body.get("source") or "customer"),
+            confidence=str(body.get("confidence") or "amber"),
+        )
+    except discovery.DiscoveryError as error:
+        raise HTTPException(status_code=409, detail={"error": str(error)}) from error
+
+    audit.record(
+        tenant_id=tenant_id, action="discovery.answer.recorded",
+        correlation_id=correlation_id, outcome="succeeded",
+        actor_id=principal.user_id, actor_role=role,
+        subject_type="answer", subject_id=answer["id"],
+        # The answer's content is customer data and stays in the discovery
+        # tables; audit records that it happened, not what was said.
+        detail={"questionKey": question_key, "revision": answer["revision"]},
+    )
+
+    return {"answer": _serialise(answer), "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/interviews/{run_id}/answers/{question_key}/history")
+def answer_history(
+    tenant_id: str,
+    run_id: str,
+    question_key: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    """Every version of one answer — what was said, by whom, and when."""
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "discovery.conduct", correlation_id)
+    rows = discovery.answer_history(
+        tenant_id=tenant_id, user_id=principal.user_id,
+        run_id=run_id, question_key=question_key,
     )
     return {"history": [_serialise(row) for row in rows], "correlationId": correlation_id}

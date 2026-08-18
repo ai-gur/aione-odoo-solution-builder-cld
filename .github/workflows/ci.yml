@@ -63,6 +63,9 @@ jobs:
       - name: Migrate
         run: python scripts/run.py db-migrate
 
+      - name: Seed interview definitions
+        run: python scripts/run.py db-seed
+
       # Tenant isolation, audit immutability and the durable job path. These
       # run as the API's own database role, so a policy regression fails here
       # rather than in production.

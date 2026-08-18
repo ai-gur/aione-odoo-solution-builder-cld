@@ -69,6 +69,12 @@ def db_status() -> None:
 def db_reset() -> None:
     run([sys.executable, "scripts/db.py", "reset"])
     db_migrate()
+    db_seed()
+
+
+def db_seed() -> None:
+    """Load versioned interview definitions. Idempotent."""
+    run([sys.executable, "scripts/seed_interviews.py"])
 
 
 # --- tests ------------------------------------------------------------------
@@ -136,6 +142,7 @@ COMMANDS = {
     "db-migrate": db_migrate,
     "db-status": db_status,
     "db-reset": db_reset,
+    "db-seed": db_seed,
     "test": test,
     "test-contract": test_contract,
     "test-integration": test_integration,

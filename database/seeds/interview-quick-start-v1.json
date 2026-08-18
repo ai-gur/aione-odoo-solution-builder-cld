@@ -1,0 +1,407 @@
+{
+  "definitionKey": "quick_start",
+  "version": 1,
+  "mode": "quick_start",
+  "title": {
+    "he_IL": "היכרות מהירה עם העסק",
+    "en_US": "Quick Start business discovery"
+  },
+  "note": "Canonical information goals QS-01 to QS-18 from ODOO-SOLUTION-BUILDER-DISCOVERY-ENGINE.md §6. Wording is customer language, not Odoo terminology (Discovery §3.1). Branching is deterministic and reviewed (§11).",
+  "questions": [
+    {
+      "questionKey": "QS-01",
+      "domain": "ORG",
+      "concept": "business_identity",
+      "answerType": "long_narrative",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "במשפט או שניים, במה החברה שלכם עוסקת?",
+        "en_US": "In one or two sentences, what does your company do?"
+      },
+      "helpText": {
+        "he_IL": "תיאור חופשי בשפה שלכם. אין צורך במונחים טכניים.",
+        "en_US": "Free description in your own words. No technical terms needed."
+      },
+      "complexityWeight": 1
+    },
+    {
+      "questionKey": "QS-02",
+      "domain": "OFF",
+      "concept": "offering_types",
+      "answerType": "multi_select",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "מה אתם מוכרים או מספקים?",
+        "en_US": "What do you sell or deliver?"
+      },
+      "options": [
+        { "value": "physical_products", "he_IL": "מוצרים פיזיים", "en_US": "Physical products" },
+        { "value": "services", "he_IL": "שירותים", "en_US": "Services" },
+        { "value": "projects", "he_IL": "פרויקטים", "en_US": "Projects" },
+        { "value": "subscriptions", "he_IL": "מנויים", "en_US": "Subscriptions" },
+        { "value": "manufactured_products", "he_IL": "מוצרים בייצור עצמי", "en_US": "Manufactured products" },
+        { "value": "digital_products", "he_IL": "מוצרים דיגיטליים", "en_US": "Digital products" },
+        { "value": "rentals", "he_IL": "השכרה", "en_US": "Rentals" }
+      ],
+      "complexityWeight": 2
+    },
+    {
+      "questionKey": "QS-03",
+      "domain": "CUS",
+      "concept": "customers_and_channels",
+      "answerType": "multi_select",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "מי קונה מכם, ובאילו ערוצים?",
+        "en_US": "Who buys from you, and through which channels?"
+      },
+      "options": [
+        { "value": "businesses", "he_IL": "עסקים", "en_US": "Businesses" },
+        { "value": "consumers", "he_IL": "לקוחות פרטיים", "en_US": "Consumers" },
+        { "value": "government", "he_IL": "מגזר ציבורי", "en_US": "Government" },
+        { "value": "group_companies", "he_IL": "חברות בקבוצה", "en_US": "Group companies" },
+        { "value": "sales_team", "he_IL": "צוות מכירות", "en_US": "Sales team" },
+        { "value": "store", "he_IL": "חנות פיזית", "en_US": "Physical store" },
+        { "value": "website", "he_IL": "אתר אינטרנט", "en_US": "Website" },
+        { "value": "marketplace", "he_IL": "זירת מסחר", "en_US": "Marketplace" },
+        { "value": "tender", "he_IL": "מכרזים", "en_US": "Tenders" },
+        { "value": "recurring_agreement", "he_IL": "הסכם מתמשך", "en_US": "Recurring agreement" }
+      ],
+      "complexityWeight": 1
+    },
+    {
+      "questionKey": "QS-04",
+      "domain": "ORG",
+      "concept": "scale",
+      "answerType": "repeating_group",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "מה סדר הגודל של הפעילות?",
+        "en_US": "Approximately how large is the operation?"
+      },
+      "helpText": {
+        "he_IL": "מספר עובדים, משתמשים צפויים במערכת, והזמנות או תנועות בחודש.",
+        "en_US": "Employees, expected system users, and monthly orders or transactions."
+      },
+      "options": [
+        { "value": "employees", "he_IL": "עובדים", "en_US": "Employees" },
+        { "value": "expected_users", "he_IL": "משתמשים צפויים", "en_US": "Expected users" },
+        { "value": "monthly_transactions", "he_IL": "תנועות בחודש", "en_US": "Monthly transactions" }
+      ],
+      "complexityWeight": 1
+    },
+    {
+      "questionKey": "QS-05",
+      "domain": "ORG",
+      "concept": "organization_footprint",
+      "answerType": "repeating_group",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "כמה חברות, סניפים, מדינות, חנויות ומחסנים צריכים להיכלל במערכת?",
+        "en_US": "How many legal companies, branches, countries, stores and warehouses need to be included?"
+      },
+      "options": [
+        { "value": "companies", "he_IL": "חברות משפטיות", "en_US": "Legal companies" },
+        { "value": "countries", "he_IL": "מדינות", "en_US": "Countries" },
+        { "value": "branches", "he_IL": "סניפים", "en_US": "Branches" },
+        { "value": "warehouses", "he_IL": "מחסנים", "en_US": "Warehouses" }
+      ],
+      "riskWeight": 2,
+      "complexityWeight": 3
+    },
+    {
+      "questionKey": "QS-06",
+      "domain": "STR",
+      "concept": "required_business_areas",
+      "answerType": "multi_select",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "אילו תחומי פעילות המערכת החדשה צריכה לנהל?",
+        "en_US": "Which activities should the new system manage?"
+      },
+      "helpText": {
+        "he_IL": "נציע גם תחומים שנראים רלוונטיים, אך דבר לא ייכנס לתכולה ללא אישור שלכם.",
+        "en_US": "We may suggest likely areas, but nothing enters scope without your confirmation."
+      },
+      "options": [
+        { "value": "crm", "he_IL": "ניהול לקוחות ולידים", "en_US": "CRM" },
+        { "value": "sales", "he_IL": "מכירות", "en_US": "Sales" },
+        { "value": "purchase", "he_IL": "רכש", "en_US": "Purchasing" },
+        { "value": "inventory", "he_IL": "מלאי ולוגיסטיקה", "en_US": "Inventory" },
+        { "value": "manufacturing", "he_IL": "ייצור", "en_US": "Manufacturing" },
+        { "value": "projects", "he_IL": "פרויקטים", "en_US": "Projects" },
+        { "value": "field_service", "he_IL": "שירות בשטח", "en_US": "Field service" },
+        { "value": "support", "he_IL": "תמיכה ושירות לקוחות", "en_US": "Support" },
+        { "value": "accounting", "he_IL": "הנהלת חשבונות", "en_US": "Accounting" },
+        { "value": "expenses", "he_IL": "הוצאות", "en_US": "Expenses" },
+        { "value": "hr", "he_IL": "משאבי אנוש", "en_US": "HR" },
+        { "value": "documents", "he_IL": "מסמכים וחתימות", "en_US": "Documents and signatures" },
+        { "value": "website", "he_IL": "אתר וחנות מקוונת", "en_US": "Website and eCommerce" },
+        { "value": "reporting", "he_IL": "דוחות", "en_US": "Reporting" }
+      ],
+      "riskWeight": 1,
+      "complexityWeight": 2
+    },
+    {
+      "questionKey": "QS-07",
+      "domain": "INT",
+      "concept": "current_working_method",
+      "answerType": "multi_select",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "באילו כלים אתם מנהלים את הפעילות הזו היום?",
+        "en_US": "What do you use today to run these activities?"
+      },
+      "options": [
+        { "value": "another_erp", "he_IL": "מערכת ERP אחרת", "en_US": "Another ERP" },
+        { "value": "crm_system", "he_IL": "מערכת CRM", "en_US": "A CRM system" },
+        { "value": "accounting_system", "he_IL": "תוכנת הנהלת חשבונות", "en_US": "An accounting system" },
+        { "value": "spreadsheets", "he_IL": "גיליונות אלקטרוניים", "en_US": "Spreadsheets" },
+        { "value": "paper", "he_IL": "נייר", "en_US": "Paper" },
+        { "value": "separate_apps", "he_IL": "אפליקציות נפרדות", "en_US": "Separate applications" },
+        { "value": "informal", "he_IL": "תהליכים לא מוסדרים", "en_US": "Mostly informal processes" }
+      ],
+      "complexityWeight": 1
+    },
+    {
+      "questionKey": "QS-08",
+      "domain": "INV",
+      "concept": "inventory_trigger",
+      "answerType": "multi_select",
+      "requiredPolicy": "conditional",
+      "applicability": {
+        "answer_includes": {
+          "question": "QS-02",
+          "any_of": ["physical_products", "manufactured_products", "rentals"]
+        }
+      },
+      "prompt": {
+        "he_IL": "אילו מהמאפיינים הבאים רלוונטיים לניהול הפריטים הפיזיים שלכם?",
+        "en_US": "Which of these apply to how you handle physical items?"
+      },
+      "options": [
+        { "value": "multiple_warehouses", "he_IL": "יותר ממחסן אחד", "en_US": "More than one warehouse" },
+        { "value": "serial_tracking", "he_IL": "מעקב מספרים סידוריים", "en_US": "Serial number tracking" },
+        { "value": "lot_tracking", "he_IL": "מעקב אצוות", "en_US": "Lot tracking" },
+        { "value": "expiry_dates", "he_IL": "תאריכי תפוגה", "en_US": "Expiry dates" },
+        { "value": "dropshipping", "he_IL": "משלוח ישיר מספק", "en_US": "Dropshipping" },
+        { "value": "imports", "he_IL": "יבוא", "en_US": "Imports" },
+        { "value": "returns", "he_IL": "החזרות", "en_US": "Returns" }
+      ],
+      "riskWeight": 2,
+      "complexityWeight": 3
+    },
+    {
+      "questionKey": "QS-09",
+      "domain": "SRV",
+      "concept": "service_delivery",
+      "answerType": "multi_select",
+      "requiredPolicy": "conditional",
+      "applicability": {
+        "answer_includes": { "question": "QS-02", "any_of": ["services", "projects"] }
+      },
+      "prompt": {
+        "he_IL": "כיצד אתם מתכננים ומתעדים את אספקת השירות?",
+        "en_US": "How do you plan and record delivery?"
+      },
+      "options": [
+        { "value": "tasks", "he_IL": "משימות", "en_US": "Tasks" },
+        { "value": "projects", "he_IL": "פרויקטים", "en_US": "Projects" },
+        { "value": "appointments", "he_IL": "פגישות", "en_US": "Appointments" },
+        { "value": "field_visits", "he_IL": "ביקורי שטח", "en_US": "Field visits" },
+        { "value": "timesheets", "he_IL": "דיווחי שעות", "en_US": "Timesheets" },
+        { "value": "milestones", "he_IL": "אבני דרך", "en_US": "Milestones" },
+        { "value": "informal", "he_IL": "מעקב לא מוסדר", "en_US": "Informal follow-up" }
+      ],
+      "complexityWeight": 2
+    },
+    {
+      "questionKey": "QS-10",
+      "domain": "MRP",
+      "concept": "manufacturing_complexity",
+      "answerType": "single_select",
+      "requiredPolicy": "conditional",
+      "applicability": {
+        "answer_includes": { "question": "QS-02", "any_of": ["manufactured_products"] }
+      },
+      "prompt": {
+        "he_IL": "האם הייצור הוא הרכבה פשוטה, או שהוא דורש תחנות עבודה, מסלולי ייצור, קבלני משנה או בקרת איכות?",
+        "en_US": "Is production simple assembly, or does it require work centers, routing, subcontracting or quality control?"
+      },
+      "helpText": {
+        "he_IL": "ייצור מורכב מחייב אפיון מעמיק יותר בתחום זה בלבד; שאר התחומים יישארו ברמת האפיון הנוכחית.",
+        "en_US": "Anything beyond simple assembly requires deeper discovery for manufacturing only; other domains stay at their current depth."
+      },
+      "options": [
+        { "value": "simple_assembly", "he_IL": "הרכבה פשוטה", "en_US": "Simple assembly" },
+        { "value": "work_centers", "he_IL": "תחנות עבודה ומסלולי ייצור", "en_US": "Work centers and routing" },
+        { "value": "subcontracting", "he_IL": "קבלני משנה", "en_US": "Subcontracting" },
+        { "value": "quality_control", "he_IL": "בקרת איכות", "en_US": "Quality control" }
+      ],
+      "riskWeight": 3,
+      "complexityWeight": 4
+    },
+    {
+      "questionKey": "QS-11",
+      "domain": "FIN",
+      "concept": "finance_scope",
+      "answerType": "single_select",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "האם המערכת צריכה להפיק חשבוניות ולנהל הנהלת חשבונות לישויות בישראל?",
+        "en_US": "Should the system issue invoices and manage accounting for Israeli entities?"
+      },
+      "helpText": {
+        "he_IL": "מדיניות פיננסית נשארת לא מאומתת עד לאישור של בעל תפקיד מוסמך בתחום הכספים.",
+        "en_US": "Financial policy remains unverified until an authorized finance owner confirms it."
+      },
+      "options": [
+        { "value": "full_accounting", "he_IL": "הנהלת חשבונות מלאה", "en_US": "Full accounting" },
+        { "value": "invoicing_only", "he_IL": "הפקת חשבוניות בלבד", "en_US": "Invoicing only" },
+        { "value": "external", "he_IL": "רואה חשבון או מערכת חיצונית", "en_US": "External accountant or system" },
+        { "value": "undecided", "he_IL": "טרם הוחלט", "en_US": "Undecided" }
+      ],
+      "riskWeight": 4,
+      "complexityWeight": 3
+    },
+    {
+      "questionKey": "QS-12",
+      "domain": "WEB",
+      "concept": "digital_presence",
+      "answerType": "multi_select",
+      "requiredPolicy": "optional",
+      "prompt": {
+        "he_IL": "האם נדרשים אתר, חנות מקוונת, פורטל לקוחות או קביעת תורים אונליין?",
+        "en_US": "Do you need a website, online store, customer portal or online appointment booking?"
+      },
+      "options": [
+        { "value": "website", "he_IL": "אתר", "en_US": "Website" },
+        { "value": "ecommerce", "he_IL": "חנות מקוונת", "en_US": "Online store" },
+        { "value": "portal", "he_IL": "פורטל לקוחות", "en_US": "Customer portal" },
+        { "value": "appointments", "he_IL": "קביעת תורים", "en_US": "Appointments" },
+        { "value": "none", "he_IL": "לא נדרש", "en_US": "Not required" }
+      ],
+      "complexityWeight": 2
+    },
+    {
+      "questionKey": "QS-13",
+      "domain": "INT",
+      "concept": "integrations",
+      "answerType": "repeating_group",
+      "requiredPolicy": "optional",
+      "prompt": {
+        "he_IL": "אילו מערכות צריכות להמשיך להחליף מידע עם Odoo?",
+        "en_US": "Which systems must continue exchanging information with Odoo?"
+      },
+      "helpText": {
+        "he_IL": "כל ממשק שיצוין ייפתח כפריט בירור טכני.",
+        "en_US": "Any named integration becomes an open technical qualification item."
+      },
+      "options": [
+        { "value": "system_name", "he_IL": "שם המערכת", "en_US": "System name" },
+        { "value": "purpose", "he_IL": "מטרה", "en_US": "Purpose" },
+        { "value": "direction", "he_IL": "כיוון החלפת המידע", "en_US": "Direction of exchange" }
+      ],
+      "riskWeight": 3,
+      "complexityWeight": 3
+    },
+    {
+      "questionKey": "QS-14",
+      "domain": "STR",
+      "concept": "main_problems",
+      "answerType": "ranked_list",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "מהן שלוש הבעיות המרכזיות שאתם רוצים שהמערכת החדשה תפתור?",
+        "en_US": "What are the three most important problems you want the new system to solve?"
+      },
+      "complexityWeight": 1
+    },
+    {
+      "questionKey": "QS-15",
+      "domain": "STR",
+      "concept": "success_measure",
+      "answerType": "long_narrative",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "חצי שנה אחרי העלייה לאוויר — איזה שיפור מדיד יגיד לכם שהפרויקט הצליח?",
+        "en_US": "Six months after launch, what measurable improvement would tell you the project succeeded?"
+      },
+      "complexityWeight": 1
+    },
+    {
+      "questionKey": "QS-16",
+      "domain": "SEC",
+      "concept": "approvals",
+      "answerType": "multi_select",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "אילו פעולות או החלטות מחייבות אישור הנהלה?",
+        "en_US": "Which transactions or decisions require management approval?"
+      },
+      "helpText": {
+        "he_IL": "ספי אישור מדויקים ייקבעו באפיון המורחב.",
+        "en_US": "Exact thresholds are established in deeper discovery."
+      },
+      "options": [
+        { "value": "discounts", "he_IL": "הנחות", "en_US": "Discounts" },
+        { "value": "quotations", "he_IL": "הצעות מחיר", "en_US": "Quotations" },
+        { "value": "purchases", "he_IL": "רכש", "en_US": "Purchases" },
+        { "value": "payments", "he_IL": "תשלומים", "en_US": "Payments" },
+        { "value": "expenses", "he_IL": "הוצאות", "en_US": "Expenses" },
+        { "value": "credit", "he_IL": "אשראי לקוחות", "en_US": "Customer credit" },
+        { "value": "refunds", "he_IL": "זיכויים", "en_US": "Refunds" },
+        { "value": "stock_adjustments", "he_IL": "תיקוני מלאי", "en_US": "Stock adjustments" },
+        { "value": "none", "he_IL": "אין דרישת אישור", "en_US": "No approval required" }
+      ],
+      "riskWeight": 3,
+      "complexityWeight": 2
+    },
+    {
+      "questionKey": "QS-17",
+      "domain": "DAT",
+      "concept": "data_migration",
+      "answerType": "multi_select",
+      "requiredPolicy": "required",
+      "prompt": {
+        "he_IL": "איזה מידע קיים צריך לעבור למערכת החדשה?",
+        "en_US": "What existing information must be brought into the new system?"
+      },
+      "helpText": {
+        "he_IL": "העברת היסטוריה או יתרות כספיות פותחת פריט בירור נתונים מחייב.",
+        "en_US": "Historical or financial migration creates a mandatory data qualification follow-up."
+      },
+      "options": [
+        { "value": "customers", "he_IL": "לקוחות", "en_US": "Customers" },
+        { "value": "suppliers", "he_IL": "ספקים", "en_US": "Suppliers" },
+        { "value": "products", "he_IL": "מוצרים", "en_US": "Products" },
+        { "value": "prices", "he_IL": "מחירונים", "en_US": "Price lists" },
+        { "value": "stock", "he_IL": "יתרות מלאי", "en_US": "Stock balances" },
+        { "value": "open_documents", "he_IL": "מסמכים פתוחים", "en_US": "Open documents" },
+        { "value": "accounting_balances", "he_IL": "יתרות הנהלת חשבונות", "en_US": "Accounting balances" },
+        { "value": "historical_transactions", "he_IL": "תנועות היסטוריות", "en_US": "Historical transactions" },
+        { "value": "employees", "he_IL": "עובדים", "en_US": "Employees" },
+        { "value": "files", "he_IL": "קבצים ומסמכים", "en_US": "Files" }
+      ],
+      "riskWeight": 4,
+      "complexityWeight": 3
+    },
+    {
+      "questionKey": "QS-18",
+      "domain": "DOC",
+      "concept": "supporting_material",
+      "answerType": "evidence_reference",
+      "requiredPolicy": "optional",
+      "evidencePolicy": "optional",
+      "prompt": {
+        "he_IL": "אפשר לצרף דוגמאות שיעזרו לנו להבין את העסק?",
+        "en_US": "Would you like to upload examples that help us understand the business?"
+      },
+      "helpText": {
+        "he_IL": "לדוגמה: קטלוג מוצרים, הצעת מחיר, חשבונית, מסמך תהליך או מבנה ארגוני. כל מידע שנחלץ מהמסמך יובא לאישורכם לפני שייחשב מאומת.",
+        "en_US": "For example a product list, quotation, invoice, process document or organization chart. Anything extracted is brought back for your confirmation before it counts as verified."
+      },
+      "complexityWeight": 1
+    }
+  ]
+}

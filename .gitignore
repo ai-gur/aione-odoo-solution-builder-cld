@@ -1,0 +1,37 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# JavaScript
+node_modules/
+.next/
+coverage/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Tooling and local runtime
+.turbo/
+.cache/
+dist/
+build/
+tmp/
+artifacts/
+sandbox-data/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+

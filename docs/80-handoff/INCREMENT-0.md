@@ -138,7 +138,7 @@ As a maintainer, every pull request runs required formatting, linting, type, uni
 ## Acceptance tests
 
 1. Fresh documented setup succeeds on a supported developer machine.
-2. `make dev` or the approved equivalent starts all required control-plane services.
+2. `python scripts/run.py stack-up` starts all required control-plane services.
 3. Web and API health checks pass.
 4. Hebrew shell renders RTL and English shell renders LTR.
 5. Keyboard navigation and visible focus work in the shell.

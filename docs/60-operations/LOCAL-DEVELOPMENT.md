@@ -50,19 +50,35 @@ Paths are supplied through `.env.local`, which is never committed.
 
 ## Expected developer commands
 
-Increment 0 should implement commands equivalent to:
+The canonical command interface, decided 18 August 2026 under the
+developer-experience clause below:
 
 ```text
-make bootstrap
-make dev
-make check
-make test
-make test-contract
-make test-integration
-make sandbox-up
-make sandbox-test
-make sandbox-down
+python scripts/run.py bootstrap
+python scripts/run.py stack-up
+python scripts/run.py stack-down
+python scripts/run.py db-migrate
+python scripts/run.py db-status
+python scripts/run.py db-reset
+python scripts/run.py test
+python scripts/run.py test-contract
+python scripts/run.py test-integration
+python scripts/run.py test-api
+python scripts/run.py api-dev
+python scripts/run.py worker-dev
 ```
 
-Command names may change through an accepted developer-experience decision, but README and CI must use one canonical interface.
+Sandbox commands (`sandbox-up`, `sandbox-test`, `sandbox-down`) join the same
+interface when the Docker sandbox driver arrives in Increment 5.
+
+**Why not `make`.** `make` is absent from a stock Windows installation, and the
+first developers on this project are on Windows. Installing it would add a
+system-level dependency, and per-machine prerequisites are exactly what a
+bootstrap command exists to avoid. Python is already a hard requirement — the
+domain service and workers are written in it — so the commands live in
+`scripts/run.py` and need nothing that running the product does not already
+need. A Makefile wrapper was tried and removed: two entry points must be kept
+in sync, and the second one earns nothing.
+
+Command names may change through a further accepted developer-experience decision, but README and CI must use one canonical interface.
 

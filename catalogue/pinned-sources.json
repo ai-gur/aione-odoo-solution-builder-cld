@@ -58,7 +58,9 @@
     {
       "id": "V-02",
       "item": "The vendor mirror is a partial clone (blob:none) with a sparse cone checkout: full history, almost no files. Catalogue ingestion refuses it, correctly. Materialize the full tree at the pinned revisions before the first catalogue release, and keep _odoo-source until that is verified — it is currently the only complete offline copy.",
-      "closedBy": "Full working tree present at the pinned revisions, ingestion producing a release"
+      "closedBy": "Sparse checkout disabled on both mirrors; 658 core and 782 enterprise manifests present at the pinned revisions; ingestion produced a 1440-module draft. _odoo-source is now genuinely redundant.",
+      "status": "closed",
+      "closedOn": "2026-08-18"
     }
   ]
 }

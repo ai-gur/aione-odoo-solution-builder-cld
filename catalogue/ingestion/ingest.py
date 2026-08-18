@@ -34,6 +34,11 @@ from typing import Any
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "packages" / "contracts" / "python"))
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from localenv import load as load_local_env  # noqa: E402
+
+load_local_env()
 
 from aione_contracts import canonical_bytes  # noqa: E402
 

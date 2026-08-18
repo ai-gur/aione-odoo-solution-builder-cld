@@ -25,6 +25,12 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from localenv import load as load_local_env  # noqa: E402
+
+load_local_env()
+
 PINNED = ROOT / "catalogue" / "pinned-sources.json"
 
 if hasattr(sys.stdout, "reconfigure"):

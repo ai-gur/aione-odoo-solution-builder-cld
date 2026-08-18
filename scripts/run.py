@@ -19,6 +19,13 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from localenv import load as load_local_env  # noqa: E402
+
+# Read .env.local before any command runs, so the documented setup works.
+load_local_env()
+
 COMPOSE = ["docker", "compose", "-f", str(ROOT / "infrastructure" / "control-plane" / "compose.yaml")]
 
 

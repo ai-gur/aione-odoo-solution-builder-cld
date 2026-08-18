@@ -197,3 +197,51 @@ export function submitAnswer(
     value,
   });
 }
+
+export type Fact = {
+  fact_key: string;
+  value: unknown;
+  source_question_keys: string[];
+  confidence: "green" | "amber" | "red";
+  verification_state: string;
+};
+
+export type Requirement = {
+  requirement_ref: string;
+  domain: string;
+  statement: Record<string, string>;
+  rationale: Record<string, string>;
+  acceptance_criteria: Record<string, string>[];
+  priority: string;
+  status: string;
+  confidence: "green" | "amber" | "red";
+  source_question_keys: string[];
+};
+
+export type OpenQuestion = {
+  topic_key: string;
+  question: Record<string, string>;
+  severity: string;
+  blocking: boolean;
+  owner_role: string | null;
+  state: string;
+  source_question_keys: string[];
+};
+
+export type DerivedView = {
+  facts: Fact[];
+  requirements: Requirement[];
+  openQuestions: OpenQuestion[];
+  blockingCount: number;
+};
+
+export function getDerived(tenantId: string, runId: string): Promise<ApiResult<DerivedView>> {
+  return request(`/v1/tenants/${tenantId}/interviews/${runId}/derived`);
+}
+
+export function normaliseInterview(
+  tenantId: string,
+  runId: string,
+): Promise<ApiResult<{ facts: number; requirements: number; openQuestions: number; superseded: number }>> {
+  return send(`/v1/tenants/${tenantId}/interviews/${runId}/normalise`, "POST", {});
+}

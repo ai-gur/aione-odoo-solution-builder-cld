@@ -17,9 +17,11 @@ import { copyFor, type Locale } from "@/lib/i18n";
  * never sees a token, and the tenant is never named by the client.
  */
 
+// Matches scripts/seed_dev.py. Distinct from the subjects the test suites own,
+// so running the tests does not sign the developer out of their fixture.
 const TEST_SUBJECTS = [
-  { subject: "auth|test-a", label: "Tester A" },
-  { subject: "auth|test-b", label: "Tester B" },
+  { subject: "auth|dev-manager", label: "Dana — Account Manager" },
+  { subject: "auth|dev-lead", label: "Yossi — Team Lead" },
 ];
 
 async function signIn(formData: FormData) {

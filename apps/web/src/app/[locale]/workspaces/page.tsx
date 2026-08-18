@@ -74,7 +74,13 @@ export default async function WorkspacesPage({
                     </span>
                   </div>
 
-                  <div className="ms-auto flex flex-wrap items-center gap-2">
+                  <Link
+                    href={`/${locale}/workspaces/${workspace.id}/review`}
+                    className="ms-auto text-[14px] underline-offset-4 hover:underline"
+                  >
+                    {copy.review}
+                  </Link>
+                  <div className="flex flex-wrap items-center gap-2">
                     {workspace.discovery_mode ? (
                       <StateBadge state="neutral" label={copy.modeLabel[workspace.discovery_mode]} />
                     ) : null}

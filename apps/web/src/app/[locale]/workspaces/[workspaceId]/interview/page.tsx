@@ -57,12 +57,20 @@ export default async function InterviewPage({
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="text-[30px] font-medium leading-[1.38]">{copy.interview}</h1>
         <StateBadge state="info" label={copy.modeLabel[plan.data.mode] ?? plan.data.mode} />
-        <Link
-          href={`/${locale}/workspaces`}
-          className="ms-auto text-[14px] underline-offset-4 hover:underline"
-        >
-          {copy.backToWorkspaces}
-        </Link>
+        <span className="ms-auto flex items-center gap-4">
+          <Link
+            href={`/${locale}/workspaces/${workspaceId}/review`}
+            className="text-[14px] underline-offset-4 hover:underline"
+          >
+            {copy.review}
+          </Link>
+          <Link
+            href={`/${locale}/workspaces`}
+            className="text-[14px] underline-offset-4 hover:underline"
+          >
+            {copy.backToWorkspaces}
+          </Link>
+        </span>
       </div>
 
       {/* Progress by applicable questions. The denominator moves as branches

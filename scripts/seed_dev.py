@@ -40,18 +40,24 @@ INSERT INTO app.tenants (id, name) VALUES ('{TENANT}', 'AIOne')
 -- Conflict on the natural key, not the surrogate one: an earlier test run may
 -- have created these subjects with different identifiers.
 INSERT INTO app.users (id, auth_subject, email, display_name) VALUES
-  ('{MANAGER}', 'auth|test-a', 'a@example.test', 'Tester A'),
-  ('{CONSULTANT}', 'auth|test-b', 'b@example.test', 'Tester B')
+  ('{MANAGER}', 'auth|dev-manager', 'manager@example.test', 'Dana — Account Manager'),
+  ('{CONSULTANT}', 'auth|dev-lead', 'lead@example.test', 'Yossi — Team Lead')
   ON CONFLICT (auth_subject) DO NOTHING;
 
--- Tester A holds both roles locally: the Account Manager authorities for
--- creating customers and workspaces, and the consultant authority for running
--- an interview. In a real tenant these are different people.
+-- These subjects are deliberately distinct from the ones the test suites use.
+-- Tests own auth|test-*, and deleting a user cascades to their memberships, so
+-- a shared subject means running the tests quietly logs the developer out of
+-- their own fixture.
+--
+-- The Account Manager holds the consultant role too, so one local sign-in can
+-- both create a workspace and run its interview. In a real tenant these are
+-- different people.
 INSERT INTO app.memberships (id, tenant_id, user_id, role_key)
 SELECT 'mbr_DEV000000000000000000' || row_number() OVER (), '{TENANT}', u.id, r.role_key
   FROM app.users u
-  JOIN (VALUES ('auth|test-a', 'account_owner'), ('auth|test-a', 'consultant'),
-               ('auth|test-b', 'consultant')) AS r(subject, role_key)
+  JOIN (VALUES ('auth|dev-manager', 'account_owner'), ('auth|dev-manager', 'consultant'),
+               ('auth|dev-lead', 'solution_owner'), ('auth|dev-lead', 'consultant'))
+       AS r(subject, role_key)
     ON r.subject = u.auth_subject
   ON CONFLICT (tenant_id, user_id, role_key) DO NOTHING;
 
@@ -83,4 +89,4 @@ if __name__ == "__main__":
     print(f"  tenant    {TENANT}  AIOne")
     print(f"  customer  {CUSTOMER}  דוגמה הפצות בע\"מ")
     print(f"  workspace {WORKSPACE}  ERP ראשי")
-    print("  sign in as Tester A")
+    print("  sign in as Dana (Account Manager) or Yossi (Team Lead)")

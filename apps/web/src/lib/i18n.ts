@@ -66,6 +66,23 @@ type Copy = {
   notApplicableHere: string;
   startInterview: string;
   backToWorkspaces: string;
+  review: string;
+  reviewIntro: string;
+  facts: string;
+  requirements: string;
+  openQuestions: string;
+  blocking: string;
+  advisory: string;
+  noneYet: string;
+  recalculate: string;
+  basedOn: string;
+  saidBy: string;
+  priorityLabel: Record<string, string>;
+  confidenceLabel: Record<string, string>;
+  verificationLabel: Record<string, string>;
+  acceptance: string;
+  ownerLabel: string;
+  toInterview: string;
 };
 
 const he: Copy = {
@@ -133,6 +150,31 @@ const he: Copy = {
   notApplicableHere: "לא רלוונטי לפי התשובות עד כה",
   startInterview: "התחלת ריאיון",
   backToWorkspaces: "חזרה למרחבי הפתרון",
+  review: "בדיקת אפיון",
+  reviewIntro:
+    "מה שהמערכת הסיקה מהתשובות. כל שורה מציגה את המקור שממנו נגזרה, וניתן לתקן תשובה ולחשב מחדש.",
+  facts: "עובדות עסקיות",
+  requirements: "דרישות",
+  openQuestions: "שאלות פתוחות",
+  blocking: "חוסם אישור",
+  advisory: "לידיעה",
+  noneYet: "טרם נגזרו פריטים. יש לענות על שאלות ולחשב מחדש.",
+  recalculate: "חישוב מחדש",
+  basedOn: "נגזר מ",
+  saidBy: "תשובת הלקוח",
+  priorityLabel: { must: "חובה", should: "רצוי", could: "אפשרי", wont_this_release: "לא בגרסה זו" },
+  confidenceLabel: { green: "ודאות גבוהה", amber: "דורש הנחה מאושרת", red: "דורש הכרעה" },
+  verificationLabel: {
+    confirmed: "אושר על ידי הלקוח",
+    inferred: "הוסק על ידי המערכת",
+    unverified: "טרם אומת",
+    proposed: "מוצע",
+    conflicting: "סתירה",
+    superseded: "הוחלף",
+  },
+  acceptance: "קריטריוני קבלה",
+  ownerLabel: "אחראי",
+  toInterview: "למסך הריאיון",
 };
 
 const en: Copy = {
@@ -201,6 +243,31 @@ const en: Copy = {
   notApplicableHere: "Not applicable given the answers so far",
   startInterview: "Start interview",
   backToWorkspaces: "Back to workspaces",
+  review: "Discovery review",
+  reviewIntro:
+    "What the system concluded from the answers. Every row shows the source it came from, and correcting an answer and recalculating updates it.",
+  facts: "Business facts",
+  requirements: "Requirements",
+  openQuestions: "Open questions",
+  blocking: "Blocks approval",
+  advisory: "Advisory",
+  noneYet: "Nothing derived yet. Answer questions and recalculate.",
+  recalculate: "Recalculate",
+  basedOn: "Derived from",
+  saidBy: "Customer answer",
+  priorityLabel: { must: "Must", should: "Should", could: "Could", wont_this_release: "Won't, this release" },
+  confidenceLabel: { green: "High confidence", amber: "Needs an approved assumption", red: "Needs resolution" },
+  verificationLabel: {
+    confirmed: "Confirmed by the customer",
+    inferred: "Inferred by the system",
+    unverified: "Not yet verified",
+    proposed: "Proposed",
+    conflicting: "Conflicting",
+    superseded: "Superseded",
+  },
+  acceptance: "Acceptance criteria",
+  ownerLabel: "Owner",
+  toInterview: "Go to the interview",
 };
 
 const DICTIONARIES: Record<Locale, Copy> = { he, en };

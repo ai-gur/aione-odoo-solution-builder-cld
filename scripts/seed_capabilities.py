@@ -116,6 +116,22 @@ def load(path: pathlib.Path) -> None:
                         {literal(unresolved.get('treatment'))});"""
         )
 
+    for decision in document.get("topicDecisions", []):
+        decision_id = "tdc_" + hashlib.sha256(
+            f"{set_id}:{decision['topic']}".encode()
+        ).hexdigest()[:26].upper()
+        statements.append(
+            f"""INSERT INTO catalogue.topic_decisions
+                  (id, set_id, topic, preferred_capability_key, reason, decided_by,
+                   decided_role, decided_on, alternative_note)
+                VALUES ({literal(decision_id)}, {literal(set_id)},
+                        {literal(decision['topic'])},
+                        {literal(decision['preferredCapabilityKey'])},
+                        {literal(decision['reason'])}, {literal(decision['decidedBy'])},
+                        {literal(decision.get('role'))}, {literal(decision['date'])},
+                        {literal(decision.get('alternativeNote'))});"""
+        )
+
     statements.append("COMMIT;")
     psql("\n".join(statements))
 

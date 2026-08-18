@@ -161,6 +161,53 @@ class TestClaims(CapabilitySetTestCase):
                     )
 
 
+class TestTopicDecisions(CapabilitySetTestCase):
+    """Where several capabilities address one topic, a decision records which
+    one an archetype uses and who chose it (F-05)."""
+
+    def test_a_decision_names_a_capability_that_addresses_its_topic(self) -> None:
+        for path, document in self.documents():
+            by_key = {c["capabilityKey"]: c for c in document["capabilities"]}
+            for decision in document.get("topicDecisions", []):
+                where = f"{path.name}: decision on {decision['topic']}"
+                preferred = by_key.get(decision["preferredCapabilityKey"])
+                self.assertIsNotNone(
+                    preferred, f"{where} names {decision['preferredCapabilityKey']}, "
+                               "which is not in this set",
+                )
+                self.assertIn(
+                    decision["topic"], preferred["addressesTopics"],
+                    f"{where} names a capability that does not address that topic",
+                )
+
+    def test_a_decision_is_attributed_and_reasoned(self) -> None:
+        """An unattributed preference is indistinguishable from a sort order,
+        which is the thing a decision exists to remove."""
+        for path, document in self.documents():
+            for decision in document.get("topicDecisions", []):
+                where = f"{path.name}: decision on {decision['topic']}"
+                self.assertTrue(decision.get("decidedBy"), where)
+                self.assertTrue(decision.get("reason"), where)
+                self.assertTrue(
+                    decision.get("alternativeNote"),
+                    f"{where} records nothing about what the rejected capability is still for",
+                )
+                datetime.date.fromisoformat(decision["date"])
+
+    def test_a_decision_is_only_recorded_where_there_is_a_choice(self) -> None:
+        for path, document in self.documents():
+            for decision in document.get("topicDecisions", []):
+                addressing = [
+                    c for c in document["capabilities"]
+                    if decision["topic"] in c["addressesTopics"]
+                ]
+                self.assertGreater(
+                    len(addressing), 1,
+                    f"{path.name}: {decision['topic']} has one capability, so there is "
+                    "nothing to decide",
+                )
+
+
 class TestVerificationProvenance(CapabilitySetTestCase):
     def test_a_verified_capability_names_its_reviewer_and_date(self) -> None:
         for path, document in self.documents():

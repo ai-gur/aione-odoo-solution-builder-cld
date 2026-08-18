@@ -101,6 +101,16 @@ sequence — and the RFQ is created from it afterwards. Neither is a
 substitute for the other, and the difference is a change to how the business
 buys, not a configuration detail.
 
-**Consequence.** Both are capability records against `approval.purchases`. A
-requirement that reaches them gets both, ranked equally, with the choice
-stated as a decision for the review rather than settled by the catalogue.
+**Consequence.** Both are capability records against `approval.purchases`.
+The archetype decision, recorded on 19 August 2026 by Nir Bar, is the
+request-first workflow: for a wholesale distributor the approval belongs
+before the commitment to a vendor, and the workflow supports a minimum
+approver count and optional sequencing where the threshold is a single amount
+per company. `purchase.approval.thresholds` stays verified and available; a
+customer who wants one amount checked on the order is served by it, and
+choosing it is a deliberate deviation rather than a missing capability.
+
+The decision is recorded against the capability set, so it is immutable with
+it and a blueprint can be re-read later against the decision that applied when
+it was generated. Where no decision exists, the assessment stays amber and
+says a choice is needed rather than letting a sort order make it.

@@ -17,6 +17,11 @@ The mapping is deterministic and evidence-bound:
   because a partial fit that records no gap silently loses the unmet part.
 - A capability still in `draft` lowers the confidence of the assessment. Draft
   catalogue content may inform a blueprint; it may not carry one to approval.
+- Where several capabilities address one topic equally well, the archetype
+  decision recorded against the capability set chooses between them and the
+  assessment names who decided (F-05). With no decision recorded the assessment
+  stays amber and says a choice is needed, rather than letting a sort order
+  make it.
 """
 
 from __future__ import annotations
@@ -79,10 +84,20 @@ def _unresolved(cursor, set_id: str) -> dict[str, dict[str, Any]]:
     return {row["topic"]: dict(row) for row in cursor.fetchall()}
 
 
+def _topic_decisions(cursor, set_id: str) -> dict[str, dict[str, Any]]:
+    cursor.execute(
+        "SELECT topic, preferred_capability_key, reason, decided_by, decided_role, "
+        "decided_on, alternative_note FROM catalogue.topic_decisions WHERE set_id = %s",
+        (set_id,),
+    )
+    return {row["topic"]: dict(row) for row in cursor.fetchall()}
+
+
 def classify(
     requirement: dict[str, Any],
     candidates: list[dict[str, Any]],
     unresolved: dict[str, dict[str, Any]],
+    decision: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Decide the fit for one requirement. Pure, so it is testable alone."""
     topic = requirement.get("topic") or ""
@@ -116,34 +131,52 @@ def classify(
         candidates,
         key=lambda c: (c["status"] != "verified", c["coverage"] != "full", c["capability_key"]),
     )
-    chosen = ranked[0]
-
     def rank_key(capability: dict[str, Any]) -> tuple[bool, bool]:
         return (capability["status"] != "verified", capability["coverage"] != "full")
 
-    # Two capabilities the evidence ranks equally are a consulting decision,
-    # not a sort order. Odoo often offers a second way to do something — a
-    # purchase threshold on the order, or an approval request the order is
-    # created from — and which one suits a business is not a property of the
-    # catalogue. Picking alphabetically and calling it green would hide that.
-    contested = [
-        other for other in ranked[1:] if rank_key(other) == rank_key(chosen)
-    ]
+    # An archetype decision, when one exists, settles which capability is used
+    # (F-05). It is recorded against the capability set and names the person who
+    # made it, so it moves the choice out of the sort order without hiding it.
+    preferred = None
+    if decision:
+        preferred = next(
+            (c for c in candidates if c["capability_key"] == decision["preferred_capability_key"]),
+            None,
+        )
+
+    if preferred is not None:
+        chosen = preferred
+        ranked = [preferred] + [c for c in ranked if c is not preferred]
+        contested: list[dict[str, Any]] = []
+    else:
+        chosen = ranked[0]
+        # Two capabilities the evidence ranks equally are a consulting decision,
+        # not a sort order. Odoo often offers a second way to do something — a
+        # purchase threshold on the order, or an approval request the order is
+        # created from — and which one suits a business is not a property of
+        # the catalogue. Picking alphabetically and calling it green hides that.
+        contested = [other for other in ranked[1:] if rank_key(other) == rank_key(chosen)]
+
+    def rejection(other: dict[str, Any]) -> str:
+        if preferred is not None:
+            return "not the archetype default for this topic"
+        if other in contested:
+            return "equally ranked; the choice between them is a consulting decision"
+        if other["coverage"] != chosen["coverage"]:
+            return "lower coverage"
+        return "draft, where the selected capability is verified"
+
     rejected = [
-        {
-            "capabilityKey": other["capability_key"],
-            "reason": (
-                "equally ranked; the choice between them is a consulting decision"
-                if other in contested
-                else "lower coverage" if other["coverage"] != chosen["coverage"]
-                else "draft, where the selected capability is verified"
-            ),
-        }
+        {"capabilityKey": other["capability_key"], "reason": rejection(other)}
         for other in ranked[1:]
     ]
 
     activation = chosen["activation"] or {}
-    needs_configuration = bool(activation.get("settingField"))
+    # Either a settings switch, or configuration records a consultant has to
+    # create — an approval category is configuration as surely as a checkbox is.
+    needs_configuration = bool(
+        activation.get("settingField") or activation.get("configurationRequired")
+    )
 
     if chosen["coverage"] == "partial":
         classification = "partial_fit"
@@ -164,8 +197,17 @@ def classify(
         f"{chosen['description'].get('en_US', '')} "
         f"Implemented by {', '.join(chosen['modules'])}."
     )
-    if needs_configuration:
+    if activation.get("settingField"):
         rationale_en += f" Activated through the {activation['settingField']} setting."
+    elif needs_configuration:
+        how = (activation.get("evidence") or "configuration records").rstrip(" .")
+        rationale_en += f" Activated by configuration: {how}."
+    if preferred is not None:
+        rationale_en += (
+            f" Selected as the archetype default for this requirement by"
+            f" {decision['decided_by']} on {decision['decided_on']}:"
+            f" {decision['reason']}"
+        )
     if contested:
         others = ", ".join(other["capability_key"] for other in contested)
         rationale_en += (
@@ -230,6 +272,7 @@ def generate(*, tenant_id: str, user_id: str, workspace_id: str) -> dict[str, An
         capability_set = _capability_set(cursor, baseline_key)
         capabilities = _capabilities(cursor, capability_set["id"])
         unresolved = _unresolved(cursor, capability_set["id"])
+        decisions = _topic_decisions(cursor, capability_set["id"])
 
         by_topic: dict[str, list[dict[str, Any]]] = {}
         for capability in capabilities:
@@ -261,7 +304,9 @@ def generate(*, tenant_id: str, user_id: str, workspace_id: str) -> dict[str, An
 
         for requirement in requirements:
             topic = requirement.get("topic") or ""
-            decision = classify(requirement, by_topic.get(topic, []), unresolved)
+            decision = classify(
+                requirement, by_topic.get(topic, []), unresolved, decisions.get(topic)
+            )
             assessments.append({**decision, "requirement_ref": requirement["requirement_ref"],
                                 "topic": topic})
 

@@ -370,7 +370,8 @@
       "coverage": "full",
       "activation": {
         "settingField": null,
-        "evidence": "approval categories are configuration records on approval.category; approvals_purchase adds the 'purchase' approval type"
+        "evidence": "approval categories are configuration records on approval.category; approvals_purchase adds the 'purchase' approval type",
+        "configurationRequired": true
       },
       "securitySurfaces": [
         "approvals.group_approval_user",
@@ -386,7 +387,13 @@
         "The approval happens on the request, before any RFQ exists. It is not a gate on an existing purchase order: approvals_purchase extends purchase.order only to log state changes into the request's chatter, and cancelling an approved request removes or flags the orders it created.",
         "approvals depends on hr, so employee records are part of the deployment even where the customer wanted only purchasing."
       ],
-      "status": "draft"
+      "status": "verified",
+      "verification": {
+        "reviewer": "Nir Bar, founding partner, AIOne",
+        "role": "solution_owner",
+        "date": "2026-08-19",
+        "note": "Confirmed against the Enterprise source, and selected as the archetype default for purchase approval (F-05). A wholesale distributor's approval belongs before the commitment to a vendor, not after it: the request is approved by a named set of approvers, with a minimum count and optional sequencing, and the RFQ is created from the approved request. The limitation stands — this is not a gate on an existing purchase order, and approvals brings hr with it."
+      }
     }
   ],
   "unresolvedTopics": [
@@ -426,6 +433,17 @@
         }
       ],
       "treatment": "Unresolved pending functional review."
+    }
+  ],
+  "topicDecisions": [
+    {
+      "topic": "approval.purchases",
+      "preferredCapabilityKey": "purchase.approval.request_workflow",
+      "reason": "For an Israeli B2B wholesale distributor the approval belongs before the commitment to a vendor. A request-first workflow supports a minimum approver count and optional sequential approval; a threshold on the order is a single amount per company and approves something already raised.",
+      "decidedBy": "Nir Bar, founding partner, AIOne",
+      "role": "solution_owner",
+      "date": "2026-08-19",
+      "alternativeNote": "purchase.approval.thresholds stays in the catalogue and stays verified. A customer who wants a single amount checked on the order itself is served by it, and selecting it is a deliberate deviation from the archetype default rather than a missing capability."
     }
   ]
 }

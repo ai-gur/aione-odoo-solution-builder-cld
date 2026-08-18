@@ -207,6 +207,70 @@ class TestClassification(unittest.TestCase):
         self.assertIn("decision for the review", decision["rationale"]["en_US"])
         self.assertIn("consulting decision", decision["alternatives"][0]["reason"])
 
+    def decision(self, **overrides):
+        base = {
+            "topic": "approval.purchases",
+            "preferred_capability_key": "purchase.approval.request_workflow",
+            "reason": "The approval belongs before the commitment to a vendor.",
+            "decided_by": "Nir Bar, founding partner, AIOne",
+            "decided_role": "solution_owner",
+            "decided_on": "2026-08-19",
+            "alternative_note": "The threshold still serves a customer who wants one amount.",
+        }
+        return {**base, **overrides}
+
+    def test_an_archetype_decision_chooses_between_equal_capabilities(self) -> None:
+        """The choice is made by a named person for a named archetype, and the
+        assessment says so."""
+        verified = dict(status="verified", verified_by="A Reviewer", verified_on="2026-08-18")
+        result = blueprint.classify(
+            {"requirement_ref": "REQ-APR-002", "topic": "approval.purchases"},
+            [
+                self.capability(capability_key="purchase.approval.thresholds", **verified),
+                self.capability(capability_key="purchase.approval.request_workflow", **verified),
+            ],
+            {},
+            self.decision(),
+        )
+        self.assertEqual(result["capability_key"], "purchase.approval.request_workflow")
+        self.assertEqual(result["confidence"], "green")
+        self.assertIn("Nir Bar", result["rationale"]["en_US"])
+        self.assertIn("2026-08-19", result["rationale"]["en_US"])
+        self.assertEqual(result["alternatives"][0]["capabilityKey"], "purchase.approval.thresholds")
+        self.assertIn("archetype default", result["alternatives"][0]["reason"])
+        self.assertNotIn("decision for the review", result["rationale"]["en_US"])
+
+    def test_a_decision_naming_an_absent_capability_does_not_settle_anything(self) -> None:
+        """A stale decision must not silently pick a winner. The assessment
+        falls back to reporting that a choice is needed."""
+        verified = dict(status="verified", verified_by="A Reviewer", verified_on="2026-08-18")
+        result = blueprint.classify(
+            {"requirement_ref": "REQ-APR-002", "topic": "approval.purchases"},
+            [
+                self.capability(capability_key="purchase.approval.thresholds", **verified),
+                self.capability(capability_key="purchase.approval.request_workflow", **verified),
+            ],
+            {},
+            self.decision(preferred_capability_key="purchase.approval.withdrawn"),
+        )
+        self.assertEqual(result["confidence"], "amber")
+        self.assertIn("decision for the review", result["rationale"]["en_US"])
+
+    def test_configuration_records_are_configuration_not_standard(self) -> None:
+        """An approval category is configuration as surely as a checkbox is."""
+        result = blueprint.classify(
+            {"requirement_ref": "R", "topic": "approval.purchases"},
+            [self.capability(
+                capability_key="purchase.approval.request_workflow",
+                activation={"settingField": None, "configurationRequired": True,
+                            "evidence": "approval categories are configuration records"},
+                status="verified", verified_by="A Reviewer", verified_on="2026-08-18",
+            )],
+            {},
+        )
+        self.assertEqual(result["classification"], "configuration_fit")
+        self.assertIn("Activated by configuration", result["rationale"]["en_US"])
+
     def test_a_verified_capability_still_outranks_a_draft_one(self) -> None:
         """Unequal ranks are settled by evidence, so no decision is needed."""
         decision = blueprint.classify(
@@ -329,8 +393,12 @@ class TestBlueprintGeneration(unittest.TestCase):
         # Two companies means multi-company.
         self.assertEqual(by_ref["REQ-ORG-001"]["capability_key"], "organisation.multi_company")
 
-        # Purchase approvals exist; discount approvals do not (F-01).
-        self.assertEqual(by_ref["REQ-APR-002"]["capability_key"], "purchase.approval.thresholds")
+        # Purchase approvals exist in two shapes, and the archetype decision
+        # picks the request-first workflow (F-05). Discount approvals do not
+        # exist at all (F-01).
+        self.assertEqual(
+            by_ref["REQ-APR-002"]["capability_key"], "purchase.approval.request_workflow"
+        )
         self.assertEqual(by_ref["REQ-APR-001"]["classification"], "unresolved")
         self.assertEqual(by_ref["REQ-APR-001"]["modules"], [])
 

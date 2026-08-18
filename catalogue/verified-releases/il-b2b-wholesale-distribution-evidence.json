@@ -869,6 +869,777 @@
       }
     },
     {
+      "technicalName": "account_accountant",
+      "source": "odoo_enterprise",
+      "manifestDigest": "sha256:b6cf27c48b1a0191b4992d2a75d0ef2d8dcf7f01947cb64d96902ab3cb649a61",
+      "models": {
+        "defines": [
+          {
+            "model": "account.auto.reconcile.wizard",
+            "evidence": "wizard/account_auto_reconcile_wizard.py:11"
+          },
+          {
+            "model": "account.bank.statement",
+            "evidence": "models/account_bank_statement.py:21"
+          },
+          {
+            "model": "account.bank.statement.line",
+            "evidence": "models/account_bank_statement.py:77"
+          },
+          {
+            "model": "account.change.lock.date",
+            "evidence": "wizard/account_change_lock_date.py:15"
+          },
+          {
+            "model": "account.fiscal.year",
+            "evidence": "models/account_fiscal_year.py:11"
+          },
+          {
+            "model": "account.reconcile.wizard",
+            "evidence": "wizard/account_reconcile_wizard.py:12"
+          }
+        ],
+        "extends": [
+          {
+            "model": "account.account",
+            "evidence": "models/account_account.py:6"
+          },
+          {
+            "model": "account.bank.statement",
+            "evidence": "models/account_bank_statement.py:22"
+          },
+          {
+            "model": "account.bank.statement.line",
+            "evidence": "models/account_bank_statement.py:78"
+          },
+          {
+            "model": "account.chart.template",
+            "evidence": "demo/account_accountant_demo.py:7"
+          },
+          {
+            "model": "account.journal",
+            "evidence": "models/account_journal_dashboard.py:6"
+          },
+          {
+            "model": "account.move",
+            "evidence": "models/account_move.py:24"
+          },
+          {
+            "model": "account.move.line",
+            "evidence": "models/account_move.py:600"
+          },
+          {
+            "model": "account.payment",
+            "evidence": "models/account_payment.py:9"
+          },
+          {
+            "model": "account.reconcile.model",
+            "evidence": "models/account_reconcile_model.py:6"
+          },
+          {
+            "model": "account.reconcile.model.line",
+            "evidence": "models/account_reconcile_model_line.py:73"
+          },
+          {
+            "model": "account.tax",
+            "evidence": "models/account_tax.py:5"
+          },
+          {
+            "model": "analytic.mixin",
+            "evidence": "models/analytic_mixin.py:6"
+          },
+          {
+            "model": "digest.digest",
+            "evidence": "models/digest.py:9"
+          },
+          {
+            "model": "ir.ui.menu",
+            "evidence": "models/ir_ui_menu.py:7"
+          },
+          {
+            "model": "mail.thread.main.attachment",
+            "evidence": "models/account_bank_statement.py:22"
+          },
+          {
+            "model": "product.product",
+            "evidence": "models/product.py:5"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:9"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:8"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "account.group_account_basic",
+          "name": "Invoicing & Banks",
+          "evidence": "security/account_accountant_security.xml"
+        },
+        {
+          "xmlId": "account.group_account_manager",
+          "name": null,
+          "evidence": "security/account_accountant_security.xml"
+        },
+        {
+          "xmlId": "group_fiscal_year",
+          "name": "Allow to define fiscal years of more or less than a year",
+          "evidence": "security/account_accountant_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 7,
+        "models": [
+          "account.model_account_secure_entries_wizard",
+          "model_account_auto_reconcile_wizard",
+          "model_account_change_lock_date",
+          "model_account_fiscal_year",
+          "model_account_reconcile_wizard"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "deferred_expense_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:34"
+        },
+        {
+          "field": "deferred_expense_amount_computation_method",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:45"
+        },
+        {
+          "field": "deferred_expense_journal_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:28"
+        },
+        {
+          "field": "deferred_revenue_account_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:58"
+        },
+        {
+          "field": "deferred_revenue_amount_computation_method",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:69"
+        },
+        {
+          "field": "deferred_revenue_journal_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:52"
+        },
+        {
+          "field": "fiscalyear_last_day",
+          "type": "Integer",
+          "evidence": "models/res_config_settings.py:10"
+        },
+        {
+          "field": "fiscalyear_last_month",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:11"
+        },
+        {
+          "field": "generate_deferred_expense_entries_method",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:40"
+        },
+        {
+          "field": "generate_deferred_revenue_entries_method",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:64"
+        },
+        {
+          "field": "group_fiscal_year",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:14"
+        },
+        {
+          "field": "invoicing_switch_threshold",
+          "type": "Date",
+          "evidence": "models/res_config_settings.py:13"
+        },
+        {
+          "field": "module_account_auto_transfer",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:75"
+        },
+        {
+          "field": "module_sign",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:25"
+        },
+        {
+          "field": "predict_bill_product",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:15"
+        },
+        {
+          "field": "sign_invoice",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:17"
+        },
+        {
+          "field": "signing_user",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:18"
+        },
+        {
+          "field": "use_anglo_saxon",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:12"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "account_reports",
+      "source": "odoo_enterprise",
+      "manifestDigest": "sha256:4e4ca80120392db89f95fbc438a18d8031b37441877d8257b9a7e15473c594d2",
+      "models": {
+        "defines": [
+          {
+            "model": "account.aged.partner.balance.report.handler",
+            "evidence": "models/account_aged_partner_balance.py:15"
+          },
+          {
+            "model": "account.aged.payable.report.handler",
+            "evidence": "models/account_aged_partner_balance.py:417"
+          },
+          {
+            "model": "account.aged.receivable.report.handler",
+            "evidence": "models/account_aged_partner_balance.py:443"
+          },
+          {
+            "model": "account.audit.account.status",
+            "evidence": "models/account_audit_account_status.py:12"
+          },
+          {
+            "model": "account.balance.sheet.report.handler",
+            "evidence": "models/balance_sheet.py:5"
+          },
+          {
+            "model": "account.bank.reconciliation.report.handler",
+            "evidence": "models/bank_reconciliation_report.py:12"
+          },
+          {
+            "model": "account.cash.flow.report.handler",
+            "evidence": "models/account_cash_flow_report.py:6"
+          },
+          {
+            "model": "account.customer.statement.report.handler",
+            "evidence": "models/account_customer_statement.py:5"
+          },
+          {
+            "model": "account.deferred.expense.report.handler",
+            "evidence": "models/account_deferred_reports.py:650"
+          },
+          {
+            "model": "account.deferred.report.handler",
+            "evidence": "models/account_deferred_reports.py:13"
+          },
+          {
+            "model": "account.deferred.revenue.report.handler",
+            "evidence": "models/account_deferred_reports.py:659"
+          },
+          {
+            "model": "account.ec.sales.report.handler",
+            "evidence": "models/account_sales_report.py:9"
+          },
+          {
+            "model": "account.followup.report.handler",
+            "evidence": "models/account_followup_report.py:6"
+          },
+          {
+            "model": "account.general.ledger.report.handler",
+            "evidence": "models/account_general_ledger.py:15"
+          },
+          {
+            "model": "account.generic.tax.report.handler",
+            "evidence": "models/account_generic_tax_report.py:68"
+          },
+          {
+            "model": "account.generic.tax.report.handler.account.tax",
+            "evidence": "models/account_generic_tax_report.py:695"
+          },
+          {
+            "model": "account.generic.tax.report.handler.tax.account",
+            "evidence": "models/account_generic_tax_report.py:704"
+          },
+          {
+            "model": "account.journal.report.handler",
+            "evidence": "models/account_journal_report.py:21"
+          },
+          {
+            "model": "account.multicurrency.revaluation.report.handler",
+            "evidence": "models/account_multicurrency_revaluation_report.py:22"
+          },
+          {
+            "model": "account.multicurrency.revaluation.wizard",
+            "evidence": "wizard/multicurrency_revaluation.py:13"
+          },
+          {
+            "model": "account.partner.ledger.report.handler",
+            "evidence": "models/account_partner_ledger.py:14"
+          },
+          {
+            "model": "account.report.annotation",
+            "evidence": "models/account_report.py:57"
+          },
+          {
+            "model": "account.report.budget",
+            "evidence": "models/budget.py:10"
+          },
+          {
+            "model": "account.report.budget.item",
+            "evidence": "models/budget.py:110"
+          },
+          {
+            "model": "account.report.custom.handler",
+            "evidence": "models/account_report.py:8091"
+          },
+          {
+            "model": "account.report.file.download.error.wizard",
+            "evidence": "wizard/account_report_file_download_error_wizard.py:7"
+          },
+          {
+            "model": "account.report.horizontal.group",
+            "evidence": "models/account_report.py:8040"
+          },
+          {
+            "model": "account.report.horizontal.group.rule",
+            "evidence": "models/account_report.py:8060"
+          },
+          {
+            "model": "account.report.send",
+            "evidence": "wizard/account_report_send.py:7"
+          },
+          {
+            "model": "account.return",
+            "evidence": "models/account_return.py:711"
+          },
+          {
+            "model": "account.return.check",
+            "evidence": "models/account_return.py:2819"
+          },
+          {
+            "model": "account.return.check.template",
+            "evidence": "models/account_return.py:3105"
+          },
+          {
+            "model": "account.return.creation.wizard",
+            "evidence": "wizard/return_creation_wizard.py:9"
+          },
+          {
+            "model": "account.return.payment.wizard",
+            "evidence": "wizard/return_generic_payment_wizard.py:5"
+          },
+          {
+            "model": "account.return.submission.wizard",
+            "evidence": "wizard/return_submission_wizard.py:7"
+          },
+          {
+            "model": "account.return.type",
+            "evidence": "models/account_return.py:60"
+          },
+          {
+            "model": "account.tax.report.handler",
+            "evidence": "models/account_generic_tax_report.py:11"
+          },
+          {
+            "model": "account.tax.unit",
+            "evidence": "models/account_tax.py:9"
+          },
+          {
+            "model": "account.trial.balance.report.handler",
+            "evidence": "models/account_trial_balance_report.py:12"
+          },
+          {
+            "model": "account_reports.export.wizard",
+            "evidence": "wizard/report_export_wizard.py:16"
+          },
+          {
+            "model": "account_reports.export.wizard.format",
+            "evidence": "wizard/report_export_wizard.py:72"
+          },
+          {
+            "model": "ir_actions_account_report_download",
+            "evidence": "models/ir_actions.py:14"
+          },
+          {
+            "model": "qr.code.payment.wizard",
+            "evidence": "wizard/qr_code_payment_wizard.py:8"
+          }
+        ],
+        "extends": [
+          {
+            "model": "account.account",
+            "evidence": "models/account.py:11"
+          },
+          {
+            "model": "account.aged.partner.balance.report.handler",
+            "evidence": "models/account_aged_partner_balance.py:418"
+          },
+          {
+            "model": "account.analytic.line",
+            "evidence": "models/account_analytic_line.py:6"
+          },
+          {
+            "model": "account.change.lock.date",
+            "evidence": "wizard/account_change_lock_date.py:11"
+          },
+          {
+            "model": "account.chart.template",
+            "evidence": "models/account_chart_template.py:7"
+          },
+          {
+            "model": "account.deferred.report.handler",
+            "evidence": "models/account_deferred_reports.py:651"
+          },
+          {
+            "model": "account.financial.year.op",
+            "evidence": "wizard/fiscal_year.py:7"
+          },
+          {
+            "model": "account.fiscal.position",
+            "evidence": "models/account_fiscal_position.py:5"
+          },
+          {
+            "model": "account.generic.tax.report.handler",
+            "evidence": "models/account_generic_tax_report.py:696"
+          },
+          {
+            "model": "account.journal",
+            "evidence": "models/account_journal_dashboard.py:7"
+          },
+          {
+            "model": "account.move",
+            "evidence": "models/account_move.py:5"
+          },
+          {
+            "model": "account.move.line",
+            "evidence": "models/account_analytic_report.py:255"
+          },
+          {
+            "model": "account.partner.ledger.report.handler",
+            "evidence": "models/account_customer_statement.py:6"
+          },
+          {
+            "model": "account.report",
+            "evidence": "models/account_analytic_report.py:11"
+          },
+          {
+            "model": "account.report.custom.handler",
+            "evidence": "models/account_aged_partner_balance.py:16"
+          },
+          {
+            "model": "account.report.expression",
+            "evidence": "models/account_report.py:7962"
+          },
+          {
+            "model": "account.report.external.value",
+            "evidence": "models/account_report.py:7984"
+          },
+          {
+            "model": "account.report.line",
+            "evidence": "models/account_report.py:7646"
+          },
+          {
+            "model": "account.return.payment.wizard",
+            "evidence": "wizard/qr_code_payment_wizard.py:9"
+          },
+          {
+            "model": "account.tax.report.handler",
+            "evidence": "models/account_generic_tax_report.py:69"
+          },
+          {
+            "model": "ir.module.module",
+            "evidence": "models/ir_module.py:7"
+          },
+          {
+            "model": "ir.ui.menu",
+            "evidence": "models/ir_ui_menu.py:5"
+          },
+          {
+            "model": "kpi.provider",
+            "evidence": "models/kpi_provider.py:11"
+          },
+          {
+            "model": "mail.activity",
+            "evidence": "models/mail_activity.py:5"
+          },
+          {
+            "model": "mail.activity.mixin",
+            "evidence": "models/account_return.py:712"
+          },
+          {
+            "model": "mail.compose.message",
+            "evidence": "wizard/mail_compose_message.py:7"
+          },
+          {
+            "model": "mail.message",
+            "evidence": "models/mail_message.py:7"
+          },
+          {
+            "model": "mail.scheduled.message",
+            "evidence": "models/mail_scheduled_message.py:5"
+          },
+          {
+            "model": "mail.thread",
+            "evidence": "models/account_return.py:61"
+          },
+          {
+            "model": "mail.thread.main.attachment",
+            "evidence": "models/account_return.py:712"
+          },
+          {
+            "model": "mail.tracking.value",
+            "evidence": "models/mail_tracking_value.py:5"
+          },
+          {
+            "model": "res.company",
+            "evidence": "models/res_company.py:12"
+          },
+          {
+            "model": "res.config.settings",
+            "evidence": "models/res_config_settings.py:5"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:8"
+          },
+          {
+            "model": "res.users",
+            "evidence": "models/res_users.py:5"
+          }
+        ]
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 37,
+        "models": [
+          "account_reports.model_account_audit_account_status",
+          "account_reports.model_qr_code_payment_wizard",
+          "model_account_multicurrency_revaluation_wizard",
+          "model_account_report_annotation",
+          "model_account_report_budget",
+          "model_account_report_budget_item",
+          "model_account_report_file_download_error_wizard",
+          "model_account_report_horizontal_group",
+          "model_account_report_horizontal_group_rule",
+          "model_account_report_send",
+          "model_account_reports_export_wizard",
+          "model_account_reports_export_wizard_format",
+          "model_account_return",
+          "model_account_return_check",
+          "model_account_return_check_template",
+          "model_account_return_creation_wizard",
+          "model_account_return_payment_wizard",
+          "model_account_return_submission_wizard",
+          "model_account_return_type",
+          "model_account_tax_unit"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [
+        {
+          "field": "account_return_periodicity",
+          "type": "Selection",
+          "evidence": "models/res_config_settings.py:9"
+        },
+        {
+          "field": "account_return_reminder_day",
+          "type": "Integer",
+          "evidence": "models/res_config_settings.py:10"
+        },
+        {
+          "field": "account_tax_return_journal_id",
+          "type": "Many2one",
+          "evidence": "models/res_config_settings.py:11"
+        },
+        {
+          "field": "totals_below_sections",
+          "type": "Boolean",
+          "evidence": "models/res_config_settings.py:7"
+        }
+      ],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "approvals",
+      "source": "odoo_enterprise",
+      "manifestDigest": "sha256:157018b70a480f07d97e5482f59c3c00576ceaa347daa7e7c1b64bd68aaf2248",
+      "models": {
+        "defines": [
+          {
+            "model": "approval.approver",
+            "evidence": "models/approval_approver.py:8"
+          },
+          {
+            "model": "approval.category",
+            "evidence": "models/approval_category.py:16"
+          },
+          {
+            "model": "approval.category.approver",
+            "evidence": "models/approval_category_approver.py:11"
+          },
+          {
+            "model": "approval.product.line",
+            "evidence": "models/approval_product_line.py:9"
+          },
+          {
+            "model": "approval.request",
+            "evidence": "models/approval_request.py:8"
+          }
+        ],
+        "extends": [
+          {
+            "model": "ir.attachment",
+            "evidence": "models/ir_attachment.py:9"
+          },
+          {
+            "model": "mail.activity",
+            "evidence": "models/mail_activity.py:9"
+          },
+          {
+            "model": "mail.activity.mixin",
+            "evidence": "models/approval_request.py:10"
+          },
+          {
+            "model": "mail.activity.type",
+            "evidence": "models/mail_activity_type.py:5"
+          },
+          {
+            "model": "mail.thread.main.attachment",
+            "evidence": "models/approval_request.py:10"
+          }
+        ]
+      },
+      "securityGroups": [
+        {
+          "xmlId": "base.default_user_group",
+          "name": null,
+          "evidence": "data/approval_demo.xml"
+        },
+        {
+          "xmlId": "group_approval_manager",
+          "name": "Administrator",
+          "evidence": "security/approval_security.xml"
+        },
+        {
+          "xmlId": "group_approval_user",
+          "name": "Officer: Approve all requests",
+          "evidence": "security/approval_security.xml"
+        }
+      ],
+      "accessRules": {
+        "count": 14,
+        "models": [
+          "model_approval_approver",
+          "model_approval_category",
+          "model_approval_category_approver",
+          "model_approval_product_line",
+          "model_approval_request"
+        ],
+        "evidence": "security/ir.model.access.csv"
+      },
+      "configSettings": [],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "approvals_purchase",
+      "source": "odoo_enterprise",
+      "manifestDigest": "sha256:23e60018a755b98bb8ca6ee2ba5ba21a6c5eba09b90db2d97bc9c2e2ac494805",
+      "models": {
+        "defines": [],
+        "extends": [
+          {
+            "model": "approval.category",
+            "evidence": "models/approval_category.py:8"
+          },
+          {
+            "model": "approval.product.line",
+            "evidence": "models/approval_product_line.py:9"
+          },
+          {
+            "model": "approval.request",
+            "evidence": "models/approval_request.py:10"
+          },
+          {
+            "model": "purchase.order",
+            "evidence": "models/purchase_order.py:9"
+          },
+          {
+            "model": "res.partner",
+            "evidence": "models/res_partner.py:6"
+          }
+        ]
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 0,
+        "models": [],
+        "evidence": null
+      },
+      "configSettings": [],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
+      "technicalName": "approvals_purchase_stock",
+      "source": "odoo_enterprise",
+      "manifestDigest": "sha256:7e10e6505077c5e094eb574466cbd870083ab49e76e894799ffed5705a46373b",
+      "models": {
+        "defines": [],
+        "extends": [
+          {
+            "model": "approval.product.line",
+            "evidence": "models/approval_product_line.py:8"
+          },
+          {
+            "model": "approval.request",
+            "evidence": "models/approval_request.py:9"
+          }
+        ]
+      },
+      "securityGroups": [],
+      "accessRules": {
+        "count": 0,
+        "models": [],
+        "evidence": null
+      },
+      "configSettings": [],
+      "capabilityDescriptions": [],
+      "verification": {
+        "evidenceExtracted": true,
+        "expertReviewed": false,
+        "status": "draft"
+      }
+    },
+    {
       "technicalName": "base",
       "source": "odoo_core",
       "manifestDigest": "sha256:a0bca70fbd781b1625e459af425be629b1d300e599d77b36e838f516d4ca86bb",

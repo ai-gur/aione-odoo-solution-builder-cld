@@ -1,5 +1,5 @@
 {
-  "$comment": "Capability records for the Israeli B2B wholesale pilot. Each states what Odoo can do for a business, keyed to the requirement topics normalisation produces, and each carries the source evidence that supports it. A capability is draft until an AIOne functional reviewer confirms it against the pinned revision; a draft capability may inform a blueprint but cannot carry one to approval (Blueprint §8). All nine were reviewed on 18 August 2026 — see `verification` below. Verification confirms the statement and its recorded limitations; it does not widen coverage, close a residual gap, or resolve an unresolved topic.",
+  "$comment": "Capability records for the Israeli B2B wholesale pilot. Each states what Odoo can do for a business, keyed to the requirement topics normalisation produces, and each carries the source evidence that supports it. A capability is draft until an AIOne functional reviewer confirms it against the pinned revision; a draft capability may inform a blueprint but cannot carry one to approval (Blueprint §8). AIOne delivers Odoo 19 Enterprise, so this set covers Enterprise modules as well as core, and every record states the edition its modules require.",
   "kind": "CapabilitySet",
   "schemaVersion": "1.1.0",
   "scopeKey": "il-b2b-wholesale-distribution",
@@ -9,29 +9,37 @@
     "role": "solution_owner",
     "date": "2026-08-18",
     "baselineKey": "odoo19-baseline-2026-08-17",
-    "scope": "All nine capability records in this set. Each statement, its modules, its activation route and its recorded limitations were reviewed against the pinned Odoo 19 revisions in catalogue/pinned-sources.json.",
+    "scope": "The nine capability records that existed on 18 August 2026. Each statement, its modules, its activation route and its recorded limitations were reviewed against the pinned Odoo 19 revisions in catalogue/pinned-sources.json.",
     "excluded": [
       "The two unresolved topics below. Verifying what the catalogue does contain says nothing about what it does not; approval.discounts (F-01) and approval.credit remain open questions requiring an answer about Enterprise modules outside the pilot set.",
-      "The residual gaps on inventory.traceability.expiry and finance.chart_of_accounts_israel. Both capabilities are verified as partial: the reviewer confirmed the statement and confirmed that the gap is real, which is why coverage stays partial and neither can produce a green assessment."
+      "The residual gaps on inventory.traceability.expiry and finance.chart_of_accounts_israel. Both capabilities are verified as partial: the reviewer confirmed the statement and confirmed that the gap is real, which is why coverage stays partial and neither can produce a green assessment.",
+      "purchase.approval.request_workflow, authored from the Enterprise approvals evidence after this review. It is draft and awaits the same review."
     ]
   },
   "capabilities": [
     {
       "capabilityKey": "inventory.multi_warehouse",
-      "addressesTopics": ["inventory.multi_warehouse"],
+      "addressesTopics": [
+        "inventory.multi_warehouse"
+      ],
       "domain": "INV",
       "description": {
         "he_IL": "ניהול מלאי בכמה מחסנים, עם זמינות ותנועות לכל מחסן בנפרד.",
         "en_US": "Manage stock across several warehouses, with availability and moves per warehouse."
       },
-      "modules": ["stock"],
+      "modules": [
+        "stock"
+      ],
       "edition": "community",
       "coverage": "full",
       "activation": {
         "settingField": "group_stock_multi_locations",
         "evidence": "stock: res.config.settings field present"
       },
-      "securitySurfaces": ["stock.group_stock_multi_locations", "stock.group_adv_location"],
+      "securitySurfaces": [
+        "stock.group_stock_multi_locations",
+        "stock.group_adv_location"
+      ],
       "evidence": [
         "stock declares 17 security groups including group_adv_location (Manage Push and Pull inventory flows)",
         "stock defines 51 models and ships 77 access rules"
@@ -49,20 +57,27 @@
     },
     {
       "capabilityKey": "inventory.traceability.serial",
-      "addressesTopics": ["inventory.traceability.serial"],
+      "addressesTopics": [
+        "inventory.traceability.serial"
+      ],
       "domain": "INV",
       "description": {
         "he_IL": "מעקב אחר פריטים לפי מספר סידורי מקבלה ועד אספקה, כולל הצגת המספר במסמכי משלוח.",
         "en_US": "Track items by serial number from receipt through delivery, including showing the number on delivery documents."
       },
-      "modules": ["stock"],
+      "modules": [
+        "stock"
+      ],
       "edition": "community",
       "coverage": "full",
       "activation": {
         "settingField": "group_stock_production_lot",
         "evidence": "stock: res.config.settings field present"
       },
-      "securitySurfaces": ["stock.group_production_lot", "stock.group_lot_on_delivery_slip"],
+      "securitySurfaces": [
+        "stock.group_production_lot",
+        "stock.group_lot_on_delivery_slip"
+      ],
       "evidence": [
         "stock declares group_lot_on_delivery_slip (Display Serial & Lot Number in Delivery Slips)"
       ],
@@ -79,21 +94,29 @@
     },
     {
       "capabilityKey": "inventory.traceability.lot",
-      "addressesTopics": ["inventory.traceability.lot"],
+      "addressesTopics": [
+        "inventory.traceability.lot"
+      ],
       "domain": "INV",
       "description": {
         "he_IL": "מעקב אחר פריטים לפי אצווה, מקבלה ועד אספקה.",
         "en_US": "Track items by lot from receipt through delivery."
       },
-      "modules": ["stock"],
+      "modules": [
+        "stock"
+      ],
       "edition": "community",
       "coverage": "full",
       "activation": {
         "settingField": "group_stock_production_lot",
         "evidence": "stock: res.config.settings field present"
       },
-      "securitySurfaces": ["stock.group_production_lot"],
-      "evidence": ["stock declares lot and serial groups in security/stock_security.xml"],
+      "securitySurfaces": [
+        "stock.group_production_lot"
+      ],
+      "evidence": [
+        "stock declares lot and serial groups in security/stock_security.xml"
+      ],
       "limitations": [],
       "status": "verified",
       "verification": {
@@ -105,13 +128,17 @@
     },
     {
       "capabilityKey": "inventory.traceability.expiry",
-      "addressesTopics": ["inventory.traceability.expiry"],
+      "addressesTopics": [
+        "inventory.traceability.expiry"
+      ],
       "domain": "INV",
       "description": {
         "he_IL": "ניהול תאריכי תפוגה לאצוות ומניעת אספקה של פריטים שפג תוקפם.",
         "en_US": "Manage expiry dates on lots and prevent delivery of expired items."
       },
-      "modules": ["stock"],
+      "modules": [
+        "stock"
+      ],
       "edition": "community",
       "coverage": "partial",
       "activation": {
@@ -136,20 +163,26 @@
     },
     {
       "capabilityKey": "organisation.multi_company",
-      "addressesTopics": ["organisation.multi_company"],
+      "addressesTopics": [
+        "organisation.multi_company"
+      ],
       "domain": "ORG",
       "description": {
         "he_IL": "ניהול כמה חברות משפטיות במסד נתונים אחד, עם הפרדת רשומות ודיווח לכל חברה.",
         "en_US": "Run several legal companies in one database, with record separation and per-company reporting."
       },
-      "modules": ["base"],
+      "modules": [
+        "base"
+      ],
       "edition": "community",
       "coverage": "full",
       "activation": {
         "settingField": null,
         "evidence": "base declares base.group_multi_company; company records are created as configuration"
       },
-      "securitySurfaces": ["base.group_multi_company"],
+      "securitySurfaces": [
+        "base.group_multi_company"
+      ],
       "evidence": [
         "base declares 13 security groups including group_multi_company",
         "stock and account both reference base.group_multi_company in their data"
@@ -167,20 +200,26 @@
     },
     {
       "capabilityKey": "sales.discount.per_line",
-      "addressesTopics": ["sales.discount.per_line"],
+      "addressesTopics": [
+        "sales.discount.per_line"
+      ],
       "domain": "SAL",
       "description": {
         "he_IL": "מתן הנחה ברמת שורת הזמנה, מוגבל למשתמשים בעלי ההרשאה המתאימה.",
         "en_US": "Apply a discount at order-line level, restricted to users holding the discount permission."
       },
-      "modules": ["sale"],
+      "modules": [
+        "sale"
+      ],
       "edition": "community",
       "coverage": "full",
       "activation": {
         "settingField": "group_discount_per_so_line",
         "evidence": "sale: wizard/res_config_settings.py:22"
       },
-      "securitySurfaces": ["sale.group_discount_per_so_line"],
+      "securitySurfaces": [
+        "sale.group_discount_per_so_line"
+      ],
       "evidence": [
         "sale declares group_discount_per_so_line (Discount on lines) in security/res_groups.xml"
       ],
@@ -197,21 +236,29 @@
     },
     {
       "capabilityKey": "sales.order.lock_confirmed",
-      "addressesTopics": ["sales.order.lock_confirmed"],
+      "addressesTopics": [
+        "sales.order.lock_confirmed"
+      ],
       "domain": "SAL",
       "description": {
         "he_IL": "נעילת הזמנות מאושרות כך שלא ניתן לשנותן ללא הרשאה.",
         "en_US": "Lock confirmed sales orders so they cannot be edited without permission."
       },
-      "modules": ["sale"],
+      "modules": [
+        "sale"
+      ],
       "edition": "community",
       "coverage": "full",
       "activation": {
         "settingField": "group_auto_done_setting",
         "evidence": "sale: security/res_groups.xml"
       },
-      "securitySurfaces": ["sale.group_auto_done_setting"],
-      "evidence": ["sale declares group_auto_done_setting (Lock Confirmed Sales)"],
+      "securitySurfaces": [
+        "sale.group_auto_done_setting"
+      ],
+      "evidence": [
+        "sale declares group_auto_done_setting (Lock Confirmed Sales)"
+      ],
       "limitations": [],
       "status": "verified",
       "verification": {
@@ -223,20 +270,30 @@
     },
     {
       "capabilityKey": "finance.chart_of_accounts_israel",
-      "addressesTopics": ["finance.accounting_israel", "finance.invoicing_israel"],
+      "addressesTopics": [
+        "finance.accounting_israel",
+        "finance.invoicing_israel"
+      ],
       "domain": "FIN",
       "description": {
         "he_IL": "לוח חשבונות ישראלי ודוחות מקומיים, כבסיס להנהלת חשבונות בישויות ישראליות.",
         "en_US": "Israeli chart of accounts and local reports, as the basis for accounting in Israeli entities."
       },
-      "modules": ["l10n_il", "l10n_il_reports", "account"],
+      "modules": [
+        "l10n_il",
+        "l10n_il_reports",
+        "account"
+      ],
       "edition": "enterprise",
       "coverage": "partial",
       "activation": {
         "settingField": null,
         "evidence": "l10n_il extends account.chart.template; the template is applied at company setup"
       },
-      "securitySurfaces": ["account.group_account_manager", "account.group_account_invoice"],
+      "securitySurfaces": [
+        "account.group_account_manager",
+        "account.group_account_invoice"
+      ],
       "evidence": [
         "l10n_il defines no models and extends only account.chart.template",
         "l10n_il_reports is the only other l10n_il module at this revision",
@@ -259,20 +316,27 @@
     },
     {
       "capabilityKey": "purchase.approval.thresholds",
-      "addressesTopics": ["approval.purchases"],
+      "addressesTopics": [
+        "approval.purchases"
+      ],
       "domain": "PUR",
       "description": {
         "he_IL": "דרישת אישור להזמנות רכש מעל סכום מוגדר.",
         "en_US": "Require approval for purchase orders above a defined amount."
       },
-      "modules": ["purchase"],
+      "modules": [
+        "purchase"
+      ],
       "edition": "community",
       "coverage": "full",
       "activation": {
         "settingField": "po_double_validation",
         "evidence": "purchase: res.config.settings field present"
       },
-      "securitySurfaces": ["purchase.group_purchase_manager", "purchase.group_purchase_user"],
+      "securitySurfaces": [
+        "purchase.group_purchase_manager",
+        "purchase.group_purchase_user"
+      ],
       "evidence": [
         "purchase declares group_purchase_manager and group_purchase_user in security/purchase_security.xml",
         "purchase exposes double-validation configuration on res.config.settings"
@@ -287,6 +351,42 @@
         "date": "2026-08-18",
         "note": "Confirmed: purchase double validation is a real approval step above a single amount per company. The limitation matters in practice — a customer describing two approval tiers by role is beyond this capability and needs a further decision."
       }
+    },
+    {
+      "capabilityKey": "purchase.approval.request_workflow",
+      "addressesTopics": [
+        "approval.purchases"
+      ],
+      "domain": "APR",
+      "description": {
+        "he_IL": "אישור בקשת רכש על ידי מאשרים מוגדרים, עם מספר אישורים מזערי ואפשרות לאישור בסדר עוקב, ויצירת בקשות להצעת מחיר מתוך הבקשה המאושרת.",
+        "en_US": "Approve a purchase request through a named set of approvers, with a minimum number of approvals and optional sequential approval, then create RFQs from the approved request."
+      },
+      "modules": [
+        "approvals",
+        "approvals_purchase"
+      ],
+      "edition": "enterprise",
+      "coverage": "full",
+      "activation": {
+        "settingField": null,
+        "evidence": "approval categories are configuration records on approval.category; approvals_purchase adds the 'purchase' approval type"
+      },
+      "securitySurfaces": [
+        "approvals.group_approval_user",
+        "approvals.group_approval_manager"
+      ],
+      "evidence": [
+        "approvals defines approval.category, approval.request, approval.approver, approval.category.approver and approval.product.line",
+        "approval.category declares approval_minimum (Minimum Approval) and approver_sequence (approvers approve one after the other) in models/approval_category.py",
+        "approvals declares group_approval_user (Officer: Approve all requests) and group_approval_manager in security/approval_security.xml",
+        "approvals_purchase adds approval_type 'purchase' (Create RFQ's) to approval.category and action_create_purchase_orders to approval.request"
+      ],
+      "limitations": [
+        "The approval happens on the request, before any RFQ exists. It is not a gate on an existing purchase order: approvals_purchase extends purchase.order only to log state changes into the request's chatter, and cancelling an approved request removes or flags the orders it created.",
+        "approvals depends on hr, so employee records are part of the deployment even where the customer wanted only purchasing."
+      ],
+      "status": "draft"
     }
   ],
   "unresolvedTopics": [
@@ -296,20 +396,31 @@
       "reason": "No capability in the pilot module set requires an approval before a discounted quotation is confirmed. sale controls who may enter a discount, not who must approve one.",
       "candidatesRequiringVerification": [
         {
-          "modules": ["approvals"],
+          "modules": [
+            "approvals"
+          ],
           "edition": "enterprise",
           "licence": "OEEL-1",
-          "question": "Can the Enterprise approvals framework gate confirmation of a sales order carrying a discount above a threshold, without custom development?"
+          "question": "Can the Enterprise approvals framework gate confirmation of a sales order carrying a discount above a threshold, without custom development?",
+          "answer": "No, not as the framework stands at this revision.",
+          "answeredOn": "2026-08-18",
+          "evidence": [
+            "approvals contains no reference to sale.order anywhere in the module",
+            "approval.category is a request object of its own, not a generic approval applied to another model",
+            "The only bridges to a business document at this revision are approvals_purchase, approvals_purchase_stock and documents_approvals; there is no approvals_sale"
+          ]
         }
       ],
-      "treatment": "Fit assessment stays unresolved until an Odoo functional reviewer answers the question above. The alternatives are a verified Enterprise capability, Studio or an automation rule, or a custom-development gap."
+      "treatment": "The Enterprise candidate is eliminated on source evidence: approvals cannot gate a sales order. What remains is a decision between an automation rule on sale.order, Studio, and custom development, and that decision belongs to an Odoo functional reviewer. Until it is made the fit assessment stays unresolved, because the treatment is unknown — not because the question was never asked."
     },
     {
       "topic": "approval.credit",
       "reason": "Customer credit limits exist in account, but whether an approval is required before exceeding one is not established at this revision.",
       "candidatesRequiringVerification": [
         {
-          "modules": ["account"],
+          "modules": [
+            "account"
+          ],
           "edition": "community",
           "question": "Does the credit-limit feature block or merely warn, and can blocking be gated by an approval?"
         }

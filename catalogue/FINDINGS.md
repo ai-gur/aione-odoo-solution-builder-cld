@@ -24,12 +24,21 @@ revision: `approvals`, `approvals_purchase`, `approvals_purchase_stock`,
 `documents_approvals`, all OEEL-1. `approvals_purchase` covers purchase
 requests; none of them is wired to sales-order discounts out of the box.
 
-**Consequence for the pilot.** `REQ-APR-001` resolves to one of: a verified
-Enterprise approvals capability if review confirms it can gate a sales order;
-Studio or an automation rule; or a custom-development gap. The decision needs
-an Odoo functional reviewer, and until then the fit assessment is `unresolved`
-rather than a guess. This is the case Blueprint §27 describes: produce a sound
-design direction and refuse to invent the module.
+**The Enterprise candidate is now eliminated.** `approvals` contains no
+reference to `sale.order` anywhere in the module. `approval.category` is a
+request object of its own, not a generic approval attached to another model,
+so there is nothing to point at a quotation. The only bridges to a business
+document at this revision are `approvals_purchase`,
+`approvals_purchase_stock` and `documents_approvals`; there is no
+`approvals_sale`. The Enterprise approvals framework cannot gate confirmation
+of a discounted sales order.
+
+**Consequence for the pilot.** `REQ-APR-001` stays `unresolved`, but for a
+narrower reason than before: the question was asked and one candidate was
+ruled out on evidence. What remains is a choice between an automation rule on
+`sale.order`, Studio, and custom development, and that choice belongs to an
+Odoo functional reviewer. This is the case Blueprint §27 describes: produce a
+sound design direction and refuse to invent the module.
 
 ## F-02 — Israeli localization is two modules and adds no models
 
@@ -73,3 +82,25 @@ unexpectedly.
 they belong in the manifest's preflight rather than being discovered when a
 module fails to install. `website` requires `geoip2`, which matters as soon as
 the pilot adds a customer portal.
+
+## F-05 — Enterprise approvals approves a request, not an order
+
+**Evidence.** `approvals_purchase` adds `approval_type` `'purchase'` ("Create
+RFQ's") to `approval.category` and `action_create_purchase_orders` to
+`approval.request`. Its `purchase.order` override does one thing: it logs
+state changes into the approval request's chatter. Cancelling an approved
+request removes the draft orders it created, or flags them for manual action
+if they have moved on.
+
+**Why it matters.** A customer who says "purchases above ₪50,000 need my
+approval" can mean either of two things, and Odoo answers them differently.
+`purchase`'s `po_double_validation` is a second validation on the order
+itself, above a single amount per company. The Enterprise approvals workflow
+approves a *request* — with a minimum number of approvers, optionally in
+sequence — and the RFQ is created from it afterwards. Neither is a
+substitute for the other, and the difference is a change to how the business
+buys, not a configuration detail.
+
+**Consequence.** Both are capability records against `approval.purchases`. A
+requirement that reaches them gets both, ranked equally, with the choice
+stated as a decision for the review rather than settled by the catalogue.

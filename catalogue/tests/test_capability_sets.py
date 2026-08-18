@@ -132,6 +132,34 @@ class TestClaims(CapabilitySetTestCase):
                 self.assertTrue(unresolved.get("reason"), f"{path.name}: {unresolved['topic']}")
                 self.assertTrue(unresolved.get("treatment"), f"{path.name}: {unresolved['topic']}")
 
+    def test_an_answered_candidate_carries_the_evidence_for_its_answer(self) -> None:
+        """Ruling a candidate out is itself a technical claim. 'We checked and
+        it cannot do this' has to be as checkable as 'it can'."""
+        for path, document in self.documents():
+            for unresolved in document.get("unresolvedTopics", []):
+                for candidate in unresolved.get("candidatesRequiringVerification", []):
+                    if "answer" not in candidate:
+                        continue
+                    where = f"{path.name}: {unresolved['topic']} / {candidate['modules']}"
+                    self.assertTrue(candidate.get("evidence"), f"{where} answers with no evidence")
+                    datetime.date.fromisoformat(candidate["answeredOn"])
+
+    def test_a_capability_naming_an_enterprise_module_is_reachable(self) -> None:
+        """Every module a capability names must be in the pilot scope, so its
+        evidence was actually extracted rather than assumed."""
+        scope = json.loads((ROOT / "catalogue" / "pilot-scope.json").read_text(encoding="utf-8"))
+        in_scope = {name for names in scope["domains"].values() for name in names}
+        for path, document in self.documents():
+            if document["scopeKey"] != scope["scopeKey"]:
+                continue
+            for capability in document["capabilities"]:
+                for module in capability["modules"]:
+                    self.assertIn(
+                        module, in_scope,
+                        f"{path.name}: {capability['capabilityKey']} names {module}, "
+                        "which is outside the pilot scope and therefore unevidenced",
+                    )
+
 
 class TestVerificationProvenance(CapabilitySetTestCase):
     def test_a_verified_capability_names_its_reviewer_and_date(self) -> None:

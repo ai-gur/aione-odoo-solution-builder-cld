@@ -189,6 +189,39 @@ class TestClassification(unittest.TestCase):
         self.assertEqual(decision["capability_key"], "verified.one")
         self.assertEqual(decision["alternatives"][0]["capabilityKey"], "draft.one")
 
+    def test_two_equally_ranked_capabilities_are_a_decision_not_a_sort_order(self) -> None:
+        """Odoo often offers two real ways to do something — a threshold on the
+        purchase order, or an approval request the order is created from
+        (F-05). Choosing alphabetically and calling it green would hide that a
+        business decision was made by a sort."""
+        verified = dict(status="verified", verified_by="A Reviewer", verified_on="2026-08-18")
+        decision = blueprint.classify(
+            {"requirement_ref": "REQ-APR-002", "topic": "approval.purchases"},
+            [
+                self.capability(capability_key="purchase.approval.request_workflow", **verified),
+                self.capability(capability_key="purchase.approval.thresholds", **verified),
+            ],
+            {},
+        )
+        self.assertEqual(decision["confidence"], "amber")
+        self.assertIn("decision for the review", decision["rationale"]["en_US"])
+        self.assertIn("consulting decision", decision["alternatives"][0]["reason"])
+
+    def test_a_verified_capability_still_outranks_a_draft_one(self) -> None:
+        """Unequal ranks are settled by evidence, so no decision is needed."""
+        decision = blueprint.classify(
+            {"requirement_ref": "R", "topic": "approval.purchases"},
+            [
+                self.capability(capability_key="draft.one", status="draft"),
+                self.capability(capability_key="verified.one", status="verified",
+                                verified_by="A Reviewer", verified_on="2026-08-18"),
+            ],
+            {},
+        )
+        self.assertEqual(decision["capability_key"], "verified.one")
+        self.assertEqual(decision["confidence"], "green")
+        self.assertNotIn("decision for the review", decision["rationale"]["en_US"])
+
     def test_israeli_localization_is_classified_as_localization(self) -> None:
         decision = blueprint.classify(
             {"requirement_ref": "REQ-FIN-001", "topic": "finance.accounting_israel"},

@@ -117,12 +117,26 @@ def classify(
         key=lambda c: (c["status"] != "verified", c["coverage"] != "full", c["capability_key"]),
     )
     chosen = ranked[0]
+
+    def rank_key(capability: dict[str, Any]) -> tuple[bool, bool]:
+        return (capability["status"] != "verified", capability["coverage"] != "full")
+
+    # Two capabilities the evidence ranks equally are a consulting decision,
+    # not a sort order. Odoo often offers a second way to do something — a
+    # purchase threshold on the order, or an approval request the order is
+    # created from — and which one suits a business is not a property of the
+    # catalogue. Picking alphabetically and calling it green would hide that.
+    contested = [
+        other for other in ranked[1:] if rank_key(other) == rank_key(chosen)
+    ]
     rejected = [
         {
             "capabilityKey": other["capability_key"],
             "reason": (
-                "lower coverage" if other["coverage"] != chosen["coverage"]
-                else "not preferred by ranking"
+                "equally ranked; the choice between them is a consulting decision"
+                if other in contested
+                else "lower coverage" if other["coverage"] != chosen["coverage"]
+                else "draft, where the selected capability is verified"
             ),
         }
         for other in ranked[1:]
@@ -143,7 +157,7 @@ def classify(
     # A draft capability cannot support a green assessment: the claim it rests
     # on has not been reviewed by anyone who knows Odoo.
     confidence = "green" if chosen["status"] == "verified" else "amber"
-    if chosen["coverage"] == "partial":
+    if chosen["coverage"] == "partial" or contested:
         confidence = "amber"
 
     rationale_en = (
@@ -152,6 +166,13 @@ def classify(
     )
     if needs_configuration:
         rationale_en += f" Activated through the {activation['settingField']} setting."
+    if contested:
+        others = ", ".join(other["capability_key"] for other in contested)
+        rationale_en += (
+            f" {len(contested) + 1} capabilities address this requirement equally well"
+            f" ({others} is the alternative); which one suits this business is a"
+            " decision for the review."
+        )
     if chosen["status"] != "verified":
         rationale_en += " Catalogue entry is draft and needs functional verification."
     elif chosen.get("verified_by"):

@@ -2,6 +2,8 @@
   "$comment": "The first catalogue release covers one archetype, not all 1440 modules (MVP Architecture §16.3). Israeli B2B wholesale distribution: order to cash, procure to pay, stock, and the Israeli accounting boundary.",
   "scopeKey": "il-b2b-wholesale-distribution",
   "baselineKey": "odoo19-baseline-2026-08-17",
+  "targetEdition": "enterprise",
+  "editionNote": "AIOne delivers Odoo 19 Enterprise. The Foundation mounts both the core and the Enterprise revisions, and a solution workspace defaults to target_odoo_edition 'enterprise'. The scope below therefore includes Enterprise modules, and a capability built from them is an Enterprise capability. Scoping only core modules would make the catalogue describe a product AIOne does not sell — every requirement that Enterprise answers would appear as a gap.",
   "archetype": {
     "he_IL": "מפיץ סיטונאי ישראלי בין עסקים",
     "en_US": "Israeli B2B wholesale distributor"
@@ -10,13 +12,16 @@
     "CRM": ["crm"],
     "SAL": ["sale", "sale_management", "sale_stock", "product"],
     "PUR": ["purchase", "purchase_stock"],
+    "APR": ["approvals", "approvals_purchase", "approvals_purchase_stock"],
     "INV": ["stock", "stock_account", "delivery", "uom"],
-    "FIN": ["account", "l10n_il", "l10n_il_reports"],
+    "FIN": ["account", "account_accountant", "account_reports", "l10n_il", "l10n_il_reports"],
     "SEC": ["base", "base_setup"],
     "REP": ["board"]
   },
   "notes": [
     "Modules listed here are the business-selected set. Their transitive dependencies come from the release and are recorded as technical dependencies, not as scope decisions (Blueprint §13).",
-    "Nothing here asserts that a module satisfies a requirement. That is a fit assessment, made per requirement against verified capabilities."
+    "Nothing here asserts that a module satisfies a requirement. That is a fit assessment, made per requirement against verified capabilities.",
+    "l10n_il_reports depends on account_reports, which depends on account_accountant, both Enterprise. Naming the localization without them described a module set that cannot install.",
+    "Deliberately outside this scope at this release: stock_barcode, web_studio, documents, sign, sale_subscription, sale_renting, the marketplace connectors and the delivery carriers. Each is Enterprise and available, and none is reached by a requirement the Quick Start interview produces — QS-08 asks about warehouses, tracking, dropshipping, imports and returns, and never about barcode scanning. A scope entry is a commitment to author and verify capabilities for a module, so an unreachable module is left out rather than listed. stock_barcode belongs here as soon as the comprehensive interview asks about warehouse operations."
   ]
 }

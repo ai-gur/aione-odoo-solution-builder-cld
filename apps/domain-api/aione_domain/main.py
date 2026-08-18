@@ -16,16 +16,25 @@ import logging
 import secrets
 import sys
 from contextlib import asynccontextmanager
+from datetime import datetime
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 
-from . import audit, db, identity
+from . import audit, authorization, db, identity, workspaces
 from .config import ConfigurationError, Settings, load_settings
 
 logger = logging.getLogger("aione.domain")
 
 CORRELATION_HEADER = "X-Correlation-Id"
+
+
+def _serialise(row: dict) -> dict:
+    """Render a database row as JSON. Timestamps become RFC 3339 (ADR-015)."""
+    return {
+        key: (value.isoformat() if isinstance(value, datetime) else value)
+        for key, value in row.items()
+    }
 
 
 def _configure_logging(level: str) -> None:
@@ -327,3 +336,219 @@ def list_audit_events(
         ]
 
     return {"tenantId": tenant_id, "events": events, "correlationId": correlation_id}
+
+
+# ---------------------------------------------------------------------------
+# Customers and solution workspaces (Increment 1)
+# ---------------------------------------------------------------------------
+
+
+def authorize(
+    principal: identity.Principal, tenant_id: str, authority: str, correlation_id: str
+) -> str:
+    """Check an authority, audit the denial, and return the role used.
+
+    Every route goes through here, so a denial is always recorded and always
+    recorded the same way. The role that permitted the action is returned
+    because history and approval rows must name it (Constitution §5) — "they
+    were an administrator" is not an answer.
+    """
+    try:
+        return authorization.require(principal, tenant_id, authority)
+    except authorization.AuthorizationError as error:
+        audit.record(
+            tenant_id=tenant_id,
+            action=authority,
+            correlation_id=correlation_id,
+            outcome="denied",
+            actor_id=principal.user_id,
+            detail={"reason": error.reason},
+        )
+        raise HTTPException(status_code=403, detail={"error": "forbidden"}) from error
+
+
+@app.post("/v1/tenants/{tenant_id}/customers", status_code=201)
+def create_customer(
+    tenant_id: str,
+    request: Request,
+    body: dict,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    correlation_id = request.state.correlation_id
+    role = authorize(principal, tenant_id, "customer.manage", correlation_id)
+
+    legal_name = str(body.get("legalName", "")).strip()
+    customer_code = str(body.get("customerCode", "")).strip()
+    if not legal_name or not customer_code:
+        raise HTTPException(
+            status_code=400, detail={"error": "legalName_and_customerCode_required"}
+        )
+
+    try:
+        customer = workspaces.create_customer(
+            tenant_id=tenant_id,
+            user_id=principal.user_id,
+            legal_name=legal_name,
+            customer_code=customer_code,
+            trading_name=(body.get("tradingName") or None),
+            countries=body.get("countries") or None,
+        )
+    except workspaces.ConflictError as error:
+        raise HTTPException(status_code=409, detail={"error": str(error)}) from error
+
+    audit.record(
+        tenant_id=tenant_id,
+        action="customer.created",
+        correlation_id=correlation_id,
+        outcome="succeeded",
+        actor_id=principal.user_id,
+        actor_role=role,
+        subject_type="customer",
+        subject_id=customer["id"],
+        detail={"customerCode": customer_code},
+    )
+    return {"customer": _serialise(customer), "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/customers")
+def list_customers(
+    tenant_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "customer.read", correlation_id)
+    rows = workspaces.list_customers(tenant_id=tenant_id, user_id=principal.user_id)
+    return {"customers": [_serialise(row) for row in rows], "correlationId": correlation_id}
+
+
+@app.post("/v1/tenants/{tenant_id}/workspaces", status_code=201)
+def create_workspace(
+    tenant_id: str,
+    request: Request,
+    body: dict,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    correlation_id = request.state.correlation_id
+    role = authorize(principal, tenant_id, "workspace.create", correlation_id)
+
+    customer_id = str(body.get("customerId", "")).strip()
+    name = str(body.get("name", "")).strip()
+    if not customer_id or not name:
+        raise HTTPException(status_code=400, detail={"error": "customerId_and_name_required"})
+
+    try:
+        workspace = workspaces.create_workspace(
+            tenant_id=tenant_id,
+            user_id=principal.user_id,
+            actor_role=role,
+            customer_id=customer_id,
+            name=name,
+            business_scope=(body.get("businessScope") or None),
+            primary_locale=str(body.get("primaryLocale") or "he_IL"),
+            discovery_mode=(body.get("discoveryMode") or None),
+        )
+    except workspaces.ConflictError as error:
+        raise HTTPException(status_code=409, detail={"error": str(error)}) from error
+
+    audit.record(
+        tenant_id=tenant_id,
+        action="workspace.created",
+        correlation_id=correlation_id,
+        outcome="succeeded",
+        actor_id=principal.user_id,
+        actor_role=role,
+        subject_type="workspace",
+        subject_id=workspace["id"],
+        detail={"name": name},
+    )
+    return {"workspace": _serialise(workspace), "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/workspaces")
+def list_workspaces(
+    tenant_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+    customer_id: str | None = None,
+) -> dict[str, object]:
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "workspace.read", correlation_id)
+    rows = workspaces.list_workspaces(
+        tenant_id=tenant_id, user_id=principal.user_id, customer_id=customer_id
+    )
+    return {"workspaces": [_serialise(row) for row in rows], "correlationId": correlation_id}
+
+
+@app.post("/v1/tenants/{tenant_id}/workspaces/{workspace_id}/transition")
+def transition_workspace(
+    tenant_id: str,
+    workspace_id: str,
+    request: Request,
+    body: dict,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    correlation_id = request.state.correlation_id
+    to_state = str(body.get("toState", "")).strip()
+
+    # Confirming an engagement is complete is the Account Manager's decision
+    # about the customer relationship, not a general workspace edit
+    # (ROLES-AND-PERMISSIONS.md §4).
+    authority = "workspace.complete" if to_state == "operating" else "workspace.manage"
+    role = authorize(principal, tenant_id, authority, correlation_id)
+
+    try:
+        workspace = workspaces.transition(
+            tenant_id=tenant_id,
+            user_id=principal.user_id,
+            actor_role=role,
+            workspace_id=workspace_id,
+            to_state=to_state,
+            reason=(body.get("reason") or None),
+        )
+    except workspaces.TransitionError as error:
+        audit.record(
+            tenant_id=tenant_id,
+            action="workspace.transition",
+            correlation_id=correlation_id,
+            outcome="failed",
+            actor_id=principal.user_id,
+            actor_role=role,
+            subject_type="workspace",
+            subject_id=workspace_id,
+            detail={"from": error.current, "to": error.requested},
+        )
+        raise HTTPException(
+            status_code=409,
+            detail={"error": "illegal_transition", "from": error.current, "to": error.requested},
+        ) from error
+    except workspaces.ConflictError as error:
+        raise HTTPException(status_code=404, detail={"error": str(error)}) from error
+
+    audit.record(
+        tenant_id=tenant_id,
+        action="workspace.transition",
+        correlation_id=correlation_id,
+        outcome="succeeded",
+        actor_id=principal.user_id,
+        actor_role=role,
+        subject_type="workspace",
+        subject_id=workspace_id,
+        detail={"to": to_state},
+    )
+    return {"workspace": _serialise(workspace), "correlationId": correlation_id}
+
+
+@app.get("/v1/tenants/{tenant_id}/workspaces/{workspace_id}/history")
+def workspace_history(
+    tenant_id: str,
+    workspace_id: str,
+    request: Request,
+    principal: identity.Principal = Depends(current_principal),
+) -> dict[str, object]:
+    correlation_id = request.state.correlation_id
+    authorize(principal, tenant_id, "workspace.read", correlation_id)
+    rows = workspaces.workspace_history(
+        tenant_id=tenant_id, user_id=principal.user_id, workspace_id=workspace_id
+    )
+    return {"history": [_serialise(row) for row in rows], "correlationId": correlation_id}
